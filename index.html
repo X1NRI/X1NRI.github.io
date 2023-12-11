@@ -137,6 +137,85 @@
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2023/12/11/DASCTF X 0psu3 2023十一月挑战赛/" title="DASCTF X 0psu3 2023十一月挑战赛复现">DASCTF X 0psu3 2023十一月挑战赛</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2023-12-11  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p><img src="/EXP_FILE/97aa869f5bad1ebb9f7a850637e5c183_MD5.jpeg"></p>
+<blockquote>
+<p>WP：<a target="_blank" rel="noopener" href="https://dxh3b3fqgc3.feishu.cn/docx/HkgmdV6Fgom3P0x0iUscKxYZnLd">DAS X 0psu3 - 飞书云文档 (feishu.cn)</a></p>
+</blockquote>
+<h1 id="PWN"><a href="#PWN" class="headerlink" title="PWN"></a>PWN</h1><h2 id="ASadStory"><a href="#ASadStory" class="headerlink" title="ASadStory"></a>ASadStory</h2><p>没canary，partial relro<br><img src="/EXP_FILE/7ef99aa3078903a58b74311db309722c_MD5.jpeg">【2.31-0ubuntu9.12】无泄露堆沙盒<br>试运行一下😂<br><img src="/EXP_FILE/0aa0df98f3b91e0b12b185e69f91bd52_MD5.jpeg"></p>
+<h3 id="程序分析"><a href="#程序分析" class="headerlink" title="程序分析"></a>程序分析</h3><p>直接看1.yes，我们可以选择两个武器：<br><img src="/EXP_FILE/105a6c6cb8dcfd465ec799ecc734a962_MD5.jpeg"></p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">void</span> __noreturn <span class="token function">sub_1492</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+  <span class="token keyword">int</span> v0<span class="token punctuation">;</span> <span class="token comment">// edx</span>
+  <span class="token keyword">char</span> <span class="token operator">*</span>buf<span class="token punctuation">;</span> <span class="token comment">// [rsp+4h] [rbp-Ch] BYREF</span>
+  <span class="token keyword">int</span> v2<span class="token punctuation">;</span> <span class="token comment">// [rsp+Ch] [rbp-4h]</span>
+
+  <span class="token function">puts</span><span class="token punctuation">(</span><span class="token string">"OK,now I will tell you the name of the betrayers:"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">puts</span><span class="token punctuation">(</span><span class="token string">"s* &amp;&amp; B*!!!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">puts</span><span class="token punctuation">(</span><span class="token string">"Your mission is to defeat them!!!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">puts</span><span class="token punctuation">(</span><span class="token string">"You can choice a weapon: "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">while</span> <span class="token punctuation">(</span> <span class="token number">1</span> <span class="token punctuation">)</span>
+  <span class="token punctuation">&#123;</span>
+    <span class="token function">puts</span><span class="token punctuation">(</span>a1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"your choice: "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">read</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>buf<span class="token punctuation">,</span> <span class="token number">8uLL</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    v2 <span class="token operator">=</span> <span class="token function">strtol</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span><span class="token punctuation">)</span><span class="token operator">&amp;</span>buf<span class="token punctuation">,</span> <span class="token operator">&amp;</span>buf<span class="token punctuation">,</span> v0<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span> v2 <span class="token operator">==</span> <span class="token number">1</span> <span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
+      <span class="token function">sub_1420</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span> v2 <span class="token operator">==</span> <span class="token number">2</span> <span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
+      <span class="token function">sub_1468</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ul>
+<li>武器1<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">int</span> <span class="token function">sub_1420</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+  <span class="token function">printf</span><span class="token punctuation">(</span>format<span class="token punctuation">,</span> sub_1249<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">puts</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>byte_2200<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span> <span class="token function">close</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+能泄露pie，但是会关闭标准输出</li>
+<li>武器2<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">int</span> <span class="token function">sub_1468</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+  <span class="token keyword">char</span> v1<span class="token punctuation">[</span><span class="token number">48</span><span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment">// [rsp+0h] [rbp-30h] BYREF</span>
+
+  <span class="token function">gets</span><span class="token punctuation">(</span>v1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span> <span class="token function">sanbox</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+一个无限栈溢出，不过同时会打开prctl沙箱，禁用了execve和open，并限制了arch<br><img src="/EXP_FILE/c1fd61751f52ca7e5e88cf79bf28ff2c_MD5.jpeg"></li>
+</ul>
+<blockquote>
+<p>想要ret2libc，就必须泄露pie而关掉输出，可关掉输出就无法得到libc地址，左右为难。</p>
+</blockquote>
+	
+	</div>
+  <a type="button" href="/2023/12/11/DASCTF X 0psu3 2023十一月挑战赛/#more" class="btn btn-default more">Read More</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2023/12/11/RootMe/" title="一切的开始？">RootMe靶机实战</a>
 		</h3>
 		</div>
@@ -347,7 +426,7 @@ qemu-system-x86_64 <span class="token parameter variable">-initrd</span> core.cp
 		
 			<li><a href="/categories/渗透测试学习/">渗透测试学习<span>1</span></a></li>
 		
-			<li><a href="/categories/赛题/">赛题<span>1</span></a></li>
+			<li><a href="/categories/赛题/">赛题<span>2</span></a></li>
 		
 		</ul>
 	</div>
@@ -360,6 +439,10 @@ qemu-system-x86_64 <span class="token parameter variable">-initrd</span> core.cp
 <div class="widget">
   <h4>Recent Posts</h4>
   <ul class="entry list-unstyled">
+    
+      <li>
+        <a href="/2023/12/11/DASCTF X 0psu3 2023十一月挑战赛/"  title="DASCTF X 0psu3 2023十一月挑战赛复现" ><i class="fa fa-file-o"></i>DASCTF X 0psu3 2023十一月挑战赛</a>
+      </li>
     
       <li>
         <a href="/2023/12/11/RootMe/"  title="一切的开始？" ><i class="fa fa-file-o"></i>RootMe靶机实战</a>
