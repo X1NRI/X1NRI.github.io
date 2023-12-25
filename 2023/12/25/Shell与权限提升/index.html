@@ -200,10 +200,10 @@
 </ol>
 <h3 id="LinEnum的使用"><a href="#LinEnum的使用" class="headerlink" title="LinEnum的使用"></a>LinEnum的使用</h3><p>我们关注输出的这几项内容：</p>
 <ul>
-<li>_Kernel_：此处显示内核信息。这台机器很可能存在可用的内核漏洞。</li>
-<li>_Can we read&#x2F;write sensitive files_：这些是任何经过身份验证的用户都可以读取和写入的文件。通过查看这些敏感文件的权限，我们可以看到哪里存在配置错误，允许通常不应该写入敏感文件的用户。</li>
-<li>_SUID Files_：此处显示了 SUID 文件的输出。有一些有趣的项目，我们肯定会将其作为提升特权的一种方式。SUID（在执行时设置所有者用户 ID）是授予文件的一种特殊类型的文件权限。它允许文件以所有者的权限运行。如果这是 root，则它以 root 权限运行。它可以让我们提升权限。</li>
-<li><em>Crontab</em> _Contents_：crontab是一个系统中定期执行任务的工具</li>
+<li><em>Kernel</em>：此处显示内核信息。这台机器很可能存在可用的内核漏洞。</li>
+<li><em>Can we read&#x2F;write sensitive files</em>：这些是任何经过身份验证的用户都可以读取和写入的文件。通过查看这些敏感文件的权限，我们可以看到哪里存在配置错误，允许通常不应该写入敏感文件的用户。</li>
+<li><em>SUID Files</em>：此处显示了 SUID 文件的输出。有一些有趣的项目，我们肯定会将其作为提升特权的一种方式。SUID（在执行时设置所有者用户 ID）是授予文件的一种特殊类型的文件权限。它允许文件以所有者的权限运行。如果这是 root，则它以 root 权限运行。它可以让我们提升权限。</li>
+<li><em>Crontab Contents</em>：crontab是一个系统中定期执行任务的工具</li>
 </ul>
 <h3 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h3><p>先用ssh连接主机，以user3的身份登录</p>
 <p>使用python web服务器，传输LinEnum.sh<br><img src="/PenTest_FILE/d48205e48d07ead847c2b110654b759b_MD5.jpeg"></p>
