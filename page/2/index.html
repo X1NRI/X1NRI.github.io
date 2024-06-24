@@ -137,6 +137,256 @@
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2024/02/12/Vivotek CC8160 摄像头栈溢出漏洞 (CVE-2017-17105)/" title="初探物联网">Vivotek CC8160 摄像头栈溢出漏洞 (CVE-2017-17105)</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2024-02-12  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<blockquote>
+<p>Vivotek是一家知名的家庭摄像头企业，其旗下的一款高清摄像头Vivotek CC8160，在2017年被发现存在一个远程命令执行的漏洞。这个漏洞是由于程序在处理POST请求中的Content-Length字段时，没有对长度进行检测，导致用户可以输入任意长度的字符串造成栈溢出。<a target="_blank" rel="noopener" href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-17105">CVE - CVE-2017-17105 (mitre.org)</a></p>
+</blockquote>
+<h1 id="一、环境搭建"><a href="#一、环境搭建" class="headerlink" title="一、环境搭建"></a>一、环境搭建</h1><blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/Vu1nT0tal/IoT-vulhub/tree/master/VIVOTEK/remote_stack_overflow">IoT-vulhub&#x2F;VIVOTEK&#x2F;remote_stack_overflow at master · Vu1nT0tal&#x2F;IoT-vulhub (github.com)</a></p>
+</blockquote>
+<h2 id="IoT-vulhub基础环境"><a href="#IoT-vulhub基础环境" class="headerlink" title="IoT-vulhub基础环境"></a>IoT-vulhub基础环境</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 下载本项目</span>
+<span class="token function">wget</span> https://github.com/VulnTotal-Team/IoT-vulhub/archive/master.zip <span class="token parameter variable">-O</span> iot-vulhub-master.zip
+<span class="token function">unzip</span> iot-vulhub-master.zip <span class="token operator">&amp;&amp;</span> <span class="token builtin class-name">cd</span> iot-vulhub-master
+
+<span class="token comment"># 构建 ubuntu1604 基础镜像</span>
+<span class="token builtin class-name">cd</span> baseImage/ubuntu1604 <span class="token operator">&amp;&amp;</span> <span class="token function">docker</span> build <span class="token parameter variable">-t</span> firmianay/ubuntu1604 <span class="token builtin class-name">.</span>
+
+<span class="token comment"># 构建 binwalk 容器，方便使用</span>
+<span class="token builtin class-name">cd</span> baseImage/binwalk <span class="token operator">&amp;&amp;</span> <span class="token function">docker</span> build <span class="token parameter variable">-t</span> firmianay/binwalk <span class="token builtin class-name">.</span>
+
+<span class="token comment"># 搭建qemu user的环境</span>
+<span class="token builtin class-name">cd</span> baseImage/qemu-user-static
+<span class="token function">sudo</span> <span class="token function">docker</span> build <span class="token parameter variable">-t</span> firmianay/qemu-user-static <span class="token builtin class-name">.</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="漏洞环境搭建"><a href="#漏洞环境搭建" class="headerlink" title="漏洞环境搭建"></a>漏洞环境搭建</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">cd</span> VIVOTEK/remote_stack_overflow
+<span class="token comment"># 解压固件</span>
+binwalk <span class="token parameter variable">-Mer</span> <span class="token string">"./firmware/CC8160-VVTK-0100d.flash.pkg"</span>
+
+<span class="token comment"># 搭建qemu system的arm环境</span>
+<span class="token builtin class-name">cd</span> baseImage/qemu-system/armel/images <span class="token operator">&amp;&amp;</span> <span class="token function">bash</span> ./download.sh
+<span class="token builtin class-name">cd</span> <span class="token punctuation">..</span>/
+<span class="token function">sudo</span> <span class="token function">docker</span> build <span class="token parameter variable">-t</span> firmianay/qemu-system:armel <span class="token builtin class-name">.</span>
+
+<span class="token function">bash</span> ./init_env.sh arm <span class="token comment">#(有三种参数: arm/mips/mipsel)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ul>
+<li>报错1：在执行<code>system-emu/dockerfile</code>和<code>user-emu/dockerfile</code>时会报错：<code>COPY ./firmware/_*/_31* /root/firmware</code> 会执行失败。<br>将其改为 <code>COPY ./firmware/_CC8160-VVTK-0100d.flash.pkg.extracted/_31.extracted /root/firmware</code>，这是因为在新版docker中，会对文件名做检测</li>
+</ul>
+<h3 id="用户模拟"><a href="#用户模拟" class="headerlink" title="用户模拟"></a>用户模拟</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 构建镜像</span>
+<span class="token function">sudo</span> <span class="token function">docker-compose</span> <span class="token parameter variable">-f</span> docker-compose-user.yml build
+
+<span class="token comment"># 启动容器</span>
+<span class="token function">sudo</span> <span class="token function">docker-compose</span> <span class="token parameter variable">-f</span> docker-compose-user.yml up
+
+<span class="token comment"># 关闭容器</span>
+<span class="token function">sudo</span> <span class="token function">docker-compose</span> <span class="token parameter variable">-f</span> docker-compose-user.yml down<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+	
+	</div>
+  <a type="button" href="/2024/02/12/Vivotek CC8160 摄像头栈溢出漏洞 (CVE-2017-17105)/#more" class="btn btn-default more">Read More</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
+			<a href="/2024/02/11/LK01-4 Holstein v4 竞态条件/" title="所谓hacker...">LK01-4 Holstein v4 竞态条件</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2024-02-11  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p>LKM源码：</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;linux/module.h></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;linux/kernel.h></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;linux/cdev.h></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;linux/fs.h></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;linux/uaccess.h></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;linux/slab.h></span></span>
+
+<span class="token function">MODULE_LICENSE</span><span class="token punctuation">(</span><span class="token string">"GPL"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">MODULE_AUTHOR</span><span class="token punctuation">(</span><span class="token string">"ptr-yudai"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">MODULE_DESCRIPTION</span><span class="token punctuation">(</span><span class="token string">"Holstein v4 - Vulnerable Kernel Driver for Pawnyable"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name">DEVICE_NAME</span> <span class="token string">"holstein"</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name">BUFFER_SIZE</span> <span class="token expression"><span class="token number">0x400</span></span></span>
+
+<span class="token keyword">int</span> mutex <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token keyword">char</span> <span class="token operator">*</span>g_buf <span class="token operator">=</span> <span class="token constant">NULL</span><span class="token punctuation">;</span>
+
+<span class="token keyword">static</span> <span class="token keyword">int</span> <span class="token function">module_open</span><span class="token punctuation">(</span><span class="token keyword">struct</span> <span class="token class-name">inode</span> <span class="token operator">*</span>inode<span class="token punctuation">,</span> <span class="token keyword">struct</span> <span class="token class-name">file</span> <span class="token operator">*</span>file<span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+  <span class="token function">printk</span><span class="token punctuation">(</span>KERN_INFO <span class="token string">"module_open called\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>mutex<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token function">printk</span><span class="token punctuation">(</span>KERN_INFO <span class="token string">"resource is busy"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token operator">-</span>EBUSY<span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+  mutex <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+
+  g_buf <span class="token operator">=</span> <span class="token function">kzalloc</span><span class="token punctuation">(</span>BUFFER_SIZE<span class="token punctuation">,</span> GFP_KERNEL<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>g_buf<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token function">printk</span><span class="token punctuation">(</span>KERN_INFO <span class="token string">"kmalloc failed"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token operator">-</span>ENOMEM<span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+
+  <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">static</span> <span class="token class-name">ssize_t</span> <span class="token function">module_read</span><span class="token punctuation">(</span><span class="token keyword">struct</span> <span class="token class-name">file</span> <span class="token operator">*</span>file<span class="token punctuation">,</span>
+                           <span class="token keyword">char</span> __user <span class="token operator">*</span>buf<span class="token punctuation">,</span> <span class="token class-name">size_t</span> count<span class="token punctuation">,</span>
+                           <span class="token class-name">loff_t</span> <span class="token operator">*</span>f_pos<span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+  <span class="token function">printk</span><span class="token punctuation">(</span>KERN_INFO <span class="token string">"module_read called\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>count <span class="token operator">></span> BUFFER_SIZE<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token function">printk</span><span class="token punctuation">(</span>KERN_INFO <span class="token string">"invalid buffer size\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token operator">-</span>EINVAL<span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">copy_to_user</span><span class="token punctuation">(</span>buf<span class="token punctuation">,</span> g_buf<span class="token punctuation">,</span> count<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token function">printk</span><span class="token punctuation">(</span>KERN_INFO <span class="token string">"copy_to_user failed\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token operator">-</span>EINVAL<span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+
+  <span class="token keyword">return</span> count<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">static</span> <span class="token class-name">ssize_t</span> <span class="token function">module_write</span><span class="token punctuation">(</span><span class="token keyword">struct</span> <span class="token class-name">file</span> <span class="token operator">*</span>file<span class="token punctuation">,</span>
+                            <span class="token keyword">const</span> <span class="token keyword">char</span> __user <span class="token operator">*</span>buf<span class="token punctuation">,</span> <span class="token class-name">size_t</span> count<span class="token punctuation">,</span>
+                            <span class="token class-name">loff_t</span> <span class="token operator">*</span>f_pos<span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+  <span class="token function">printk</span><span class="token punctuation">(</span>KERN_INFO <span class="token string">"module_write called\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>count <span class="token operator">></span> BUFFER_SIZE<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token function">printk</span><span class="token punctuation">(</span>KERN_INFO <span class="token string">"invalid buffer size\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token operator">-</span>EINVAL<span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">copy_from_user</span><span class="token punctuation">(</span>g_buf<span class="token punctuation">,</span> buf<span class="token punctuation">,</span> count<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token function">printk</span><span class="token punctuation">(</span>KERN_INFO <span class="token string">"copy_from_user failed\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token operator">-</span>EINVAL<span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+
+  <span class="token keyword">return</span> count<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">static</span> <span class="token keyword">int</span> <span class="token function">module_close</span><span class="token punctuation">(</span><span class="token keyword">struct</span> <span class="token class-name">inode</span> <span class="token operator">*</span>inode<span class="token punctuation">,</span> <span class="token keyword">struct</span> <span class="token class-name">file</span> <span class="token operator">*</span>file<span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+  <span class="token function">printk</span><span class="token punctuation">(</span>KERN_INFO <span class="token string">"module_close called\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">kfree</span><span class="token punctuation">(</span>g_buf<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  mutex <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">static</span> <span class="token keyword">struct</span> <span class="token class-name">file_operations</span> module_fops <span class="token operator">=</span>
+  <span class="token punctuation">&#123;</span>
+   <span class="token punctuation">.</span>owner   <span class="token operator">=</span> THIS_MODULE<span class="token punctuation">,</span>
+   <span class="token punctuation">.</span>read    <span class="token operator">=</span> module_read<span class="token punctuation">,</span>
+   <span class="token punctuation">.</span>write   <span class="token operator">=</span> module_write<span class="token punctuation">,</span>
+   <span class="token punctuation">.</span>open    <span class="token operator">=</span> module_open<span class="token punctuation">,</span>
+   <span class="token punctuation">.</span>release <span class="token operator">=</span> module_close<span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+<span class="token keyword">static</span> <span class="token class-name">dev_t</span> dev_id<span class="token punctuation">;</span>
+<span class="token keyword">static</span> <span class="token keyword">struct</span> <span class="token class-name">cdev</span> c_dev<span class="token punctuation">;</span>
+
+<span class="token keyword">static</span> <span class="token keyword">int</span> __init <span class="token function">module_initialize</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">alloc_chrdev_region</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>dev_id<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> DEVICE_NAME<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token function">printk</span><span class="token punctuation">(</span>KERN_WARNING <span class="token string">"Failed to register device\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token operator">-</span>EBUSY<span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+
+  <span class="token function">cdev_init</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>c_dev<span class="token punctuation">,</span> <span class="token operator">&amp;</span>module_fops<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  c_dev<span class="token punctuation">.</span>owner <span class="token operator">=</span> THIS_MODULE<span class="token punctuation">;</span>
+
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">cdev_add</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>c_dev<span class="token punctuation">,</span> dev_id<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token function">printk</span><span class="token punctuation">(</span>KERN_WARNING <span class="token string">"Failed to add cdev\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">unregister_chrdev_region</span><span class="token punctuation">(</span>dev_id<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token operator">-</span>EBUSY<span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+
+  <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">static</span> <span class="token keyword">void</span> __exit <span class="token function">module_cleanup</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+  <span class="token function">cdev_del</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>c_dev<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">unregister_chrdev_region</span><span class="token punctuation">(</span>dev_id<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token function">module_init</span><span class="token punctuation">(</span>module_initialize<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">module_exit</span><span class="token punctuation">(</span>module_cleanup<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>Makefile：</p>
+<pre class="line-numbers language-makefile" data-language="makefile"><code class="language-makefile">obj-m <span class="token operator">:=</span> vuln.o
+KBUILD_DIR <span class="token operator">:=</span> /lib/modules/<span class="token variable">$</span><span class="token punctuation">(</span>KVERSION<span class="token punctuation">)</span>/build
+CFLAGS_vuln.o <span class="token operator">:=</span> -O1
+
+<span class="token target symbol">all</span><span class="token punctuation">:</span>
+	<span class="token variable">$</span><span class="token punctuation">(</span>MAKE<span class="token punctuation">)</span> -C <span class="token variable">$</span><span class="token punctuation">(</span>KBUILD_DIR<span class="token punctuation">)</span> M<span class="token operator">=</span><span class="token variable">$</span><span class="token punctuation">(</span><span class="token function">shell</span> pwd<span class="token punctuation">)</span> modules
+
+<span class="token target symbol">clean</span><span class="token punctuation">:</span>
+	<span class="token variable">$</span><span class="token punctuation">(</span>MAKE<span class="token punctuation">)</span> -C <span class="token variable">$</span><span class="token punctuation">(</span>KBUILD_DIR<span class="token punctuation">)</span> M<span class="token operator">=</span><span class="token variable">$</span><span class="token punctuation">(</span><span class="token function">shell</span> pwd<span class="token punctuation">)</span> clean<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>版本5.16.14</p>
+<h1 id="一、LK01-4-Holstein-v4"><a href="#一、LK01-4-Holstein-v4" class="headerlink" title="一、LK01-4 Holstein v4"></a>一、LK01-4 Holstein v4</h1><h2 id="一-程序分析"><a href="#一-程序分析" class="headerlink" title="(一)程序分析"></a>(一)程序分析</h2><h3 id="S99pawnyable"><a href="#S99pawnyable" class="headerlink" title="S99pawnyable"></a>S99pawnyable</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token shebang important">#!/bin/sh</span>
+mdev <span class="token parameter variable">-s</span>
+<span class="token function">mount</span> <span class="token parameter variable">-t</span> proc none /proc
+<span class="token function">mkdir</span> <span class="token parameter variable">-p</span> /dev/pts
+<span class="token function">mount</span> <span class="token parameter variable">-vt</span> devpts <span class="token parameter variable">-o</span> <span class="token assign-left variable">gid</span><span class="token operator">=</span><span class="token number">4</span>,mode<span class="token operator">=</span><span class="token number">620</span> none /dev/pts
+<span class="token function">chmod</span> <span class="token number">666</span> /dev/ptmx
+stty <span class="token parameter variable">-opost</span>
+<span class="token builtin class-name">echo</span> <span class="token number">2</span> <span class="token operator">></span> /proc/sys/kernel/kptr_restrict
+<span class="token builtin class-name">echo</span> <span class="token number">1</span> <span class="token operator">></span> /proc/sys/kernel/dmesg_restrict
+
+insmod /root/vuln.ko
+<span class="token function">mknod</span> <span class="token parameter variable">-m</span> <span class="token number">666</span> /dev/holstein c <span class="token variable"><span class="token variable">`</span><span class="token function">grep</span> holstein /proc/devices <span class="token operator">|</span> <span class="token function">awk</span> <span class="token string">'&#123;print $1;&#125;'</span><span class="token variable">`</span></span> <span class="token number">0</span>
+
+<span class="token builtin class-name">echo</span> <span class="token parameter variable">-e</span> <span class="token string">"<span class="token entity" title="\n">\n</span>Boot took <span class="token variable"><span class="token variable">$(</span><span class="token function">cut</span> -d<span class="token string">' '</span> <span class="token parameter variable">-f1</span> /proc/uptime<span class="token variable">)</span></span> seconds<span class="token entity" title="\n">\n</span>"</span>
+<span class="token builtin class-name">echo</span> <span class="token string">"[ Holstein v4 (KL01-4) - Pawnyable ]"</span>
+setsid cttyhack setuidgid <span class="token number">1000</span> <span class="token function">sh</span>
+
+<span class="token function">umount</span> /proc
+poweroff <span class="token parameter variable">-d</span> <span class="token number">0</span> <span class="token parameter variable">-f</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="run-sh"><a href="#run-sh" class="headerlink" title="run.sh"></a>run.sh</h3>
+	
+	</div>
+  <a type="button" href="/2024/02/11/LK01-4 Holstein v4 竞态条件/#more" class="btn btn-default more">Read More</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2024/02/04/LK01-3 Holstein v3 UAF/" title="所谓hacker...">LK01-3 Holstein v3 UAF</a>
 		</h3>
 		</div>
@@ -1023,145 +1273,6 @@ this is how mistakes happen. (This means you too, Jan!)
 </div>
 
 		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2023/12/11/RootMe/" title="一切的开始？">RootMe</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2023-12-11  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p><img src="/PenTest_FILE/2fec24fbca2e3994d0bc8ec68aeeb528_MD5.jpeg"></p>
-<blockquote>
-<p>虽然是个很简单的靶机，不过第一次打靶还是蛮兴奋的😄</p>
-</blockquote>
-<p>连上openvpn，开打！<br><img src="/PenTest_FILE/3f0c68cf907b552076580550d80d29b0_MD5.jpeg"></p>
-<h1 id="侦察"><a href="#侦察" class="headerlink" title="侦察"></a>侦察</h1><p><img src="/PenTest_FILE/241922fb91bc201c24bd6252cb6de156_MD5.jpeg"></p>
-<ol>
-<li>机器打开了几个端口？答：2</li>
-</ol>
-<p>-sV探测下服务<br><img src="/PenTest_FILE/5d5d6dcb9f13094b1126474b53e81174_MD5.jpeg"></p>
-<ol start="2">
-<li><p>正在运行哪个版本的 Apache？答：2.4.29<br>同上</p>
-</li>
-<li><p>端口 22 上运行什么服务？答：ssh<br>同上</p>
-</li>
-<li><p>使用 GoBuster 工具在 Web 服务器上查找目录，什么是隐藏目录？答：&#x2F;panel&#x2F;<br><img src="/PenTest_FILE/64ea2a7b5bda0934a4282065d9a2efc7_MD5.jpeg"><br>&#x2F;panel&#x2F;引起了我们的注意，打开看看<br><img src="/PenTest_FILE/db98ea7829a52c771097db5d20fa32e2_MD5.jpeg"><br>好家伙，是一个文件上传</p>
-</li>
-</ol>
-<h1 id="获取shell"><a href="#获取shell" class="headerlink" title="获取shell"></a>获取shell</h1><ol>
-<li>找到一个要上传的表单并获取反向 shell，然后找到标志user.txt。</li>
-</ol>
-	
-	</div>
-  <a type="button" href="/2023/12/11/RootMe/#more" class="btn btn-default more">Read More</a>
-</div>
-
-		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2023/12/02/2023-线上-河南金盾信安杯/" title="Rainbow7的金盾信安之旅">2023-线上-河南金盾信安杯</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2023-12-02  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<h1 id="sign-format"><a href="#sign-format" class="headerlink" title="sign-format"></a>sign-format</h1><p><img src="/EXP_FILE/10d63cbe7c7433236ed8a177dacbfb8f_MD5.jpeg"><br><img src="/EXP_FILE/7c80218a56a1994d0b9786787401b5a7_MD5.jpeg"><br>无pie，有沙盒</p>
-<h2 id="程序分析"><a href="#程序分析" class="headerlink" title="程序分析"></a>程序分析</h2><blockquote>
-<p>很简单的程序</p>
-</blockquote>
-<ul>
-<li><p>main</p>
-<pre class="line-numbers language-c" data-language="c"><code class="language-c">__int64 __fastcall <span class="token function">main</span><span class="token punctuation">(</span><span class="token keyword">int</span> a1<span class="token punctuation">,</span> <span class="token keyword">char</span> <span class="token operator">*</span><span class="token operator">*</span>a2<span class="token punctuation">,</span> <span class="token keyword">char</span> <span class="token operator">*</span><span class="token operator">*</span>a3<span class="token punctuation">)</span>
-<span class="token punctuation">&#123;</span>
-  <span class="token function">sub_40135D</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token function">puts</span><span class="token punctuation">(</span><span class="token string">"Welcome here!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token function">puts</span><span class="token punctuation">(</span><span class="token string">"It's a simple sign-in question."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token function">puts</span><span class="token punctuation">(</span><span class="token string">"Let's start!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token function">close</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token function">read</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> format<span class="token punctuation">,</span> <span class="token number">0x100uLL</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token function">printf</span><span class="token punctuation">(</span>format<span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token keyword">return</span> <span class="token number">0LL</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>把输出关闭了，还有一个bss上的fmt<br><img src="/EXP_FILE/00fcf9fecb9625710fcee2508251d2d4_MD5.jpeg"></p>
-</li>
-<li><p>sub_40135D</p>
-<pre class="line-numbers language-c" data-language="c"><code class="language-c">__int64 <span class="token function">sub_40135D</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token punctuation">&#123;</span>
-  <span class="token function">setvbuf</span><span class="token punctuation">(</span><span class="token constant">stdin</span><span class="token punctuation">,</span> <span class="token number">0LL</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">0LL</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token function">setvbuf</span><span class="token punctuation">(</span><span class="token constant">stdout</span><span class="token punctuation">,</span> <span class="token number">0LL</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">0LL</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token function">setvbuf</span><span class="token punctuation">(</span><span class="token constant">stderr</span><span class="token punctuation">,</span> <span class="token number">0LL</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">0LL</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token keyword">if</span> <span class="token punctuation">(</span> <span class="token function">mprotect</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token keyword">void</span> <span class="token operator">*</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token keyword">unsigned</span> __int64<span class="token punctuation">)</span>format <span class="token operator">&amp;</span> <span class="token number">0xFFFFFFFFFFFFF000LL</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">0x1000uLL</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">)</span> <span class="token punctuation">)</span>
-    <span class="token function">perror</span><span class="token punctuation">(</span><span class="token string">"mprotect"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token keyword">return</span> <span class="token function">sub_401236</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>将bss段赋予rwx权限</p>
-</li>
-</ul>
-<h2 id="EXP"><a href="#EXP" class="headerlink" title="EXP"></a>EXP</h2><p>只有一次非栈fmt的机会，我们无法只通过这一次控制执行流（期间也想过劫持二级指针和劫持fini_array），由于输出关闭也不能泄露数据</p>
-<p>在调用exit函数退出程序时，会调用到<code>_dl_fini</code>函数：</p>
-<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> nmaps<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token keyword">struct</span> <span class="token class-name">link_map</span> <span class="token operator">*</span>l <span class="token operator">=</span> maps<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment">// link_map结构体指针l</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>l<span class="token operator">-></span>l_init_called<span class="token punctuation">)</span>	<span class="token comment">//检查点1</span>
-    <span class="token punctuation">&#123;</span>
-      <span class="token comment">/* Make sure nothing happens if we are called twice.  */</span>
-      l<span class="token operator">-></span>l_init_called <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
-      <span class="token comment">/* Is there a destructor function?  */</span>
-      <span class="token keyword">if</span> <span class="token punctuation">(</span>l<span class="token operator">-></span>l_info<span class="token punctuation">[</span>DT_FINI_ARRAY<span class="token punctuation">]</span> <span class="token operator">!=</span> <span class="token constant">NULL</span>	<span class="token comment">//检查点2</span>
-          <span class="token operator">||</span> <span class="token punctuation">(</span>ELF_INITFINI <span class="token operator">&amp;&amp;</span> l<span class="token operator">-></span>l_info<span class="token punctuation">[</span>DT_FINI<span class="token punctuation">]</span> <span class="token operator">!=</span> <span class="token constant">NULL</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-        <span class="token punctuation">&#123;</span>
-          <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
-            <span class="token comment">/* First see whether an array is given.  */</span>
-            <span class="token keyword">if</span> <span class="token punctuation">(</span>l<span class="token operator">-></span>l_info<span class="token punctuation">[</span>DT_FINI_ARRAY<span class="token punctuation">]</span> <span class="token operator">!=</span> <span class="token constant">NULL</span><span class="token punctuation">)</span>	<span class="token comment">//检查点3</span>
-            <span class="token punctuation">&#123;</span>
-              <span class="token function">ElfW</span><span class="token punctuation">(</span>Addr<span class="token punctuation">)</span> <span class="token operator">*</span>array <span class="token operator">=</span>
-                <span class="token punctuation">(</span><span class="token function">ElfW</span><span class="token punctuation">(</span>Addr<span class="token punctuation">)</span> <span class="token operator">*</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>l<span class="token operator">-></span>l_addr
-                        <span class="token operator">+</span> l<span class="token operator">-></span>l_info<span class="token punctuation">[</span>DT_FINI_ARRAY<span class="token punctuation">]</span><span class="token operator">-></span>d_un<span class="token punctuation">.</span>d_ptr<span class="token punctuation">)</span><span class="token punctuation">;</span>
-              <span class="token keyword">unsigned</span> <span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token punctuation">(</span>l<span class="token operator">-></span>l_info<span class="token punctuation">[</span>DT_FINI_ARRAYSZ<span class="token punctuation">]</span><span class="token operator">-></span>d_un<span class="token punctuation">.</span>d_val
-                        <span class="token operator">/</span> <span class="token keyword">sizeof</span> <span class="token punctuation">(</span><span class="token function">ElfW</span><span class="token punctuation">(</span>Addr<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-              <span class="token keyword">while</span> <span class="token punctuation">(</span>i<span class="token operator">--</span> <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span>
-                <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token class-name">fini_t</span><span class="token punctuation">)</span> array<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 调用了函数指针，是我们的攻击处</span>
-            <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
-        <span class="token punctuation">&#125;</span>
-      <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
-     <span class="token punctuation">&#125;</span>
-   <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
- <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-
-<p><strong>该函数会根据link_map的l_addr偏移量来调用fini_array段的指针（DT_FINI_ARRAY 这个宏就是 26）</strong><br><code>ElfW(Addr) *array = (ElfW(Addr) *) (l-&gt;l_addr + l-&gt;l_info[26]-&gt;d_un.d_ptr);</code></p>
-	
-	</div>
-  <a type="button" href="/2023/12/02/2023-线上-河南金盾信安杯/#more" class="btn btn-default more">Read More</a>
-</div>
-
-		
 
 		</div>
 
@@ -1213,9 +1324,9 @@ this is how mistakes happen. (This means you too, Jan!)
 		
 			<li><a href="/categories/RealWorld/">RealWorld<span>2</span></a></li>
 		
-			<li><a href="/categories/赛题/">赛题<span>7</span></a></li>
+			<li><a href="/categories/赛题/">赛题<span>8</span></a></li>
 		
-			<li><a href="/categories/进攻性渗透测试/">进攻性渗透测试<span>4</span></a></li>
+			<li><a href="/categories/进攻性渗透测试/">进攻性渗透测试<span>5</span></a></li>
 		
 		</ul>
 	</div>
@@ -1226,7 +1337,7 @@ this is how mistakes happen. (This means you too, Jan!)
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/渗透打靶/">渗透打靶<span>2</span></a></li>
+			<li><a href="/tags/渗透打靶/">渗透打靶<span>3</span></a></li>
 		
 			<li><a href="/tags/Pawnyable/">Pawnyable<span>6</span></a></li>
 		
@@ -1244,6 +1355,14 @@ this is how mistakes happen. (This means you too, Jan!)
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2024/06/24/CISCN2024华中赛区选拔赛/" ><i class="fa fa-file-o"></i>CISCN2024华中赛区选拔赛</a>
+      </li>
+    
+      <li>
+        <a href="/2024/05/11/Kenobi/" ><i class="fa fa-file-o"></i>Kenobbi</a>
+      </li>
+    
+      <li>
         <a href="/2024/04/20/D-Link DIR-815 路由器多次栈溢出漏洞复现 (CNVD-2013-11625)/"  title="初探物联网" ><i class="fa fa-file-o"></i>D-Link DIR-815 路由器多次栈溢出漏洞复现...</a>
       </li>
     
@@ -1253,14 +1372,6 @@ this is how mistakes happen. (This means you too, Jan!)
     
       <li>
         <a href="/2024/04/02/Pwnhub 2023三月公开赛 kheap/"  title="kpwn题集" ><i class="fa fa-file-o"></i>Pwnhub 2023三月公开赛 kheap</a>
-      </li>
-    
-      <li>
-        <a href="/2024/03/22/RWCTF2022高校赛 - Digging into kernel 1 &amp; 2/"  title="kpwn题集" ><i class="fa fa-file-o"></i>RWCTF2022高校赛 - Digging into...</a>
-      </li>
-    
-      <li>
-        <a href="/2024/03/18/OWASP Top10-2021/"  title="重启" ><i class="fa fa-file-o"></i>OWASP Top10-2021</a>
       </li>
     
   </ul>

