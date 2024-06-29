@@ -135,22 +135,23 @@
 		 </div> <!-- alert -->
 	  		
 
-	  <p><img src="/PenTest_FILE/2fec24fbca2e3994d0bc8ec68aeeb528_MD5.jpeg"></p>
-<blockquote>
+	  <blockquote>
 <p>虽然是个很简单的靶机，不过第一次打靶还是蛮兴奋的😄</p>
 </blockquote>
-<p>连上openvpn，开打！<br><img src="/PenTest_FILE/3f0c68cf907b552076580550d80d29b0_MD5.jpeg"></p>
-<h1 id="侦察"><a href="#侦察" class="headerlink" title="侦察"></a>侦察</h1><p><img src="/PenTest_FILE/241922fb91bc201c24bd6252cb6de156_MD5.jpeg"></p>
+<p>连上openvpn，开打！<br><img src="/Red_FILE/474d2d981958756fd3c943c2278eb3b0_MD5.jpeg"></p>
+<h1 id="侦察"><a href="#侦察" class="headerlink" title="侦察"></a>侦察</h1><p><img src="/Red_FILE/5298d7842e074db29aa04d4f9d23c7cf_MD5.jpeg"></p>
 <ol>
 <li>机器打开了几个端口？答：2</li>
 </ol>
-<p>-sV探测下服务<br><img src="/PenTest_FILE/5d5d6dcb9f13094b1126474b53e81174_MD5.jpeg"></p>
-<ol start="2">
-<li><p>正在运行哪个版本的 Apache？答：2.4.29<br>同上</p>
-</li>
+<p>-sV探测下服务<br><img src="/Red_FILE/9142dbcbf87e22ff8a55f8185b6858b2_MD5.jpeg"><br>2. 正在运行哪个版本的 Apache？答：2.4.29<br>同上</p>
+<ol start="3">
 <li><p>端口 22 上运行什么服务？答：ssh<br>同上</p>
 </li>
-<li><p>使用 GoBuster 工具在 Web 服务器上查找目录，什么是隐藏目录？答：&#x2F;panel&#x2F;<br><img src="/PenTest_FILE/64ea2a7b5bda0934a4282065d9a2efc7_MD5.jpeg"><br>&#x2F;panel&#x2F;引起了我们的注意，打开看看<br><img src="/PenTest_FILE/db98ea7829a52c771097db5d20fa32e2_MD5.jpeg"><br>好家伙，是一个文件上传</p>
+<li><p>使用 GoBuster 工具在 Web 服务器上查找目录，什么是隐藏目录？答：&#x2F;panel&#x2F;<br><img src="/Red_FILE/188709e15b343a358ba3f49e673173a2_MD5.jpeg"></p>
+</li>
+<li><p>&#x2F;panel&#x2F;引起了我们的注意，打开看看<br><img src="/Red_FILE/a267a52473d71a460c03e803eb9adaa9_MD5.jpeg"></p>
+</li>
+<li><p>好家伙，是一个文件上传</p>
 </li>
 </ol>
 <h1 id="获取shell"><a href="#获取shell" class="headerlink" title="获取shell"></a>获取shell</h1><ol>
@@ -347,10 +348,9 @@ while (1) &#123;
 
 <span class="token delimiter important">?></span></span> <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<p>把木马传上去，发现拒绝.php的文件上传<br><img src="/PenTest_FILE/5a969664c9f995286c4266d4418900db_MD5.jpeg"><br>改下后缀，比如phtml<br><img src="/PenTest_FILE/eef65b1a56969339082c2d8055d85fff_MD5.jpeg"><br>看下&#x2F;uploads&#x2F;，我们已经成功上传<br><img src="/PenTest_FILE/ae2932975c36cf3be4f30c045ec6471f_MD5.jpeg"><br>我们在攻击机的1234端口进行监听，并访问木马网页，成功反弹shell<br><img src="/PenTest_FILE/d8860ac1bd0c5a84620a88a69dcf30ac_MD5.jpeg"></p>
-<p>find找user.txt，打印即可</p>
+<p>把木马传上去，发现拒绝.php的文件上传<br><img src="/Red_FILE/99f9be88fe8466564d7e920b24ae9e5f_MD5.jpeg"><br>改下后缀，比如phtml<br><img src="/Red_FILE/cb4ca31478f044e25ad9980c878991e6_MD5.jpeg"><br>看下&#x2F;uploads&#x2F;，我们已经成功上传<br><img src="/Red_FILE/530844f9651306b5715a17d280b27671_MD5.jpeg"><br>我们在攻击机的1234端口进行监听，并访问木马网页，成功反弹shell<br><img src="/Red_FILE/530844f9651306b5715a17d280b27671_MD5.jpeg"><br>find找user.txt，打印即可</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">find</span> / <span class="token parameter variable">-type</span> f <span class="token parameter variable">-name</span> user.txt <span class="token operator"><span class="token file-descriptor important">2</span>></span>/dev/null<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><img src="/PenTest_FILE/aa84967ffe3523f3ca64774453f7b4ae_MD5.jpeg"></p>
+<p><img src="/Red_FILE/0bd881d2ec5665d4b437557aca30c5b0_MD5.jpeg"></p>
 <h1 id="权限提升"><a href="#权限提升" class="headerlink" title="权限提升"></a>权限提升</h1><ol>
 <li>搜索具有SUID权限的文件，如何提权？</li>
 </ol>
@@ -415,7 +415,7 @@ while (1) &#123;
 <p>如果二进制文件设置了 SUID 位，则它不会删除提升的权限，并且可能会被滥用来访问文件系统、升级或将特权访问作为 SUID 后门进行维护。如果它用于运行 <code>sh -p</code> ，则在 Debian （&lt;&#x3D; Stretch） 等允许默认 <code>sh</code> shell 以 SUID 权限运行的系统上省略该 <code>-p</code> 参数。</p>
 </blockquote>
 <ol start="3">
-<li>得到root并打印root.txt。<br>运行<code>./python -c &#39;import os; os.execl(&quot;/bin/sh&quot;, &quot;sh&quot;, &quot;-p&quot;)&#39;</code>，成功得到root！<br><img src="/PenTest_FILE/24b3a95e690277794077ea2628edb220_MD5.jpeg"></li>
+<li>得到root并打印root.txt。<br>运行<code>./python -c &#39;import os; os.execl(&quot;/bin/sh&quot;, &quot;sh&quot;, &quot;-p&quot;)&#39;</code>，成功得到root！<br><img src="/Red_FILE/9264e0d40ff79d4d32233574749af84a_MD5.jpeg"></li>
 </ol>
 
 	  <div class="article-footer-copyright">
@@ -514,7 +514,7 @@ new Valine(valineConfig);
     <ul id="categorys" class="tag_box list-unstyled collapse in">
           
   <li>
-    <li><a href="/categories/进攻性渗透测试/">进攻性渗透测试<span>5</span></a></li>
+    <li><a href="/categories/进攻性渗透测试/">进攻性渗透测试<span>6</span></a></li>
   </li>
 
     </ul>
@@ -527,7 +527,7 @@ new Valine(valineConfig);
 	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
     <ul id="tags" class="tag_box list-unstyled collapse in">	  
 	    
-  <li><a href="/tags/渗透打靶/">渗透打靶<span>3</span></a></li>
+  <li><a href="/tags/渗透打靶/">渗透打靶<span>4</span></a></li>
     </ul>
 	</div>
 		

