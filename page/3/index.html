@@ -137,6 +137,41 @@
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2023/12/24/double fetch/" title="初探内核态条件竞争">double fetch</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2023-12-24  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<blockquote>
+<p>通常情况下在用户态下的 pwn 当中我们只有一个独立运行的主线程，并不存在所谓条件竞争的情况，但在 kernel pwn 当中由攻击者负责编写用户态程序，可以很轻易地启动多个线程同时运行，从而轻易地产生条件竞争。<a target="_blank" rel="noopener" href="https://www.usenix.org/system/files/conference/usenixsecurity17/sec17-wang.pdf">原论文</a><br>参考文章：<a target="_blank" rel="noopener" href="https://ctf-wiki.org/pwn/linux/kernel-mode/exploitation/race/double-fetch/">Double Fetch - CTF Wiki (ctf-wiki.org)</a><br><a target="_blank" rel="noopener" href="https://arttnba3.cn/2021/03/03/PWN-0X00-LINUX-KERNEL-PWN-PART-I/#double-fetch">【PWN.0x00】Linux Kernel Pwn I：Basic Exploit to Kernel Pwn in CTF - arttnba3’s blog</a></p>
+</blockquote>
+<h1 id="一、原理"><a href="#一、原理" class="headerlink" title="一、原理"></a>一、原理</h1><p><code>Double Fetch</code> 从漏洞原理上属于条件竞争漏洞，是一种内核态与用户态之间的数据访问竞争。</p>
+<p>在 Linux 等现代操作系统中，虚拟内存地址通常被划分为内核空间和用户空间。内核空间负责运行内核代码、驱动模块代码等，权限较高。而用户空间运行用户代码，并通过系统调用进入内核完成相关功能。通常情况下，用户空间向内核传递数据时，内核先通过通过 <code>copy_from_user</code> 等拷贝函数将用户数据拷贝至内核空间进行校验及相关处理，<strong>但在输入数据较为复杂时，内核可能只引用其指针，而将数据暂时保存在用户空间进行后续处理。此时，该数据存在被其他恶意线程篡改风险，造成内核验证通过数据与实际使用数据不一致，导致内核代码执行异常。</strong></p>
+<p>一个典型的 <code>Double Fetch</code> 漏洞原理如下图所示，一个用户态线程准备数据并通过系统调用进入内核，该数据在内核中有两次被取用，内核第一次取用数据进行安全检查（如缓冲区大小、指针可用性等），当检查通过后内核第二次取用数据进行实际处理。而在两次取用数据之间，另一个用户态线程可创造条件竞争，对已通过检查的用户态数据进行篡改，在真实使用时造成访问越界或缓冲区溢出，最终导致内核崩溃或权限提升。</p>
+<p><img src="/Binary_FILE/6d85660472c166f79b1b5e7cfd817980_MD5.jpeg"></p>
+<p>通过在 first fetch 与 second fetch 之间的空挡修改数据从而改变内核执行流的利用手法便被称之为<code>double fetch</code></p>
+<h1 id="二、0CTF2018-Final-baby-kernel"><a href="#二、0CTF2018-Final-baby-kernel" class="headerlink" title="二、0CTF2018 Final - baby kernel"></a>二、0CTF2018 Final - baby kernel</h1><h2 id="一-程序分析"><a href="#一-程序分析" class="headerlink" title="(一)程序分析"></a>(一)程序分析</h2><h2 id="start-sh"><a href="#start-sh" class="headerlink" title="start.sh"></a>start.sh</h2>
+	
+	</div>
+  <a type="button" href="/2023/12/24/double fetch/#more" class="btn btn-default more">Read More</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2023/12/11/DASCTF X 0psu3 2023十一月挑战赛/" title="DASCTF X 0psu3 2023十一月挑战赛复现">DASCTF X 0psu3 2023十一月挑战赛</a>
 		</h3>
 		</div>
@@ -440,7 +475,7 @@ qemu-system-x86_64 <span class="token parameter variable">-initrd</span> core.cp
 		
 			<li><a href="/categories/赛题/">赛题<span>8</span></a></li>
 		
-			<li><a href="/categories/进攻性渗透测试/">进攻性渗透测试<span>6</span></a></li>
+			<li><a href="/categories/进攻性渗透测试/">进攻性渗透测试<span>7</span></a></li>
 		
 		</ul>
 	</div>
@@ -451,7 +486,7 @@ qemu-system-x86_64 <span class="token parameter variable">-initrd</span> core.cp
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/渗透打靶/">渗透打靶<span>4</span></a></li>
+			<li><a href="/tags/渗透打靶/">渗透打靶<span>5</span></a></li>
 		
 			<li><a href="/tags/Pawnyable/">Pawnyable<span>6</span></a></li>
 		
@@ -469,6 +504,10 @@ qemu-system-x86_64 <span class="token parameter variable">-initrd</span> core.cp
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2024/07/08/长城杯铁人三项2020 企业环境渗透/"  title="肾透测试" ><i class="fa fa-file-o"></i>长城杯铁人三项2020 企业环境渗透</a>
+      </li>
+    
+      <li>
         <a href="/2024/06/29/Steel Mountain/" ><i class="fa fa-file-o"></i>Steel Mountain</a>
       </li>
     
@@ -482,10 +521,6 @@ qemu-system-x86_64 <span class="token parameter variable">-initrd</span> core.cp
     
       <li>
         <a href="/2024/04/20/D-Link DIR-815 路由器多次栈溢出漏洞复现 (CNVD-2013-11625)/"  title="初探物联网" ><i class="fa fa-file-o"></i>D-Link DIR-815 路由器多次栈溢出漏洞复现...</a>
-      </li>
-    
-      <li>
-        <a href="/2024/04/10/RWCTF2023体验赛 - Digging into kernel 3/"  title="kpwn题集" ><i class="fa fa-file-o"></i>RWCTF2023体验赛 - Digging into...</a>
       </li>
     
   </ul>
