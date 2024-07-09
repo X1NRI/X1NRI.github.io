@@ -201,7 +201,7 @@ Unique gadgets found: <span class="token number">11</span><span aria-hidden="tru
 <ul>
 <li>第三轮正确操作<br>第一次继续连带泄露 StackCookie3<br>第二次paddings<br>第三次使用 ret2dll 泄露__security_cookie，并通过 rbx 控制循环，通过异或得到 old_rsp，从而计算出任意rsp的StackCookie<br>第四次 ret2dll 泄露 ucrtbase，并通过 rbx 控制循环<br>第五次走 system getshell</li>
 </ul>
-<pre class="line-numbers language-python" data-language="python"><code class="language-python">    <span class="token comment">#!/usr/bin/env python3</span>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#!/usr/bin/env python3</span>
 <span class="token comment"># -*- coding: utf-8 -*-</span>
 <span class="token comment">#@Author:X1NRI</span>
 <span class="token keyword">import</span> sys
