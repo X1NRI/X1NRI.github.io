@@ -184,6 +184,46 @@
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2024/07/10/Alfred/" >Alfred</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2024-07-10  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<h1 id="信息搜集"><a href="#信息搜集" class="headerlink" title="信息搜集"></a>信息搜集</h1><p>常规扫端口</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">80
+8080
+3389<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>80端口是个静态页面<br><img src="/Red_FILE/c7a4f24df2493fc7020ca80e71b8565b_MD5.jpeg"></p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">愿逝者安息，布鲁斯·韦恩。 
+
+将捐款发送至 alfred@wayneenterprises.com 将得到我们的衷心感谢<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>在8080端口有个登录界面<br><img src="/Red_FILE/bc60287cf8ee6287175ab6dcedba8757_MD5.jpeg"></p>
+<p>admin:admin直接进来了<br><img src="/Red_FILE/5e020b9f9ae6314b3c2b805a9f50a7bd_MD5.jpeg"></p>
+<h1 id="入侵"><a href="#入侵" class="headerlink" title="入侵"></a>入侵</h1><p>网站是一个项目管理界面，功能比较复杂，探索了好一会</p>
+<p>这是一个x86的 win7 系统<br><img src="/Red_FILE/60aeeea2adbe5c72beef763344a10989_MD5.jpeg"></p>
+	
+	</div>
+  <a type="button" href="/2024/07/10/Alfred/#more" class="btn btn-default more">Read More</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2024/07/09/强网杯2020 easyoverflow/" title="I hate windows">强网杯2020 easyoverflow</a>
 		</h3>
 		</div>
@@ -951,50 +991,6 @@ No RELRO        Canary found      NX disabled   REL             No RPATH   No RU
 </div>
 
 		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2024/03/22/RWCTF2022高校赛 - Digging into kernel 1 & 2/" title="kpwn题集">RWCTF2022高校赛 - Digging into kernel 1 &amp; 2</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2024-03-22  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<h1 id="Digging-into-kernel"><a href="#Digging-into-kernel" class="headerlink" title="Digging into kernel"></a>Digging into kernel</h1><p>启动脚本：</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">qemu-system-x86_64 <span class="token punctuation">\</span>
-    <span class="token parameter variable">-kernel</span> bzImage <span class="token punctuation">\</span>
-    <span class="token parameter variable">-initrd</span> rootfs.cpio <span class="token punctuation">\</span>
-    <span class="token parameter variable">-append</span> <span class="token string">"console=ttyS0 root=/dev/ram rdinit=/sbin/init quiet kalsr"</span> <span class="token punctuation">\</span>
-    <span class="token parameter variable">-cpu</span> kvm64,+smep,+smap <span class="token punctuation">\</span>
-    <span class="token parameter variable">--nographic</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>本题启动脚本中没有把 monitor 设置为 null，题目可以直接不用看了，先按 <code>ctrl + A</code> 然后按 <code>C</code> 然后 enter 就能进入 qemu 的 monitor 模式直接拿 flag</p>
-<h1 id="Digging-into-kernel-2"><a href="#Digging-into-kernel-2" class="headerlink" title="Digging into kernel 2"></a>Digging into kernel 2</h1><p>这一题和上一题其实完全一样，只是修复了启动脚本中 monitor 的漏洞</p>
-<h2 id="一、逆向分析"><a href="#一、逆向分析" class="headerlink" title="一、逆向分析"></a>一、逆向分析</h2><h3 id="run-sh"><a href="#run-sh" class="headerlink" title="run.sh"></a>run.sh</h3><p>（出题人把kaslr写成kalsr，我还说调试的时候为啥关不掉，淦）</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">qemu-system-x86_64 <span class="token punctuation">\</span>
-	<span class="token parameter variable">-kernel</span> bzImage <span class="token punctuation">\</span>
-	<span class="token parameter variable">-initrd</span> rootfs.cpio <span class="token punctuation">\</span>
-	<span class="token parameter variable">-append</span> <span class="token string">"console=ttyS0 root=/dev/ram rdinit=/sbin/init quiet kaslr"</span> <span class="token punctuation">\</span>
-	<span class="token parameter variable">-cpu</span> kvm64,+smep,+smap <span class="token punctuation">\</span>
-	<span class="token parameter variable">-monitor</span> null <span class="token punctuation">\</span>
-	<span class="token parameter variable">--nographic</span> <span class="token punctuation">\</span>
-    <span class="token parameter variable">-s</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-	
-	</div>
-  <a type="button" href="/2024/03/22/RWCTF2022高校赛 - Digging into kernel 1 & 2/#more" class="btn btn-default more">Read More</a>
-</div>
-
-		
 
 		</div>
 
@@ -1048,7 +1044,7 @@ No RELRO        Canary found      NX disabled   REL             No RPATH   No RU
 		
 			<li><a href="/categories/赛题/">赛题<span>10</span></a></li>
 		
-			<li><a href="/categories/进攻性渗透测试/">进攻性渗透测试<span>8</span></a></li>
+			<li><a href="/categories/进攻性渗透测试/">进攻性渗透测试<span>9</span></a></li>
 		
 		</ul>
 	</div>
@@ -1059,11 +1055,11 @@ No RELRO        Canary found      NX disabled   REL             No RPATH   No RU
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/Linux-Kernel-pwn/">Linux Kernel pwn<span>7</span></a></li>
-		
-			<li><a href="/tags/渗透打靶/">渗透打靶<span>6</span></a></li>
+			<li><a href="/tags/渗透打靶/">渗透打靶<span>7</span></a></li>
 		
 			<li><a href="/tags/Windows-pwn/">Windows pwn<span>1</span></a></li>
+		
+			<li><a href="/tags/Linux-Kernel-pwn/">Linux Kernel pwn<span>7</span></a></li>
 		
 			<li><a href="/tags/IOT/">IOT<span>2</span></a></li>
 		
@@ -1083,6 +1079,10 @@ No RELRO        Canary found      NX disabled   REL             No RPATH   No RU
       </li>
     
       <li>
+        <a href="/2024/07/10/Alfred/" ><i class="fa fa-file-o"></i>Alfred</a>
+      </li>
+    
+      <li>
         <a href="/2024/07/09/强网杯2020 easyoverflow/"  title="I hate windows" ><i class="fa fa-file-o"></i>强网杯2020 easyoverflow</a>
       </li>
     
@@ -1092,10 +1092,6 @@ No RELRO        Canary found      NX disabled   REL             No RPATH   No RU
     
       <li>
         <a href="/2024/06/29/Steel Mountain/" ><i class="fa fa-file-o"></i>Steel Mountain</a>
-      </li>
-    
-      <li>
-        <a href="/2024/06/24/CISCN2024华中赛区选拔赛/"  title="赛完就回去考试，重生之我是特种兵" ><i class="fa fa-file-o"></i>CISCN2024华中赛区选拔赛</a>
       </li>
     
   </ul>

