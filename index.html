@@ -137,6 +137,53 @@
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2024/07/17/Vulnhub-GOLDENEYE/" >GOLDENEYES</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2024-07-17  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<h1 id="入侵"><a href="#入侵" class="headerlink" title="入侵"></a>入侵</h1><blockquote>
+<p>靶机下载地址：<a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/goldeneye-1,240/#networking">黄金眼：1 ~ VulnHub — GoldenEye: 1 ~ VulnHub</a></p>
+</blockquote>
+<p>探测到靶机ip<br><img src="/Red_FILE/764c1b125b1d468c2d09ab81eb511066_MD5.jpeg"></p>
+<p>先扫扫端口叭<br>开了25、80端口</p>
+<p><img src="/Red_FILE/3a9ad0529e3fc6a10d84a32a837ee647_MD5.jpeg"><br>提示在&#x2F;sev-home&#x2F;登录<br><img src="/Red_FILE/41cadb50e3c6efa9fba59d2787a8703c_MD5.jpeg"><br>简单试了几个弱口令，没进去</p>
+<p>目录也没扫出什么</p>
+<p>注意到这是admin server，尝试爆下密码<br><img src="/Red_FILE/6110e77c5cc8b3d1b995dc93338c9bdf_MD5.jpeg"><br>但是在抓包时发现并没有传参，离谱，难道是前端验证？</p>
+<p>去看看源代码，在 terminal.js 还真有一段注释的信息：<br><img src="/Red_FILE/6d93258b7be2181235450c1cd30145ef_MD5.jpeg"></p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">//
+//Boris, make sure you update your default password. 
+//My sources say MI6 maybe planning to infiltrate. 
+//Be on the lookout for any suspicious network traffic....
+//
+//I encoded you p@ssword below...
+//
+//&amp;#73;&amp;#110;&amp;#118;&amp;#105;&amp;#110;&amp;#99;&amp;#105;&amp;#98;&amp;#108;&amp;#101;&amp;#72;&amp;#97;&amp;#99;&amp;#107;&amp;#51;&amp;#114;
+//
+//BTW Natalya says she can break your codes
+//<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>可见这个server的用户名很可能是Boris，密码一眼ascii。解码得到：<code>InvincibleHack3r</code></p>
+	
+	</div>
+  <a type="button" href="/2024/07/17/Vulnhub-GOLDENEYE/#more" class="btn btn-default more">Read More</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2024/07/09/强网杯2020 easyoverflow/" title="I hate windows">强网杯2020 easyoverflow</a>
 		</h3>
 		</div>
@@ -948,43 +995,6 @@ No RELRO        Canary found      NX disabled   REL             No RPATH   No RU
 </div>
 
 		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2024/03/18/OWASP Top10-2021/" title="重启">OWASP Top10-2021</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2024-03-18  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<p><img src="/PenTest_FILE/62b245fc43da713b2baaf5cdbc83d61b_MD5.jpeg"><br><strong>开放式Web应用程序安全项目</strong>（<strong>OWASP</strong>）是一个在线社区，在<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/w/index.php?title=Web%E5%BA%94%E7%94%A8%E5%AE%89%E5%85%A8&action=edit&redlink=1">Web应用安全</a>领域提供免费的文章，方法，文档，工具和技术。—–摘自维基百科</p>
-<h1 id="一、访问控制漏洞"><a href="#一、访问控制漏洞" class="headerlink" title="一、访问控制漏洞"></a>一、访问控制漏洞</h1><p>网站的页面受到保护，不会被普通访问者访问。例如，只有站点的管理员用户应该能够访问页面来管理其他用户。如果网站访问者可以访问他们不应该看到的受保护页面，那么访问控制就会被破坏。</p>
-<p>普通访问者能够访问受保护的页面可能会导致以下情况：</p>
-<ul>
-<li>能够查看其他用户的敏感信息</li>
-<li>访问未经授权的功能</li>
-</ul>
-<h2 id="IDOR"><a href="#IDOR" class="headerlink" title="IDOR"></a>IDOR</h2><p>IDOR 或不安全直接对象引用是指访问控制漏洞，您可以通过该漏洞访问通常看不到的资源。当程序员公开直接对象引用时，就会发生这种情况，该引用只是引用服务器内特定对象的标识符。就对象而言，我们可以指文件、用户、银行应用程序中的银行帐户或任何其他东西。</p>
-<p>假设我们正在登录我们的银行帐户，并在正确验证自己身份后，我们会看到这样的 URL <code>https://bank.thm/account?id=111111</code> 。在该页面上，我们可以看到所有重要的银行详细信息，用户会做任何他们需要做的事情并继续前进，认为没有任何问题。<br><img src="/PenTest_FILE/97f8a530d314117566bfd1e7b060072e_MD5.jpeg"></p>
-<p>然而，这里存在一个潜在的巨大问题，任何人都可以将 <code>id</code> 参数更改为 <code>222222</code> 之类的其他参数，如果站点配置不正确，那么他就会访问他人的银行信息。<br><img src="/PenTest_FILE/Pasted%20image%2020240308203059.png"></p>
-<h2 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h2>
-	
-	</div>
-  <a type="button" href="/2024/03/18/OWASP Top10-2021/#more" class="btn btn-default more">Read More</a>
-</div>
-
-		
 
 		</div>
 
@@ -1038,7 +1048,7 @@ No RELRO        Canary found      NX disabled   REL             No RPATH   No RU
 		
 			<li><a href="/categories/赛题/">赛题<span>10</span></a></li>
 		
-			<li><a href="/categories/进攻性渗透测试/">进攻性渗透测试<span>7</span></a></li>
+			<li><a href="/categories/进攻性渗透测试/">进攻性渗透测试<span>8</span></a></li>
 		
 		</ul>
 	</div>
@@ -1049,13 +1059,13 @@ No RELRO        Canary found      NX disabled   REL             No RPATH   No RU
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/IOT/">IOT<span>2</span></a></li>
-		
 			<li><a href="/tags/Linux-Kernel-pwn/">Linux Kernel pwn<span>7</span></a></li>
+		
+			<li><a href="/tags/IOT/">IOT<span>2</span></a></li>
 		
 			<li><a href="/tags/Windows-pwn/">Windows pwn<span>1</span></a></li>
 		
-			<li><a href="/tags/渗透打靶/">渗透打靶<span>5</span></a></li>
+			<li><a href="/tags/渗透打靶/">渗透打靶<span>6</span></a></li>
 		
 		 
 		</ul>
@@ -1067,6 +1077,10 @@ No RELRO        Canary found      NX disabled   REL             No RPATH   No RU
 <div class="widget">
   <h4>Recent Posts</h4>
   <ul class="entry list-unstyled">
+    
+      <li>
+        <a href="/2024/07/17/Vulnhub-GOLDENEYE/" ><i class="fa fa-file-o"></i>GOLDENEYES</a>
+      </li>
     
       <li>
         <a href="/2024/07/09/强网杯2020 easyoverflow/"  title="I hate windows" ><i class="fa fa-file-o"></i>强网杯2020 easyoverflow</a>
@@ -1082,10 +1096,6 @@ No RELRO        Canary found      NX disabled   REL             No RPATH   No RU
     
       <li>
         <a href="/2024/06/24/CISCN2024华中赛区选拔赛/"  title="赛完就回去考试，重生之我是特种兵" ><i class="fa fa-file-o"></i>CISCN2024华中赛区选拔赛</a>
-      </li>
-    
-      <li>
-        <a href="/2024/05/11/Kenobi/" ><i class="fa fa-file-o"></i>Kenobbi</a>
       </li>
     
   </ul>
