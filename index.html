@@ -151,7 +151,36 @@
   <div class="row">
 	
 	
-		Here's something encrypted, password is required to continue reading.
+		<p><img src="/Rxi134_FILE/e344a120caeb519848b35c5d84716814_MD5.jpeg"></p>
+<h1 id="信息搜集"><a href="#信息搜集" class="headerlink" title="信息搜集"></a>信息搜集</h1><pre class="line-numbers language-text" data-language="text"><code class="language-text">PORT      STATE  SERVICE      VERSION
+22/tcp    open   ssh          OpenSSH for_Windows_7.9 (protocol 2.0)
+| ssh-hostkey:
+|   2048 3a:56:ae:75:3c:78:0e:c8:56:4d:cb:1c:22:bf:45:8a (RSA)
+|   256 cc:2e:56:ab:19:97:d5:bb:03:fb:82:cd:63:da:68:01 (ECDSA)
+|_  256 93:5f:5d:aa:ca:9f:53:e7:f2:82:e6:64:a8:a3:a0:18 (ED25519)
+25/tcp    closed smtp
+110/tcp   closed pop3
+135/tcp   open   msrpc        Microsoft Windows RPC
+139/tcp   open   netbios-ssn  Microsoft Windows netbios-ssn
+445/tcp   open   microsoft-ds Windows Server 2016 Standard 14393 microsoft-ds
+47001/tcp open   http         Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+|_http-server-header: Microsoft-HTTPAPI/2.0
+|_http-title: Not Found
+49664/tcp open   msrpc        Microsoft Windows RPC
+49665/tcp open   msrpc        Microsoft Windows RPC
+49666/tcp open   msrpc        Microsoft Windows RPC
+49667/tcp open   msrpc        Microsoft Windows RPC
+49668/tcp open   msrpc        Microsoft Windows RPC
+49669/tcp open   msrpc        Microsoft Windows RPC
+49670/tcp open   msrpc        Microsoft Windows RPC<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+<h1 id="入侵-驻足"><a href="#入侵-驻足" class="headerlink" title="入侵 &amp; 驻足"></a>入侵 &amp; 驻足</h1><h2 id="smb-guest登录策略"><a href="#smb-guest登录策略" class="headerlink" title="smb guest登录策略"></a>smb guest登录策略</h2><p>对smb进行枚举<br><img src="/Rxi134_FILE/f6c2c7ba974326656f4877f7574b70c3_MD5.jpeg"><br>开启了guest登录策略，随机的用户名都会映射为guest用户</p>
+<p><img src="/Rxi134_FILE/2c5baf067163bd972aa8780521eb8dad_MD5.jpeg"></p>
+<h2 id="发现备份文件夹"><a href="#发现备份文件夹" class="headerlink" title="发现备份文件夹"></a>发现备份文件夹</h2><p>其中有个 note.txt 和 文件夹 WindowsImageBackup<br><img src="/Rxi134_FILE/41f43da27c87c35f9254b53c56ebc304_MD5.jpeg"></p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">Sysadmins: please don't transfer the entire backup file locally, the VPN to the subsidiary office is too slow.
+
+系统管理员：请不要将整个备份文件传输到本地，到子公司的 VPN 太慢了。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 	
 	</div>
   <a type="button" href="/2024/10/06/W Easy-Bastion/#more" class="btn btn-default more">Read More</a>
