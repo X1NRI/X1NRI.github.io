@@ -1,0 +1,507 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="cache-control" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  
+  <title>15.Payload Placement - .rsrc Section 有效负载放置 | X1NRI</title>
+  <meta name="author" content="X1NRI">
+  
+  <meta name="description" content="将有效负载存储在 .rsrc 部分是一个非常好的选择，因为大多数实际的二进制文件都将它们的数据保存在这里。对于恶意软件作者来说，这也是一种更清晰的方法，因为较大的有效负载无法存储在 .text 或 .data 等部分中，因为它们有大小限制，这会导致在编译时 Visual Studio 出现错误。
+例如，你的程序要生成一个exe文件，而文件的图标是你自定义的图标。你就要在这个工程里面添加Icon资源，添加一个外部的ico文件，保存到.rc里面，因此可以直接调用图标文件。
+.rsrc 部分以下步骤说明了如何将有效负载存储在 .rsrc 部分：
+
+在 Visual Studio 中，右键点击 ‘资源文件’，然后点击 添加 &amp;gt; 新项。
+
+点击“资源文件”
+
+这将生成一个新的侧边栏，即资源视图。右键点击 .rc 文件（默认名称为 Resource.rc），然后选择 添加资源 选项。
+
+点击 ‘导入’.
+
+选择 calc.ico 文件，它是重命名为扩展名 ..ico 的原始有效负载
+
+将出现一条提示，要求输入资源类型。输入不带引号的“RCDATA”。
+
+单击“确定”后，有效负载应在 Visual Studio 项目中以原始二进制格式显示
+
+退出资源视图时，“resource.h”头文件应该可见，并根据步骤 2 中的 .rc 文件命名。该文件包含一个定义语句，引用资源部分中有效负载的 ID (IDR_RCDATA1) 。这对于稍后能够从资源部分检索有效负载非常重要。
+
+
+
+编译后，有效负载现在将存储在该部分中，但无法直接访问。相反，必须使用多个 WinAPI 来访问 .rsrc
+
+FindResourceW - 获取存储在资源部分的指定数据的位置，该数据由传入的特殊 ID 指定（在头文件中定义）。
+
+LoadResource - 检索资源数据的句柄。此句柄可用于获取指定资源在内存中的基地址。返回类型为 HGLOBAL。
+
+LockResource - 从指定资源句柄中获取指向资源部分数据的指针。
+
+SizeofResource - 获取资源部分中指定数据的大小。
+
+
+下面的代码片段将利用上述 Windows API 来访问资源部分，并获取有效载荷的地址和大小：
+#include &amp;lt;Windows.h&gt;
+#include &amp;lt;stdio.h&gt;
+#include &#34;resource.h&#34;
+
+int main() &amp;#123;
+
+	HRSRC		hRsrc                   = NULL;
+	HGLOBAL		hGlobal                 = NULL;
+	PVOID		pPayloadAddress         = NULL;
+	SIZE_T		sPayloadSize            = NULL;
+
+	
+	// 获取存储在 .rsrc 中的数据位置，通过其 ID *IDR_RCDATA1*
+	hRsrc = FindResourceW(NULL, MAKEINTRESOURCEW(IDR_RCDATA1), RT_RCDATA);
+	if (hRsrc == NULL) &amp;#123;
+		// 如果函数失败
+		printf(&#34;[!] FindResourceW 调用失败，错误码: %d \n&#34;, GetLastError());
+		return -1;
+	&amp;#125;
+
+	// 获取 HGLOBAL，即指定资源数据的句柄，稍后需要调用 LockResource
+	hGlobal = LoadResource(NULL, hRsrc);
+	if (hGlobal == NULL) &amp;#123;
+		// 如果函数失败
+		printf(&#34;[!] LoadResource 调用失败，错误码: %d \n&#34;, GetLastError());
+		return -1;
+	&amp;#125;
+
+	// 获取 .rsrc 部分中有效载荷的地址
+	pPayloadAddress = LockResource(hGlobal);
+	if (pPayloadAddress == NULL) &amp;#123;
+		// 如果函数失败
+		printf(&#34;[!] LockResource 调用失败，错误码: %d \n&#34;, GetLastError());
+		return -1;
+	&amp;#125;
+
+	// 获取 .rsrc 部分中有效载荷的大小
+	sPayloadSize = SizeofResource(NULL, hRsrc);
+	if (sPayloadSize == NULL) &amp;#123;
+		// 如果函数失败
+		printf(&#34;[!] SizeofResource 调用失败，错误码: %d \n&#34;, GetLastError());
+		return -1;
+	&amp;#125;
+	
+	// 打印指针和大小到屏幕上
+	printf(&#34;[i] pPayloadAddress 变量: 0x%p \n&#34;, pPayloadAddress);
+	printf(&#34;[i] sPayloadSize 变量: %ld \n&#34;, sPayloadSize);
+	printf(&#34;[#] 按 &amp;lt;Enter&gt; 键退出...&#34;);
+	getchar();
+	return 0;
+&amp;#125;"> 
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="15.Payload Placement - .rsrc Section 有效负载放置"/>
+  <meta property="og:site_name" content="X1NRI"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+    <link rel="alternative" href="/atom.xml" title="X1NRI" type="application/atom+xml">
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/prism.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-70812759-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-70812759-1');
+</script>
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+ <body>  
+  <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+	  <a class="navbar-brand" href="/">X1NRI</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class="fa fa-folder"></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class="fa fa-tags"></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/links" title="Subscribe me.">
+			  <i class="fa fa-chain"></i>Links
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header">
+			<h1> 15.Payload Placement - .rsrc Section 有效负载放置</h1>
+		</div>
+	
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  		
+
+	  <p>将有效负载存储在 <code>.rsrc</code> 部分是一个非常好的选择，因为大多数实际的二进制文件都将它们的数据保存在这里。对于恶意软件作者来说，这也是一种更清晰的方法，因为较大的有效负载无法存储在 <code>.text</code> 或 <code>.data</code> 等部分中，因为它们有大小限制，这会导致在编译时 Visual Studio 出现错误。</p>
+<p>例如，你的程序要生成一个exe文件，而文件的图标是你自定义的图标。你就要在这个工程里面添加Icon资源，添加一个外部的ico文件，保存到.rc里面，因此可以直接调用图标文件。</p>
+<h1 id="rsrc-部分"><a href="#rsrc-部分" class="headerlink" title=".rsrc 部分"></a>.rsrc 部分</h1><p>以下步骤说明了如何将有效负载存储在 .rsrc 部分：</p>
+<ol>
+<li><p>在 Visual Studio 中，右键点击 ‘资源文件’，然后点击 添加 &gt; 新项。<br><img src="/Rxi134_FILE/88b39d76c3df4ee2d1f8c0edcb6bdd41_MD5.jpeg"></p>
+</li>
+<li><p>点击“资源文件”<br><img src="/Rxi134_FILE/a571851f25fefa5c067c0b032dfb1468_MD5.jpeg"></p>
+</li>
+<li><p>这将生成一个新的侧边栏，即资源视图。右键点击 <code>.rc</code> 文件（默认名称为 Resource.rc），然后选择 <strong>添加资源</strong> 选项。<br><img src="/Rxi134_FILE/ff6099a04cb0de581f9261e3abc6301b_MD5.jpeg"></p>
+</li>
+<li><p>点击 ‘导入’.<br><img src="/Rxi134_FILE/5774dcc6b25edccecbda14e6b840d132_MD5.jpeg"></p>
+</li>
+<li><p>选择 calc.ico 文件，它是重命名为扩展名 ..ico 的原始有效负载<br><img src="/Rxi134_FILE/07c919f5a20a71be52d69939824158e3_MD5.jpeg"></p>
+</li>
+<li><p>将出现一条提示，要求输入资源类型。输入不带引号的“RCDATA”。<br><img src="/Rxi134_FILE/0e1d8c86241e1617c36d2ab0fb80d571_MD5.jpeg"></p>
+</li>
+<li><p>单击“确定”后，有效负载应在 Visual Studio 项目中以原始二进制格式显示<br><img src="/Rxi134_FILE/dfe9c7a161f65b0223b10f4ded2a654b_MD5.jpeg"></p>
+</li>
+<li><p>退出资源视图时，“resource.h”头文件应该可见，并根据步骤 2 中的 .rc 文件命名。该文件包含一个定义语句，引用资源部分中有效负载的 ID (IDR_RCDATA1) 。这对于稍后能够从资源部分检索有效负载非常重要。<br><img src="/Rxi134_FILE/1fd5fe0ddbec8973a08c837d8e570f79_MD5.jpeg"></p>
+</li>
+</ol>
+<hr>
+<p>编译后，有效负载现在将存储在该部分中，但无法直接访问。相反，必须使用多个 WinAPI 来访问 .rsrc</p>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-findresourcew">FindResourceW</a> - 获取存储在资源部分的指定数据的位置，该数据由传入的特殊 ID 指定（在头文件中定义）。</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-loadresource">LoadResource</a> - 检索资源数据的句柄。此句柄可用于获取指定资源在内存中的基地址。返回类型为 <strong>HGLOBAL</strong>。</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-lockresource">LockResource</a> - 从指定资源句柄中获取指向资源部分数据的指针。</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-sizeofresource">SizeofResource</a> - 获取资源部分中指定数据的大小。</p>
+</li>
+</ul>
+<p>下面的代码片段将利用上述 Windows API 来访问资源部分，并获取有效载荷的地址和大小：</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;Windows.h></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">"resource.h"</span></span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+
+	HRSRC		hRsrc                   <span class="token operator">=</span> <span class="token constant">NULL</span><span class="token punctuation">;</span>
+	HGLOBAL		hGlobal                 <span class="token operator">=</span> <span class="token constant">NULL</span><span class="token punctuation">;</span>
+	PVOID		pPayloadAddress         <span class="token operator">=</span> <span class="token constant">NULL</span><span class="token punctuation">;</span>
+	SIZE_T		sPayloadSize            <span class="token operator">=</span> <span class="token constant">NULL</span><span class="token punctuation">;</span>
+
+	
+	<span class="token comment">// 获取存储在 .rsrc 中的数据位置，通过其 ID *IDR_RCDATA1*</span>
+	hRsrc <span class="token operator">=</span> <span class="token function">FindResourceW</span><span class="token punctuation">(</span><span class="token constant">NULL</span><span class="token punctuation">,</span> <span class="token function">MAKEINTRESOURCEW</span><span class="token punctuation">(</span>IDR_RCDATA1<span class="token punctuation">)</span><span class="token punctuation">,</span> RT_RCDATA<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">if</span> <span class="token punctuation">(</span>hRsrc <span class="token operator">==</span> <span class="token constant">NULL</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		<span class="token comment">// 如果函数失败</span>
+		<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"[!] FindResourceW 调用失败，错误码: %d \n"</span><span class="token punctuation">,</span> <span class="token function">GetLastError</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+
+	<span class="token comment">// 获取 HGLOBAL，即指定资源数据的句柄，稍后需要调用 LockResource</span>
+	hGlobal <span class="token operator">=</span> <span class="token function">LoadResource</span><span class="token punctuation">(</span><span class="token constant">NULL</span><span class="token punctuation">,</span> hRsrc<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">if</span> <span class="token punctuation">(</span>hGlobal <span class="token operator">==</span> <span class="token constant">NULL</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		<span class="token comment">// 如果函数失败</span>
+		<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"[!] LoadResource 调用失败，错误码: %d \n"</span><span class="token punctuation">,</span> <span class="token function">GetLastError</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+
+	<span class="token comment">// 获取 .rsrc 部分中有效载荷的地址</span>
+	pPayloadAddress <span class="token operator">=</span> <span class="token function">LockResource</span><span class="token punctuation">(</span>hGlobal<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">if</span> <span class="token punctuation">(</span>pPayloadAddress <span class="token operator">==</span> <span class="token constant">NULL</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		<span class="token comment">// 如果函数失败</span>
+		<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"[!] LockResource 调用失败，错误码: %d \n"</span><span class="token punctuation">,</span> <span class="token function">GetLastError</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+
+	<span class="token comment">// 获取 .rsrc 部分中有效载荷的大小</span>
+	sPayloadSize <span class="token operator">=</span> <span class="token function">SizeofResource</span><span class="token punctuation">(</span><span class="token constant">NULL</span><span class="token punctuation">,</span> hRsrc<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">if</span> <span class="token punctuation">(</span>sPayloadSize <span class="token operator">==</span> <span class="token constant">NULL</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		<span class="token comment">// 如果函数失败</span>
+		<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"[!] SizeofResource 调用失败，错误码: %d \n"</span><span class="token punctuation">,</span> <span class="token function">GetLastError</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	
+	<span class="token comment">// 打印指针和大小到屏幕上</span>
+	<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"[i] pPayloadAddress 变量: 0x%p \n"</span><span class="token punctuation">,</span> pPayloadAddress<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"[i] sPayloadSize 变量: %ld \n"</span><span class="token punctuation">,</span> sPayloadSize<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"[#] 按 &lt;Enter> 键退出..."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token function">getchar</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>编译并运行上述代码后，有效载荷的地址及其大小将被打印到屏幕上。需要注意的是，这个地址位于资源部分，该部分是只读内存，任何尝试在其中修改或编辑数据的操作都将导致访问冲突错误。如果要编辑有效载荷，必须分配一个与有效载荷大小相同的缓冲区，并将数据复制到该缓冲区。所有的修改（如解密有效载荷）都应在这个新缓冲区中进行。</p>
+<h1 id="更新-rsrc-Payload"><a href="#更新-rsrc-Payload" class="headerlink" title="更新 .rsrc Payload"></a>更新 .rsrc Payload</h1><p>由于有效载荷不能直接从资源部分进行编辑，因此必须将其移动到一个临时缓冲区。为此，可以使用 <code>HeapAlloc</code> 分配与有效载荷大小相同的内存，然后通过 <code>memcpy</code> 将有效载荷从资源部分移动到临时缓冲区</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token comment">// 使用 HeapAlloc 调用分配内存</span>
+PVOID pTmpBuffer <span class="token operator">=</span> <span class="token function">HeapAlloc</span><span class="token punctuation">(</span><span class="token function">GetProcessHeap</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> sPayloadSize<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span>pTmpBuffer <span class="token operator">!=</span> <span class="token constant">NULL</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+	<span class="token comment">// 将有效载荷从资源部分复制到新的缓冲区</span>
+	<span class="token function">memcpy</span><span class="token punctuation">(</span>pTmpBuffer<span class="token punctuation">,</span> pPayloadAddress<span class="token punctuation">,</span> sPayloadSize<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token comment">// 打印缓冲区的基地址 (pTmpBuffer)</span>
+<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"[i] pTmpBuffer 变量: 0x%p \n"</span><span class="token punctuation">,</span> pTmpBuffer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>由于现在 <code>pTmpBuffer</code> 指向一个可写的内存区域，并且该区域保存了有效载荷，因此可以对有效载荷进行解密或执行任何更新操作。</p>
+<p>下面的图片显示了存储在资源部分的 Msfvenom shellcode：<br><img src="/Rxi134_FILE/40966272953f986b6f63a9c174a6a1fe_MD5.jpeg"></p>
+<p>继续执行时，有效负载将保存在临时缓冲区中。<br><img src="/Rxi134_FILE/f0569689ebe78e06c268af3aa360db2c_MD5.jpeg"></p>
+
+	  <div class="article-footer-copyright">
+
+    本博客采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议(CC BY-NC-SA 4.0) 发布.</a>
+</div>
+
+	</div>
+
+	
+	<span id="/2024/11/20/15.Payload%20Placement%20-%20.rsrc%20Section%20%E6%9C%89%E6%95%88%E8%B4%9F%E8%BD%BD%E6%94%BE%E7%BD%AE/" class="leancloud-visitors view" data-flag-title="15.Payload Placement - .rsrc Section 有效负载放置">
+		<em class="post-meta-item-text"> Page View </em> <i class="leancloud-visitors-count"></i>
+	</span>
+	
+	
+	<div>
+  	<center>
+
+	<div class="pagination">
+
+    
+    
+    <a type="button" class="btn btn-default disabled"><i class="fa fa-arrow-circle-o-left"></i>Prev</a>
+    
+
+    <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
+    
+    <a href="/2024/11/16/ATT&CK红队评估实战靶场-4/" type="button" class="btn btn-default ">Next<i
+                class="fa fa-arrow-circle-o-right"></i></a>
+    
+
+    
+</div>
+
+
+    </center>
+	</div>
+	
+	<!-- comment -->
+	<!--
+<section id="comment">
+    <h2 class="title">Comments</h2>
+
+    
+</section>
+
+-->
+	
+		<section id="comments" class="comments">
+			<style>
+			.comments{margin:30px;padding:10px;background:rgb(0, 0, 0)}
+			@media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#000}}
+			</style>
+			<div id="vcomment" class="comment"></div>
+<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+<script src="https://cdnjs.loli.net/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+var valineConfig = {"enable":true,"appId":"QrmzEeS3e4xvmJxO1dSPlkW4-gzGzoHsz","appKey":"ov6uvwKnDQmJxtpeS0wvBIwL","placeholder":"","visitor":true,"avatar":"monsterid","requiredFields":["nick","mail"],"pageView":true}
+valineConfig.el='#vcomment';
+new Valine(valineConfig);
+    // new Valine({
+    //     el: '#vcomment',
+    //     appId: "",
+    //     appKey: "",
+    //     placeholder: "",
+    //     avatar:"monsterid",
+    //     visitor: "true",
+    //     requiredFields: "nick,mail".split(','),
+    // });
+</script>
+
+		</section>
+	
+	
+	
+	</div> <!-- col-md-9/col-md-12 -->
+
+
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta"> 
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2024-11-20 
+	</div>
+	
+
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>	
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+          
+  <li>
+    <li><a href="/categories/逆向工程/">逆向工程<span>4</span></a></li>
+  </li>
+
+    </ul>
+	</div>
+	
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
+    <ul id="tags" class="tag_box list-unstyled collapse in">	  
+	    
+  <li><a href="/tags/AV/">AV<span>4</span></a></li>
+    </ul>
+	</div>
+		
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
+	   <div id="toc" class="toc collapse in">
+		   <span class="toc-title">Contents</span>
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#rsrc-%E9%83%A8%E5%88%86"><span class="toc-article-text">.rsrc 部分</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E6%9B%B4%E6%96%B0-rsrc-Payload"><span class="toc-article-text">更新 .rsrc Payload</span></a></li></ol>
+		</div>
+	
+	</div>
+	
+    <hr>
+	
+</div><!-- col-md-3 -->
+
+		
+
+	</div>
+	
+		
+
+</div><!-- row -->
+
+<!--
+ -->
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  
+  &copy; 2024 X1NRI's Blog
+  
+      powered by <a href="http://hexo.io/" target="_blank">Hexo</a>.Theme <a href="https://github.com/Ares-X/hexo-theme-freemind.bithack" target="_blank">freemind.bithack</a>  
+</p>
+ </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>⬆︎TOP</span>
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>
