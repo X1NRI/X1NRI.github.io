@@ -1,0 +1,432 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="cache-control" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  
+  <title>ATT&amp;CK红队评估实战靶场-5 | X1NRI</title>
+  <meta name="author" content="X1NRI">
+  
+  <meta name="description" content="下载地址：漏洞详情
+
+网络搭建只有两台机子，一个外网一个内网
+win7
+
+sun\leo 123.com
+sun\Administrator dc123.com
+
+
+2008
+
+sun\admin 2020.com
+
+
+环境搭建win7启动phpstudy
+外网端口扫描
+TP tp5_construct_code_exec_1"> 
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="ATT&amp;CK红队评估实战靶场-5"/>
+  <meta property="og:site_name" content="X1NRI"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+    <link rel="alternative" href="/atom.xml" title="X1NRI" type="application/atom+xml">
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/prism.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-70812759-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-70812759-1');
+</script>
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+ <body>  
+  <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+	  <a class="navbar-brand" href="/">X1NRI</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class="fa fa-folder"></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class="fa fa-tags"></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/links" title="Subscribe me.">
+			  <i class="fa fa-chain"></i>Links
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header">
+			<h1> ATT&amp;CK红队评估实战靶场-5</h1>
+		</div>
+	
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  		
+
+	  <blockquote>
+<p>下载地址：<a target="_blank" rel="noopener" href="http://vulnstack.qiyuanxuetang.net/vuln/detail/7/">漏洞详情</a></p>
+</blockquote>
+<h1 id="网络搭建"><a href="#网络搭建" class="headerlink" title="网络搭建"></a>网络搭建</h1><p>只有两台机子，一个外网一个内网</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">win7
+
+sun\leo 123.com
+sun\Administrator dc123.com
+
+
+2008
+
+sun\admin 2020.com
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h1 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h1><p>win7启动phpstudy<br><img src="/Rxi134_FILE/37514640ca23b85c2139045439df833e_MD5.jpeg"></p>
+<h1 id="外网"><a href="#外网" class="headerlink" title="外网"></a>外网</h1><h2 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h2><p><img src="/Rxi134_FILE/bdc549cfcccaed50166046dc8a75eec1_MD5.jpeg"></p>
+<h2 id="TP-tp5-construct-code-exec-1"><a href="#TP-tp5-construct-code-exec-1" class="headerlink" title="TP tp5_construct_code_exec_1"></a>TP tp5_construct_code_exec_1</h2><p>访问一下，一眼thinkphp<br><img src="/Rxi134_FILE/6a6fb455a71f3d0f7cb37dee1e0b7590_MD5.jpeg"></p>
+<p>制造报错看下版本<br><img src="/Rxi134_FILE/4e90583701c7118f8126ee670d283af8_MD5.jpeg"></p>
+<p>工具直接梭哈，命令无回显，挂个webshell<br><img src="/Rxi134_FILE/0ebd4784751b05b3d16fa72b9a1a8405_MD5.jpeg"><br><img src="/Rxi134_FILE/e8118b28dc98ebd577aa1926ea22166d_MD5.jpeg"></p>
+<h2 id="信息搜集"><a href="#信息搜集" class="headerlink" title="信息搜集"></a>信息搜集</h2><p>不是还有mysql吗，翻翻配置文件<br><img src="/Rxi134_FILE/a27437b3184c8bf057378695e642578e_MD5.jpeg"></p>
+<h2 id="搭建socks隧道"><a href="#搭建socks隧道" class="headerlink" title="搭建socks隧道"></a>搭建socks隧道</h2><p>chisel失败，ew可以</p>
+<h1 id="内网"><a href="#内网" class="headerlink" title="内网"></a>内网</h1><p>内网 ip 为 192.168.138.136，内网网段为 192.168.138.0&#x2F;24</p>
+<h2 id="域内信息收集"><a href="#域内信息收集" class="headerlink" title="域内信息收集"></a>域内信息收集</h2><p>systeminfo</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">C:\phpStudy\PHPTutorial\WWW\public> systeminfo
+主机名:           WIN7
+OS 名称:          Microsoft Windows 7 专业版 
+OS 版本:          6.1.7601 Service Pack 1 Build 7601
+OS 制造商:        Microsoft Corporation
+OS 配置:          成员工作站
+OS 构件类型:      Multiprocessor Free
+注册的所有人:     Windows 用户
+注册的组织:       
+产品 ID:          00371-177-0000061-85581
+初始安装日期:     2020/3/5, 0:44:56
+系统启动时间:     2024/11/21, 15:14:49
+系统制造商:       VMware, Inc.
+系统型号:         VMware Virtual Platform
+系统类型:         x64-based PC
+处理器:           安装了 1 个处理器。
+                  [01]: Intel64 Family 6 Model 183 Stepping 1 GenuineIntel ~2419 Mhz
+BIOS 版本:        Phoenix Technologies LTD 6.00, 2020/11/12
+Windows 目录:     C:\Windows
+系统目录:         C:\Windows\system32
+启动设备:         \Device\HarddiskVolume1
+系统区域设置:     zh-cn;中文(中国)
+输入法区域设置:   zh-cn;中文(中国)
+时区:             (UTC+08:00)北京，重庆，香港特别行政区，乌鲁木齐
+物理内存总量:     2,047 MB
+可用的物理内存:   1,310 MB
+虚拟内存: 最大值: 4,095 MB
+虚拟内存: 可用:   3,168 MB
+虚拟内存: 使用中: 927 MB
+页面文件位置:     C:\pagefile.sys
+域:               sun.com
+登录服务器:       暂缺
+修补程序:         安装了 3 个修补程序。
+                  [01]: KB2534111
+                  [02]: KB2999226
+                  [03]: KB976902
+网卡:             安装了 3 个 NIC。
+                  [01]: Intel(R) PRO/1000 MT Network Connection
+                      连接名:      wk1 waiwang
+                      启用 DHCP:   是
+                      DHCP 服务器: 192.168.74.254
+                      IP 地址
+                        [01]: 192.168.74.160
+                        [02]: fe80::42a:7d55:e4d9:8eff
+                  [02]: Bluetooth 设备(个人区域网)
+                      连接名:      Bluetooth 网络连接
+                      状态:        媒体连接已中断
+                  [03]: Intel(R) PRO/1000 MT Network Connection
+                      连接名:      本地连接
+                      启用 DHCP:   否
+                      IP 地址
+                        [01]: 192.168.138.136
+                        [02]: fe80::38d3:8142:9a7e:bb5f<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>域名 sun.com </p>
+<p><img src="/Rxi134_FILE/fc299f05da8c84da0b0b383a7a32d6e6_MD5.jpeg"></p>
+<p>administrator 不在域中<br><img src="/Rxi134_FILE/c935093ae5dcf2defb190e0d818f8eab_MD5.jpeg"></p>
+<h2 id="提权至SYSTEM"><a href="#提权至SYSTEM" class="headerlink" title="提权至SYSTEM"></a>提权至SYSTEM</h2><p>CS：<br>token窃取可以直接提权，getsystem直接梭<br><img src="/Rxi134_FILE/743bc3f1526bfa6a151d604539160589_MD5.jpeg"></p>
+<h2 id="密码抓取"><a href="#密码抓取" class="headerlink" title="密码抓取"></a>密码抓取</h2><pre class="line-numbers language-text" data-language="text"><code class="language-text">sun\administrator:dc123.com
+sun\leo:123.com<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+
+
+<p>顺带进程注入到sun\leo</p>
+<p><img src="/Rxi134_FILE/794a140928413875ea907ded1bd88157_MD5.jpeg"></p>
+<h2 id="fscan大保健"><a href="#fscan大保健" class="headerlink" title="fscan大保健"></a>fscan大保健</h2><p><img src="/Rxi134_FILE/99aba2d4399562f7e9bcea3f9c03056c_MD5.jpeg"></p>
+<p>用了一个魔改版的成功了<br><img src="/Rxi134_FILE/1562489a511af1ebb2e99073430d0b26_MD5.jpeg"></p>
+<h2 id="关闭防火墙"><a href="#关闭防火墙" class="headerlink" title="关闭防火墙"></a>关闭防火墙</h2><pre class="line-numbers language-cmd" data-language="cmd"><code class="language-cmd">netsh advfirewall set allprofiles state off<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>msf exe没上线成功，用exe-small正连<br><img src="/Rxi134_FILE/685f5d6a9482e44b95b89ae6f2ad048c_MD5.jpeg"></p>
+<h2 id="拿下DC"><a href="#拿下DC" class="headerlink" title="拿下DC"></a>拿下DC</h2><p>有了域管的账号实际已经是可以为所欲为了，后面省略</p>
+
+	  <div class="article-footer-copyright">
+
+    本博客采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议(CC BY-NC-SA 4.0) 发布.</a>
+</div>
+
+	</div>
+
+	
+	<span id="/2024/11/21/ATT&amp;CK%E7%BA%A2%E9%98%9F%E8%AF%84%E4%BC%B0%E5%AE%9E%E6%88%98%E9%9D%B6%E5%9C%BA-5/" class="leancloud-visitors view" data-flag-title="ATT&amp;CK红队评估实战靶场-5">
+		<em class="post-meta-item-text"> Page View </em> <i class="leancloud-visitors-count"></i>
+	</span>
+	
+	
+	<div>
+  	<center>
+
+	<div class="pagination">
+
+    
+    
+    <a type="button" class="btn btn-default disabled"><i class="fa fa-arrow-circle-o-left"></i>Prev</a>
+    
+
+    <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
+    
+    <a href="/2024/11/20/15.Payload Placement - .rsrc Section 有效负载放置/" type="button" class="btn btn-default ">Next<i
+                class="fa fa-arrow-circle-o-right"></i></a>
+    
+
+    
+</div>
+
+
+    </center>
+	</div>
+	
+	<!-- comment -->
+	<!--
+<section id="comment">
+    <h2 class="title">Comments</h2>
+
+    
+</section>
+
+-->
+	
+		<section id="comments" class="comments">
+			<style>
+			.comments{margin:30px;padding:10px;background:rgb(0, 0, 0)}
+			@media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#000}}
+			</style>
+			<div id="vcomment" class="comment"></div>
+<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+<script src="https://cdnjs.loli.net/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+var valineConfig = {"enable":true,"appId":"QrmzEeS3e4xvmJxO1dSPlkW4-gzGzoHsz","appKey":"ov6uvwKnDQmJxtpeS0wvBIwL","placeholder":"","visitor":true,"avatar":"monsterid","requiredFields":["nick","mail"],"pageView":true}
+valineConfig.el='#vcomment';
+new Valine(valineConfig);
+    // new Valine({
+    //     el: '#vcomment',
+    //     appId: "",
+    //     appKey: "",
+    //     placeholder: "",
+    //     avatar:"monsterid",
+    //     visitor: "true",
+    //     requiredFields: "nick,mail".split(','),
+    // });
+</script>
+
+		</section>
+	
+	
+	
+	</div> <!-- col-md-9/col-md-12 -->
+
+
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta"> 
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2024-11-21 
+	</div>
+	
+
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>	
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+          
+  <li>
+    <li><a href="/categories/进攻性渗透测试/">进攻性渗透测试<span>8</span></a></li>
+  </li>
+
+    </ul>
+	</div>
+	
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
+    <ul id="tags" class="tag_box list-unstyled collapse in">	  
+	    
+  <li><a href="/tags/Vulnstack靶场/">Vulnstack靶场<span>4</span></a></li>
+    </ul>
+	</div>
+		
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
+	   <div id="toc" class="toc collapse in">
+		   <span class="toc-title">Contents</span>
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E7%BD%91%E7%BB%9C%E6%90%AD%E5%BB%BA"><span class="toc-article-text">网络搭建</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-article-text">环境搭建</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E5%A4%96%E7%BD%91"><span class="toc-article-text">外网</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F"><span class="toc-article-text">端口扫描</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#TP-tp5-construct-code-exec-1"><span class="toc-article-text">TP tp5_construct_code_exec_1</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86"><span class="toc-article-text">信息搜集</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#%E6%90%AD%E5%BB%BAsocks%E9%9A%A7%E9%81%93"><span class="toc-article-text">搭建socks隧道</span></a></li></ol></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E5%86%85%E7%BD%91"><span class="toc-article-text">内网</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#%E5%9F%9F%E5%86%85%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="toc-article-text">域内信息收集</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#%E6%8F%90%E6%9D%83%E8%87%B3SYSTEM"><span class="toc-article-text">提权至SYSTEM</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#%E5%AF%86%E7%A0%81%E6%8A%93%E5%8F%96"><span class="toc-article-text">密码抓取</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#fscan%E5%A4%A7%E4%BF%9D%E5%81%A5"><span class="toc-article-text">fscan大保健</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#%E5%85%B3%E9%97%AD%E9%98%B2%E7%81%AB%E5%A2%99"><span class="toc-article-text">关闭防火墙</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#%E6%8B%BF%E4%B8%8BDC"><span class="toc-article-text">拿下DC</span></a></li></ol></li></ol>
+		</div>
+	
+	</div>
+	
+    <hr>
+	
+</div><!-- col-md-3 -->
+
+		
+
+	</div>
+	
+		
+
+</div><!-- row -->
+
+<!--
+ -->
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  
+  &copy; 2024 X1NRI's Blog
+  
+      powered by <a href="http://hexo.io/" target="_blank">Hexo</a>.Theme <a href="https://github.com/Ares-X/hexo-theme-freemind.bithack" target="_blank">freemind.bithack</a>  
+</p>
+ </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>⬆︎TOP</span>
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>
