@@ -137,6 +137,54 @@
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2024/12/13/2024-12第二周：ciscn_2019_qual_virtual/" title="每周一pwn系列">2024-12第二周：ciscn_2019_qual_virtual</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2024-12-13  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<blockquote>
+<p>赛题地址：<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#ciscn_2019_qual_virtual">BUUCTF在线评测</a></p>
+</blockquote>
+<p>vmpwn初探</p>
+<h1 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h1><p><img src="/EXP_FILE/6b35aee306536e9016983f2737a30397_MD5.jpeg"></p>
+<h1 id="逆向分析"><a href="#逆向分析" class="headerlink" title="逆向分析"></a>逆向分析</h1><h2 id="各虚拟段初始化"><a href="#各虚拟段初始化" class="headerlink" title="各虚拟段初始化"></a>各虚拟段初始化</h2><p><img src="/EXP_FILE/cbad4ec09039da31682729a93cf874c9_MD5.jpeg"><br>如图：<br><img src="/EXP_FILE/eab6d937744654ea3eadfbf50981a3ad_MD5.jpeg"></p>
+<h2 id="opcode解析部分"><a href="#opcode解析部分" class="headerlink" title="opcode解析部分"></a>opcode解析部分</h2><p>将我们输入的指令转为opcode<br><img src="/EXP_FILE/ec885429b943018f0189461ba9692f22_MD5.jpeg"></p>
+<ul>
+<li>copy<br>即以每8字节为单位赋值：<code>*(segment+idx++)=a2</code><pre class="line-numbers language-c" data-language="c"><code class="language-c">__int64 __fastcall <span class="token function">copy</span><span class="token punctuation">(</span><span class="token keyword">void</span> <span class="token operator">*</span><span class="token operator">*</span>a1<span class="token punctuation">,</span> __int64 a2<span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+  <span class="token keyword">int</span> v3<span class="token punctuation">;</span> <span class="token comment">// [rsp+1Ch] [rbp-4h]</span>
+
+  <span class="token keyword">if</span> <span class="token punctuation">(</span> <span class="token operator">!</span>a1 <span class="token punctuation">)</span>
+    <span class="token keyword">return</span> <span class="token number">0LL</span><span class="token punctuation">;</span>
+  v3 <span class="token operator">=</span> <span class="token operator">*</span><span class="token punctuation">(</span><span class="token punctuation">(</span>_DWORD <span class="token operator">*</span><span class="token punctuation">)</span>a1 <span class="token operator">+</span> <span class="token number">3</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span>                 <span class="token comment">// 0</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span> v3 <span class="token operator">==</span> <span class="token operator">*</span><span class="token punctuation">(</span><span class="token punctuation">(</span>_DWORD <span class="token operator">*</span><span class="token punctuation">)</span>a1 <span class="token operator">+</span> <span class="token number">2</span><span class="token punctuation">)</span> <span class="token punctuation">)</span>              <span class="token comment">// if(v3==size)</span>
+    <span class="token keyword">return</span> <span class="token number">0LL</span><span class="token punctuation">;</span>
+  <span class="token operator">*</span><span class="token punctuation">(</span><span class="token punctuation">(</span>_QWORD <span class="token operator">*</span><span class="token punctuation">)</span><span class="token operator">*</span>a1 <span class="token operator">+</span> v3<span class="token punctuation">)</span> <span class="token operator">=</span> a2<span class="token punctuation">;</span>
+  <span class="token operator">*</span><span class="token punctuation">(</span><span class="token punctuation">(</span>_DWORD <span class="token operator">*</span><span class="token punctuation">)</span>a1 <span class="token operator">+</span> <span class="token number">3</span><span class="token punctuation">)</span> <span class="token operator">=</span> v3<span class="token punctuation">;</span>                     <span class="token comment">// idx=v3</span>
+  <span class="token keyword">return</span> <span class="token number">1LL</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+</ul>
+	
+	</div>
+  <a type="button" href="/2024/12/13/2024-12第二周：ciscn_2019_qual_virtual/#more" class="btn btn-default more">Read More</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2024/12/01/第六届金盾信安杯初赛2024/" title="又是被冲烂的一天">第六届金盾信安杯初赛2024</a>
 		</h3>
 		</div>
@@ -777,33 +825,6 @@ administrator:Test2008
 </div>
 
 		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2024/10/01/5.Windows Architecture Windows架构/" >5.Windows Architecture Windows架构</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2024-10-01  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		Here's something encrypted, password is required to continue reading.
-	
-	</div>
-  <a type="button" href="/2024/10/01/5.Windows Architecture Windows架构/#more" class="btn btn-default more">Read More</a>
-</div>
-
-		
 
 		</div>
 
@@ -851,7 +872,7 @@ administrator:Test2008
 		<h4>Categories</h4>
 		<ul class="tag_box inline list-unstyled">
 		
-			<li><a href="/categories/CTFpwn/">CTFpwn<span>3</span></a></li>
+			<li><a href="/categories/CTFpwn/">CTFpwn<span>4</span></a></li>
 		
 			<li><a href="/categories/pentest/">pentest<span>8</span></a></li>
 		
@@ -868,11 +889,13 @@ administrator:Test2008
 		
 			<li><a href="/tags/靶场/">靶场<span>4</span></a></li>
 		
-			<li><a href="/tags/Vulnstack靶场/">Vulnstack靶场<span>4</span></a></li>
-		
 			<li><a href="/tags/赛题/">赛题<span>3</span></a></li>
 		
+			<li><a href="/tags/Vulnstack靶场/">Vulnstack靶场<span>4</span></a></li>
+		
 			<li><a href="/tags/AV/">AV<span>4</span></a></li>
+		
+			<li><a href="/tags/每周一pwn系列/">每周一pwn系列<span>1</span></a></li>
 		
 		 
 		</ul>
@@ -884,6 +907,10 @@ administrator:Test2008
 <div class="widget">
   <h4>Recent Posts</h4>
   <ul class="entry list-unstyled">
+    
+      <li>
+        <a href="/2024/12/13/2024-12第二周：ciscn_2019_qual_virtual/"  title="每周一pwn系列" ><i class="fa fa-file-o"></i>2024-12第二周：ciscn_2019_qual_...</a>
+      </li>
     
       <li>
         <a href="/2024/12/01/第六届金盾信安杯初赛2024/"  title="又是被冲烂的一天" ><i class="fa fa-file-o"></i>第六届金盾信安杯初赛2024</a>
@@ -899,10 +926,6 @@ administrator:Test2008
     
       <li>
         <a href="/2024/11/16/ATT&amp;CK红队评估实战靶场-4/" ><i class="fa fa-file-o"></i>ATT&amp;CK红队评估实战靶场-4</a>
-      </li>
-    
-      <li>
-        <a href="/2024/10/15/春秋云镜-Initial/" ><i class="fa fa-file-o"></i>春秋云镜-Initial</a>
       </li>
     
   </ul>
