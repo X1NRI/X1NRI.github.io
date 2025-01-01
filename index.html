@@ -137,6 +137,82 @@
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2025/01/01/Easy W-Netmon/" >Easy W-Netmon</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2025-01-01  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<h1 id="信息搜集"><a href="#信息搜集" class="headerlink" title="信息搜集"></a>信息搜集</h1><p>80是个登录界面，PRTG？<br><img src="/Rxi134_FILE/a1496244f6df21b46da829111cb976f3_MD5.jpeg"></p>
+<h2 id="扫端口"><a href="#扫端口" class="headerlink" title="扫端口"></a>扫端口</h2><pre class="line-numbers language-text" data-language="text"><code class="language-text">ORT      STATE    SERVICE        VERSION
+21/tcp    open     ftp            Microsoft ftpd
+| ftp-syst: 
+|_  SYST: Windows_NT
+| ftp-anon: Anonymous FTP login allowed (FTP code 230)
+| 02-02-19  11:18PM                 1024 .rnd
+| 02-25-19  09:15PM       &lt;DIR>          inetpub
+| 07-16-16  08:18AM       &lt;DIR>          PerfLogs
+| 02-25-19  09:56PM       &lt;DIR>          Program Files
+| 02-02-19  11:28PM       &lt;DIR>          Program Files (x86)
+| 02-03-19  07:08AM       &lt;DIR>          Users
+|_11-10-23  09:20AM       &lt;DIR>          Windows
+80/tcp    open     http           PRTG/18.1.37.13946
+|_http-trane-info: Problem with XML parsing of /evox/about
+|_http-server-header: PRTG/18.1.37.13946
+| http-methods: 
+|_  Supported Methods: GET HEAD POST OPTIONS
+|_http-favicon: Unknown favicon MD5: 36B3EF286FA4BEFBB797A0966B456479
+| http-title: Welcome | PRTG Network Monitor (NETMON)
+|_Requested resource was /index.htm
+135/tcp   open     msrpc?
+139/tcp   open     netbios-ssn?
+445/tcp   open     microsoft-ds?
+668/tcp   filtered mecomm
+1051/tcp  filtered optima-vnet
+1071/tcp  filtered bsquare-voip
+3527/tcp  filtered beserver-msg-q
+3809/tcp  filtered apocd
+7019/tcp  filtered doceri-ctl
+48080/tcp filtered unknown
+49400/tcp filtered compaqdiag
+
+Host script results:
+| smb2-security-mode: 
+|   3:1:1: 
+|_    Message signing enabled but not required
+| smb2-time: 
+|   date: 2024-12-28T14:09:28
+|_  start_date: 2024-12-28T14:05:11
+| smb-security-mode: 
+|   account_used: guest
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: disabled (dangerous, but default)
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这一看ftp可以匿名登录</p>
+<h1 id="入侵"><a href="#入侵" class="headerlink" title="入侵"></a>入侵</h1><h2 id="ftp-匿名登录"><a href="#ftp-匿名登录" class="headerlink" title="ftp 匿名登录"></a>ftp 匿名登录</h2><p>可以登录上去，不过权限较低，无法上传文件</p>
+<p>发现iis的网站目录 inetpub&#x2F;<br><img src="/Rxi134_FILE/3272a46bd945fac2bed958620dffec43_MD5.jpeg"></p>
+<p>但是进去发现什么都没有？</p>
+	
+	</div>
+  <a type="button" href="/2025/01/01/Easy W-Netmon/#more" class="btn btn-default more">Read More</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2024/12/28/sql-labs靶场通关/" >SQL-labs靶场通关</a>
 		</h3>
 		</div>
@@ -732,46 +808,6 @@ administrator:Test2008
 </div>
 
 		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2024/10/15/春秋云镜-Initial/" >春秋云镜-Initial</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2024-10-15  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<blockquote>
-<p>Initial是一套难度为简单的靶场环境，完成该挑战可以帮助玩家初步认识内网渗透的简单流程。该靶场只有一个flag，各部分位于不同的机器上。</p>
-</blockquote>
-<ul>
-<li>DCSync</li>
-<li>CVE</li>
-<li>域渗透<br><img src="/Rxi134_FILE/58142e8af4ac2508452353c3efc22aee_MD5.jpeg"></li>
-</ul>
-<h1 id="信息搜集"><a href="#信息搜集" class="headerlink" title="信息搜集"></a>信息搜集</h1><h1 id="web机器-thinkphp"><a href="#web机器-thinkphp" class="headerlink" title="web机器 thinkphp"></a>web机器 thinkphp</h1><p>先访问80端口</p>
-<p>这图标，一眼thinkphp<br><img src="/Rxi134_FILE/5e7826534b99fb53ddd61360c2a3a6d4_MD5.jpeg"></p>
-<p>制造报错测试下版本，5.0.23<br><img src="/Rxi134_FILE/00dff5ba3574fba90599582655f09181_MD5.jpeg"></p>
-<p><img src="/Rxi134_FILE/780ce7e44c999bac5d117f4c23cede90_MD5.jpeg"></p>
-<p>命令执行无回显，简单上个 webshell 算了<br><img src="/Rxi134_FILE/f3dfea2fae5cf0ca1abd0d8dfe30fad4_MD5.jpeg"><br><img src="/Rxi134_FILE/db37dff6f2590695f6ab6e1a2eb6ecf7_MD5.jpeg"></p>
-<h1 id="上线msf"><a href="#上线msf" class="headerlink" title="上线msf"></a>上线msf</h1>
-	
-	</div>
-  <a type="button" href="/2024/10/15/春秋云镜-Initial/#more" class="btn btn-default more">Read More</a>
-</div>
-
-		
 
 		</div>
 
@@ -821,7 +857,7 @@ administrator:Test2008
 		
 			<li><a href="/categories/CTFpwn/">CTFpwn<span>6</span></a></li>
 		
-			<li><a href="/categories/pentest/">pentest<span>9</span></a></li>
+			<li><a href="/categories/pentest/">pentest<span>10</span></a></li>
 		
 			<li><a href="/categories/逆向工程/">逆向工程<span>5</span></a></li>
 		
@@ -836,15 +872,15 @@ administrator:Test2008
 		
 			<li><a href="/tags/每周一pwn系列/">每周一pwn系列<span>3</span></a></li>
 		
-			<li><a href="/tags/赛题/">赛题<span>3</span></a></li>
+			<li><a href="/tags/靶场/">靶场<span>5</span></a></li>
 		
-			<li><a href="/tags/靶场/">靶场<span>4</span></a></li>
+			<li><a href="/tags/AV/">AV<span>5</span></a></li>
+		
+			<li><a href="/tags/赛题/">赛题<span>3</span></a></li>
 		
 			<li><a href="/tags/web学习/">web学习<span>1</span></a></li>
 		
 			<li><a href="/tags/Vulnstack靶场/">Vulnstack靶场<span>4</span></a></li>
-		
-			<li><a href="/tags/AV/">AV<span>5</span></a></li>
 		
 		 
 		</ul>
@@ -856,6 +892,10 @@ administrator:Test2008
 <div class="widget">
   <h4>Recent Posts</h4>
   <ul class="entry list-unstyled">
+    
+      <li>
+        <a href="/2025/01/01/Easy W-Netmon/" ><i class="fa fa-file-o"></i>Easy W-Netmon</a>
+      </li>
     
       <li>
         <a href="/2024/12/28/sql-labs靶场通关/" ><i class="fa fa-file-o"></i>SQL-labs靶场通关</a>
@@ -871,10 +911,6 @@ administrator:Test2008
     
       <li>
         <a href="/2024/12/19/2024-12第三周：pwnable_bf/"  title="每周一pwn系列" ><i class="fa fa-file-o"></i>2024-12第三周：pwnable_bf</a>
-      </li>
-    
-      <li>
-        <a href="/2024/12/13/2024-12第二周：ciscn_2019_qual_virtual/"  title="每周一pwn系列" ><i class="fa fa-file-o"></i>2024-12第二周：ciscn_2019_qual_...</a>
       </li>
     
   </ul>
@@ -904,7 +940,7 @@ administrator:Test2008
   <div class="container-narrow">
   <footer> <p>
   
-  &copy; 2024 X1NRI's Blog
+  &copy; 2025 X1NRI's Blog
   
       powered by <a href="http://hexo.io/" target="_blank">Hexo</a>.Theme <a href="https://github.com/Ares-X/hexo-theme-freemind.bithack" target="_blank">freemind.bithack</a>  
 </p>

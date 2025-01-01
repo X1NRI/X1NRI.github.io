@@ -1,0 +1,455 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="cache-control" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  
+  <title>Easy W-Netmon | X1NRI&#39;s trash</title>
+  <meta name="author" content="X1NRI">
+  
+  <meta name="description" content="信息搜集80是个登录界面，PRTG？
+扫端口ORT      STATE    SERVICE        VERSION
+21/tcp    open     ftp            Microsoft ftpd
+| ftp-syst: 
+|_  SYST: Windows_NT
+| ftp-anon: Anonymous FTP login allowed (FTP code 230)
+| 02-02-19  11:18PM                 1024 .rnd
+| 02-25-19  09:15PM       &amp;lt;DIR&gt;          inetpub
+| 07-16-16  08:18AM       &amp;lt;DIR&gt;          PerfLogs
+| 02-25-19  09:56PM       &amp;lt;DIR&gt;          Program Files
+| 02-02-19  11:28PM       &amp;lt;DIR&gt;          Program Files (x86)
+| 02-03-19  07:08AM       &amp;lt;DIR&gt;          Users
+|_11-10-23  09:20AM       &amp;lt;DIR&gt;          Windows
+80/tcp    open     http           PRTG/18.1.37.13946
+|_http-trane-info: Problem with XML parsing of /evox/about
+|_http-server-header: PRTG/18.1.37.13946
+| http-methods: 
+|_  Supported Methods: GET HEAD POST OPTIONS
+|_http-favicon: Unknown favicon MD5: 36B3EF286FA4BEFBB797A0966B456479
+| http-title: Welcome | PRTG Network Monitor (NETMON)
+|_Requested resource was /index.htm
+135/tcp   open     msrpc?
+139/tcp   open     netbios-ssn?
+445/tcp   open     microsoft-ds?
+668/tcp   filtered mecomm
+1051/tcp  filtered optima-vnet
+1071/tcp  filtered bsquare-voip
+3527/tcp  filtered beserver-msg-q
+3809/tcp  filtered apocd
+7019/tcp  filtered doceri-ctl
+48080/tcp filtered unknown
+49400/tcp filtered compaqdiag
+
+Host script results:
+| smb2-security-mode: 
+|   3:1:1: 
+|_    Message signing enabled but not required
+| smb2-time: 
+|   date: 2024-12-28T14:09:28
+|_  start_date: 2024-12-28T14:05:11
+| smb-security-mode: 
+|   account_used: guest
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: disabled (dangerous, but default)
+
+这一看ftp可以匿名登录
+入侵ftp 匿名登录可以登录上去，不过权限较低，无法上传文件
+发现iis的网站目录 inetpub&amp;#x2F;
+但是进去发现什么都没有？"> 
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Easy W-Netmon"/>
+  <meta property="og:site_name" content="X1NRI&#39;s trash"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+    <link rel="alternative" href="/atom.xml" title="X1NRI&#39;s trash" type="application/atom+xml">
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/prism.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-70812759-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-70812759-1');
+</script>
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+ <body>  
+  <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+	  <a class="navbar-brand" href="/">X1NRI&#39;s trash</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class="fa fa-folder"></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class="fa fa-tags"></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/links" title="Subscribe me.">
+			  <i class="fa fa-chain"></i>Links
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header">
+			<h1> Easy W-Netmon</h1>
+		</div>
+	
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  		
+
+	  <h1 id="信息搜集"><a href="#信息搜集" class="headerlink" title="信息搜集"></a>信息搜集</h1><p>80是个登录界面，PRTG？<br><img src="/Rxi134_FILE/a1496244f6df21b46da829111cb976f3_MD5.jpeg"></p>
+<h2 id="扫端口"><a href="#扫端口" class="headerlink" title="扫端口"></a>扫端口</h2><pre class="line-numbers language-text" data-language="text"><code class="language-text">ORT      STATE    SERVICE        VERSION
+21/tcp    open     ftp            Microsoft ftpd
+| ftp-syst: 
+|_  SYST: Windows_NT
+| ftp-anon: Anonymous FTP login allowed (FTP code 230)
+| 02-02-19  11:18PM                 1024 .rnd
+| 02-25-19  09:15PM       &lt;DIR>          inetpub
+| 07-16-16  08:18AM       &lt;DIR>          PerfLogs
+| 02-25-19  09:56PM       &lt;DIR>          Program Files
+| 02-02-19  11:28PM       &lt;DIR>          Program Files (x86)
+| 02-03-19  07:08AM       &lt;DIR>          Users
+|_11-10-23  09:20AM       &lt;DIR>          Windows
+80/tcp    open     http           PRTG/18.1.37.13946
+|_http-trane-info: Problem with XML parsing of /evox/about
+|_http-server-header: PRTG/18.1.37.13946
+| http-methods: 
+|_  Supported Methods: GET HEAD POST OPTIONS
+|_http-favicon: Unknown favicon MD5: 36B3EF286FA4BEFBB797A0966B456479
+| http-title: Welcome | PRTG Network Monitor (NETMON)
+|_Requested resource was /index.htm
+135/tcp   open     msrpc?
+139/tcp   open     netbios-ssn?
+445/tcp   open     microsoft-ds?
+668/tcp   filtered mecomm
+1051/tcp  filtered optima-vnet
+1071/tcp  filtered bsquare-voip
+3527/tcp  filtered beserver-msg-q
+3809/tcp  filtered apocd
+7019/tcp  filtered doceri-ctl
+48080/tcp filtered unknown
+49400/tcp filtered compaqdiag
+
+Host script results:
+| smb2-security-mode: 
+|   3:1:1: 
+|_    Message signing enabled but not required
+| smb2-time: 
+|   date: 2024-12-28T14:09:28
+|_  start_date: 2024-12-28T14:05:11
+| smb-security-mode: 
+|   account_used: guest
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: disabled (dangerous, but default)
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这一看ftp可以匿名登录</p>
+<h1 id="入侵"><a href="#入侵" class="headerlink" title="入侵"></a>入侵</h1><h2 id="ftp-匿名登录"><a href="#ftp-匿名登录" class="headerlink" title="ftp 匿名登录"></a>ftp 匿名登录</h2><p>可以登录上去，不过权限较低，无法上传文件</p>
+<p>发现iis的网站目录 inetpub&#x2F;<br><img src="/Rxi134_FILE/3272a46bd945fac2bed958620dffec43_MD5.jpeg"></p>
+<p>但是进去发现什么都没有？</p>
+<p>倒是可以把&#x2F;Public下的flag下载下来</p>
+<h2 id="回到网站-PRTG-monitor"><a href="#回到网站-PRTG-monitor" class="headerlink" title="回到网站 PRTG monitor"></a>回到网站 PRTG monitor</h2><p>我突然发现nmap对80端口是扫出来版本号的，PRTG&#x2F;18.1.37.13946</p>
+<p>PRTG 是什么？<br><img src="/Rxi134_FILE/a4224f0187057f1e609e4322a757082f_MD5.jpeg"></p>
+<p>查查有没有nday<br><img src="/Rxi134_FILE/c7a001f64a58634856264d1fdbaab954_MD5.jpeg"></p>
+<p>还真有，但是需要先身份认证进去</p>
+<h2 id="尝试弱口令登录"><a href="#尝试弱口令登录" class="headerlink" title="尝试弱口令登录"></a>尝试弱口令登录</h2><p>查下默认密码<br><img src="/Rxi134_FILE/966a2f54d47ada08c9a85905df3cc489_MD5.jpeg"></p>
+<p>它有个忘记密码功能，对于非法用户名会报错，可以用来推测用户名<br><img src="/Rxi134_FILE/91f168d6ed9f6acf94bd118ef99cb6fb_MD5.jpeg"></p>
+<p>测一下用户名 prtgadmin<br><img src="/Rxi134_FILE/503c57568057434426e139ab620b5fe1_MD5.jpeg"><br>哎，存在的<br><img src="/Rxi134_FILE/0f61055dbe7ef85a4e59af448b12b056_MD5.jpeg"></p>
+<p>直接尝试 prtgadmin:prtgadmin，失败了…<br><img src="/Rxi134_FILE/1e58e187236f9a0b963ca947c265861c_MD5.jpeg"></p>
+<p>爆破一波密码，p都没出来</p>
+<h2 id="ftp翻找RPGT配置文件"><a href="#ftp翻找RPGT配置文件" class="headerlink" title="*ftp翻找RPGT配置文件"></a>*ftp翻找RPGT配置文件</h2><p>直接把整个目录给下载下来</p>
+<p>可以用wget 下载文件夹，不过我还是喜欢用xshell可视化</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">wget</span> <span class="token parameter variable">-r</span> ftp://anonymous:@10.10.10.152/<span class="token string">"Program Files (x86)"</span>/<span class="token string">"PRTG Network Monitor"</span>/<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/Rxi134_FILE/adc2575bb0673605c0e02f79b76fe262_MD5.jpeg"></p>
+<p>但是找半天啥都没找到。。。</p>
+<p>查看wp，数据文件在<code>%programdata%\Paessler\PRTG Network Monitor</code>下<br><img src="/Rxi134_FILE/ef3aff51f8d1619c32680b8460a3e8ab_MD5.jpeg"><br>但是我没看到ProgramData&#x2F;目录啊？<br><img src="/Rxi134_FILE/cc5434b9176c1bbfa89938c8af097835_MD5.jpeg"></p>
+<p>可以转入？！<br><img src="/Rxi134_FILE/bfee3dde4b27c7311a002c2db8fdeaa6_MD5.jpeg"></p>
+<blockquote>
+<p>隐藏受保护的系统文件：当你启用 “隐藏受保护的操作系统文件” 功能时，Windows 会隐藏一部分敏感的系统文件，防止这些文件被普通用户（或管理员）误操作。这通常是为了保护系统的完整性，确保操作系统和应用程序可以正常运行。即使这些文件被显示出来，Windows 仍然会阻止用户进行修改或删除。<br>常见的文件夹有 ProgramData&#x2F;、bootmgr&#x2F;、</p>
+</blockquote>
+<p>看到了一堆文件，先看.bak备份文件</p>
+<p><img src="/Rxi134_FILE/de738317967f0ff86b9413fb9c3bc30e_MD5.jpeg"></p>
+<p>找到一串密码！</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">prtgadmin:PrTg@dmin2018<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/Rxi134_FILE/d7faef30f52f8de2f0bde4b611bf35e7_MD5.jpeg"></p>
+<p>啊？<br><img src="/Rxi134_FILE/ffbc80abb3266f25014109ddeef701c4_MD5.jpeg"></p>
+<p>wp说根据不同的年份，可以联想到密码可能只是改成了2019</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">prtgadmin:PrTg@dmin2019<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/Rxi134_FILE/e1b98961b9ea506f3f35598f98d772b6_MD5.jpeg"></p>
+<p>登陆成功<br><img src="/Rxi134_FILE/caae998d3b07fa81adfa2e221fe9151a_MD5.jpeg"></p>
+<h2 id="CVE-2018-9276-Authenticated-Command-Injection"><a href="#CVE-2018-9276-Authenticated-Command-Injection" class="headerlink" title="CVE-2018-9276 Authenticated Command Injection"></a>CVE-2018-9276 Authenticated Command Injection</h2><p>msf可以直接打<br><img src="/Rxi134_FILE/87d17bcc221c6d41e1129a0be60bcbec_MD5.jpeg"></p>
+<p><img src="/Rxi134_FILE/4dc9b688f7b550dc11671653aca639c4_MD5.jpeg"></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>总的来说，我并不觉得这个机器非常简单，特别是找密码部分改年份的部分，有点脑洞</p>
+
+	  <div class="article-footer-copyright">
+
+    本博客采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议(CC BY-NC-SA 4.0) 发布.</a>
+</div>
+
+	</div>
+
+	
+	<span id="/2025/01/01/Easy%20W-Netmon/" class="leancloud-visitors view" data-flag-title="Easy W-Netmon">
+		<em class="post-meta-item-text"> Page View </em> <i class="leancloud-visitors-count"></i>
+	</span>
+	
+	
+	<div>
+  	<center>
+
+	<div class="pagination">
+
+    
+    
+    <a type="button" class="btn btn-default disabled"><i class="fa fa-arrow-circle-o-left"></i>Prev</a>
+    
+
+    <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
+    
+    <a href="/2024/12/28/sql-labs靶场通关/" type="button" class="btn btn-default ">Next<i
+                class="fa fa-arrow-circle-o-right"></i></a>
+    
+
+    
+</div>
+
+
+    </center>
+	</div>
+	
+	<!-- comment -->
+	<!--
+<section id="comment">
+    <h2 class="title">Comments</h2>
+
+    
+</section>
+
+-->
+	
+		<section id="comments" class="comments">
+			<style>
+			.comments{margin:30px;padding:10px;background:rgb(0, 0, 0)}
+			@media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#000}}
+			</style>
+			<div id="vcomment" class="comment"></div>
+<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+<script src="https://cdnjs.loli.net/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+var valineConfig = {"enable":true,"appId":"QrmzEeS3e4xvmJxO1dSPlkW4-gzGzoHsz","appKey":"ov6uvwKnDQmJxtpeS0wvBIwL","placeholder":"","visitor":true,"avatar":"monsterid","requiredFields":["nick","mail"],"pageView":true}
+valineConfig.el='#vcomment';
+new Valine(valineConfig);
+    // new Valine({
+    //     el: '#vcomment',
+    //     appId: "",
+    //     appKey: "",
+    //     placeholder: "",
+    //     avatar:"monsterid",
+    //     visitor: "true",
+    //     requiredFields: "nick,mail".split(','),
+    // });
+</script>
+
+		</section>
+	
+	
+	
+	</div> <!-- col-md-9/col-md-12 -->
+
+
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta"> 
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2025-01-01 
+	</div>
+	
+
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>	
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+          
+  <li>
+    <li><a href="/categories/pentest/">pentest<span>10</span></a></li>
+  </li>
+
+    </ul>
+	</div>
+	
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
+    <ul id="tags" class="tag_box list-unstyled collapse in">	  
+	    
+  <li><a href="/tags/靶场/">靶场<span>5</span></a></li>
+    </ul>
+	</div>
+		
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
+	   <div id="toc" class="toc collapse in">
+		   <span class="toc-title">Contents</span>
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86"><span class="toc-article-text">信息搜集</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#%E6%89%AB%E7%AB%AF%E5%8F%A3"><span class="toc-article-text">扫端口</span></a></li></ol></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E5%85%A5%E4%BE%B5"><span class="toc-article-text">入侵</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#ftp-%E5%8C%BF%E5%90%8D%E7%99%BB%E5%BD%95"><span class="toc-article-text">ftp 匿名登录</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#%E5%9B%9E%E5%88%B0%E7%BD%91%E7%AB%99-PRTG-monitor"><span class="toc-article-text">回到网站 PRTG monitor</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#%E5%B0%9D%E8%AF%95%E5%BC%B1%E5%8F%A3%E4%BB%A4%E7%99%BB%E5%BD%95"><span class="toc-article-text">尝试弱口令登录</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#ftp%E7%BF%BB%E6%89%BERPGT%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-article-text">*ftp翻找RPGT配置文件</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#CVE-2018-9276-Authenticated-Command-Injection"><span class="toc-article-text">CVE-2018-9276 Authenticated Command Injection</span></a></li></ol></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-article-text">总结</span></a></li></ol>
+		</div>
+	
+	</div>
+	
+    <hr>
+	
+</div><!-- col-md-3 -->
+
+		
+
+	</div>
+	
+		
+
+</div><!-- row -->
+
+<!--
+ -->
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  
+  &copy; 2025 X1NRI's Blog
+  
+      powered by <a href="http://hexo.io/" target="_blank">Hexo</a>.Theme <a href="https://github.com/Ares-X/hexo-theme-freemind.bithack" target="_blank">freemind.bithack</a>  
+</p>
+ </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>⬆︎TOP</span>
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>
