@@ -151,7 +151,48 @@
   <div class="row">
 	
 	
-		Here's something encrypted, password is required to continue reading.
+		<h1 id="信息搜集"><a href="#信息搜集" class="headerlink" title="信息搜集"></a>信息搜集</h1><h2 id="初识"><a href="#初识" class="headerlink" title="初识"></a>初识</h2><p>访问ip<br><img src="/Rxi134_FILE/b7ab4324f4016376f0959d69bb49587d_MD5.jpeg"><br><img src="/Rxi134_FILE/87f30ac2679bebf3f86d78c3caafc1b4_MD5.jpeg"></p>
+<p>上面的选项都点不了</p>
+<h2 id="扫端口"><a href="#扫端口" class="headerlink" title="扫端口"></a>扫端口</h2><pre class="line-numbers language-text" data-language="text"><code class="language-text">PORT      STATE    SERVICE         VERSION
+22/tcp    open     ssh             OpenSSH 8.2p1 Ubuntu 4ubuntu0.2 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   3072 be:54:9c:a3:67:c3:15:c3:64:71:7f:6a:53:4a:4c:21 (RSA)
+| ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCjEtN3+WZzlvu54zya9Q+D0d/jwjZT2jYFKwHe0icY7plEWSAqbP+b3ijRL6kv522KEJPHkfXuRwzt5z4CNpyUnqr6nQINn8DU0Iu/UQby+6OiQIleNUCYYaI+1mV0sm4kgmue4oVI1Q3JYOH41efTbGDFHiGSTY1lH3HcAvOFh75dCID0564T078p7ZEIoKRt1l7Yz+GeMZ870Nw13ao0QLPmq2HnpQS34K45zU0lmxIHqiK/IpFJOLfugiQF52Qt6+gX3FOjPgxk8rk81DEwicTrlir2gJiizAOchNPZjbDCnG2UqTapOm292Xg0hCE6H03Ri6GtYs5xVFw/KfGSGb7OJT1jhitbpUxRbyvP+pFy4/8u6Ty91s98bXrCyaEy2lyZh5hm7MN2yRsX+UbrSo98UfMbHkKnePg7/oBhGOOrUb77/DPePGeBF5AT029Xbz90v2iEFfPdcWj8SP/p2Fsn/qdutNQ7cRnNvBVXbNm0CpiNfoHBCBDJ1LR8p8k=
+|   256 bf:8a:3f:d4:06:e9:2e:87:4e:c9:7e:ab:22:0e:c0:ee (ECDSA)
+| ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBGKC3ouVMPI/5R2Fsr5b0uUQGDrAa6ev8uKKp5x8wdqPXvM1tr4u0GchbVoTX5T/PfJFi9UpeDx/uokU3chqcFc=
+|   256 1a:de:a1:cc:37:ce:53:bb:1b:fb:2b:0b:ad:b3:f6:84 (ED25519)
+|_ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJbkxEqMn++HZ2uEvM0lDZy+TB8B8IAeWRBEu3a34YIb
+25/tcp    open     smtp?
+|_smtp-commands: Couldn't establish connection on port 25
+80/tcp    open     http            Apache httpd 2.4.41 ((Ubuntu))
+|_http-title:  Emergent Medical Idea
+| http-methods: 
+|_  Supported Methods: GET HEAD POST OPTIONS
+|_http-server-header: Apache/2.4.41 (Ubuntu)
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+<h2 id="扫目录"><a href="#扫目录" class="headerlink" title="扫目录"></a>扫目录</h2><pre class="line-numbers language-text" data-language="text"><code class="language-text">16:44:13] Starting: 
+[16:44:25] 403 -  277B  - /.ht_wsr.txt                                      
+[16:44:28] 403 -  277B  - /.htaccess_extra                                  
+[16:44:28] 403 -  277B  - /.htaccessOLD                                     
+[16:44:28] 403 -  277B  - /.htaccess.orig                                   
+[16:44:28] 403 -  277B  - /.htaccessOLD2                                    
+[16:44:28] 403 -  277B  - /.htaccess.sample                                 
+[16:44:28] 403 -  277B  - /.htaccess.save
+[16:44:28] 403 -  277B  - /.htaccessBAK
+[16:44:28] 403 -  277B  - /.htaccess_orig
+[16:44:28] 403 -  277B  - /.htm
+[16:44:28] 403 -  277B  - /.htaccess_sc                                     
+[16:44:28] 403 -  277B  - /.html
+[16:44:28] 403 -  277B  - /.htaccess.bak1                                   
+[16:44:28] 403 -  277B  - /.htpasswd_test                                   
+[16:44:28] 403 -  277B  - /.htpasswds                                       
+[16:44:28] 403 -  277B  - /.httr-oauth
+[16:46:22] 403 -  277B  - /server-status                                    
+[16:46:22] 403 -  277B  - /server-status/   <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>目录也没东西</p>
+<h2 id="打波poc"><a href="#打波poc" class="headerlink" title="打波poc"></a>打波poc</h2>
 	
 	</div>
   <a type="button" href="/2025/01/09/Easy L-Knife/#more" class="btn btn-default more">Read More</a>
@@ -804,17 +845,17 @@ sun\admin 2020.com
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/靶场/">靶场<span>7</span></a></li>
-		
-			<li><a href="/tags/赛题/">赛题<span>3</span></a></li>
-		
-			<li><a href="/tags/每周一pwn系列/">每周一pwn系列<span>3</span></a></li>
-		
-			<li><a href="/tags/Vulnstack靶场/">Vulnstack靶场<span>4</span></a></li>
+			<li><a href="/tags/AV/">AV<span>5</span></a></li>
 		
 			<li><a href="/tags/web学习/">web学习<span>1</span></a></li>
 		
-			<li><a href="/tags/AV/">AV<span>5</span></a></li>
+			<li><a href="/tags/赛题/">赛题<span>3</span></a></li>
+		
+			<li><a href="/tags/靶场/">靶场<span>7</span></a></li>
+		
+			<li><a href="/tags/Vulnstack靶场/">Vulnstack靶场<span>4</span></a></li>
+		
+			<li><a href="/tags/每周一pwn系列/">每周一pwn系列<span>3</span></a></li>
 		
 		 
 		</ul>
