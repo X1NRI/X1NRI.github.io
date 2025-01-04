@@ -137,6 +137,81 @@
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2025/01/04/Easy L-Keeper/" >Easy L-Keeper</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2025-01-04  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<h1 id="信息搜集"><a href="#信息搜集" class="headerlink" title="信息搜集"></a>信息搜集</h1><p>访问ip<br><img src="/Rxi134_FILE/0edca269088ac282555c43cb3f4d9fc8_MD5.jpeg"></p>
+<p>在hosts添加两行</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">10.10.11.227 tickets.keeper.htb
+10.10.11.227 keeper.htb<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>访问 tickets.keeper.htb&#x2F;<br><img src="/Rxi134_FILE/399868b5209eb9a8fafaed5f93184751_MD5.jpeg"></p>
+<p>访问一下 keeper.htb&#x2F;， 就是之前跳转的界面</p>
+<h2 id="扫端口"><a href="#扫端口" class="headerlink" title="扫端口"></a>扫端口</h2><p>先简单扫下端口</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">PORT      STATE    SERVICE
+22/tcp    open     ssh
+| ssh-hostkey:
+|   256 35:39:d4:39:40:4b:1f:61:86:dd:7c:37:bb:4b:98:9e (ECDSA)
+|_  256 1a:e9:72:be:8b:b1:05:d5:ef:fe:dd:80:d8:ef:c0:66 (ED25519)
+25/tcp    open     smtp
+|_smtp-commands: Couldn't establish connection on port 25
+37/tcp    filtered time
+80/tcp    open     http
+| http-methods:
+|_  Supported Methods: GET HEAD
+|_http-title: Site doesn't have a title (text/html).
+110/tcp   open     pop3
+125/tcp   filtered locus-map
+444/tcp   filtered snpp
+514/tcp   filtered shell
+1105/tcp  filtered ftranhc
+1233/tcp  filtered univ-appserver
+1840/tcp  filtered netopia-vo2
+2107/tcp  filtered msmq-mgmt
+2251/tcp  filtered dif-port
+2399/tcp  filtered fmpro-fdal
+3827/tcp  filtered netmpi
+3871/tcp  filtered avocent-adsap
+5033/tcp  filtered jtnetd-server
+5357/tcp  filtered wsdapi
+5560/tcp  filtered isqlplus
+5877/tcp  filtered unknown
+5961/tcp  filtered unknown
+6502/tcp  filtered netop-rc
+7070/tcp  filtered realserver
+8254/tcp  filtered unknown
+9000/tcp  filtered cslistener
+9002/tcp  filtered dynamid
+9900/tcp  filtered iua
+16113/tcp filtered unknown
+22939/tcp filtered unknown
+49999/tcp filtered unknown<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+<h1 id="入侵"><a href="#入侵" class="headerlink" title="入侵"></a>入侵</h1>
+	
+	</div>
+  <a type="button" href="/2025/01/04/Easy L-Keeper/#more" class="btn btn-default more">Read More</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2025/01/01/Easy W-Netmon/" >Easy W-Netmon</a>
 		</h3>
 		</div>
@@ -752,62 +827,6 @@ sun\admin 2020.com
 </div>
 
 		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2024/11/16/ATT&CK红队评估实战靶场-4/" >ATT&amp;CK红队评估实战靶场-4</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2024-11-16  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<blockquote>
-<p>下载地址：<a target="_blank" rel="noopener" href="http://vulnstack.qiyuanxuetang.net/vuln/detail/6/">漏洞详情</a></p>
-</blockquote>
-<p><img src="/Rxi134_FILE/01e760a174b100ab764f690ba82aaa18_MD5.jpeg"></p>
-<h1 id="网络搭建"><a href="#网络搭建" class="headerlink" title="网络搭建"></a>网络搭建</h1><pre class="line-numbers language-text" data-language="text"><code class="language-text">ubuntu:ubuntu
-192.168.74.140
-192.168.183.128
-
-域成员机器
-douser:Dotest123
-192.168.183.129
-
-DC
-administrator:Test2008
-192.168.183.130<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h1 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h1><ul>
-<li><p>web机器</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">cd</span> /home/ubuntu/Desktop/vulhub/struts2/s2-045
-<span class="token function">sudo</span> <span class="token function">docker-compose</span> up <span class="token parameter variable">-d</span>
-<span class="token builtin class-name">cd</span> /home/ubuntu/Desktop/vulhub/tomcat/CVE-2017-12615/
-<span class="token function">sudo</span> <span class="token function">docker-compose</span> up <span class="token parameter variable">-d</span>
-<span class="token builtin class-name">cd</span> /home/ubuntu/Desktop/vulhub/phpmyadmin/CVE-2018-12613/
-<span class="token function">sudo</span> <span class="token function">docker-compose</span> up <span class="token parameter variable">-d</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-<li><p>win7<br>win7总是挂起，修改设备计划<br><img src="/Rxi134_FILE/393f5041cfd50e06414cf2e793ebb750_MD5.jpeg"></p>
-</li>
-</ul>
-<h1 id="边界"><a href="#边界" class="headerlink" title="边界"></a>边界</h1><h2 id="信息搜集"><a href="#信息搜集" class="headerlink" title="信息搜集"></a>信息搜集</h2><p>goby上去打些常见poc，随便把端口扫了<br><img src="/Rxi134_FILE/3243933a3096253353d76f94faab9aad_MD5.jpeg"></p>
-<h2 id="tomcat-PUT-任意文件上传（CVE-2017-12615）"><a href="#tomcat-PUT-任意文件上传（CVE-2017-12615）" class="headerlink" title="tomcat PUT 任意文件上传（CVE-2017-12615）"></a>tomcat PUT 任意文件上传（CVE-2017-12615）</h2>
-	
-	</div>
-  <a type="button" href="/2024/11/16/ATT&CK红队评估实战靶场-4/#more" class="btn btn-default more">Read More</a>
-</div>
-
-		
 
 		</div>
 
@@ -857,7 +876,7 @@ administrator:Test2008
 		
 			<li><a href="/categories/CTFpwn/">CTFpwn<span>6</span></a></li>
 		
-			<li><a href="/categories/pentest/">pentest<span>10</span></a></li>
+			<li><a href="/categories/pentest/">pentest<span>11</span></a></li>
 		
 			<li><a href="/categories/逆向工程/">逆向工程<span>5</span></a></li>
 		
@@ -870,17 +889,17 @@ administrator:Test2008
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/每周一pwn系列/">每周一pwn系列<span>3</span></a></li>
-		
-			<li><a href="/tags/靶场/">靶场<span>5</span></a></li>
-		
-			<li><a href="/tags/AV/">AV<span>5</span></a></li>
+			<li><a href="/tags/Vulnstack靶场/">Vulnstack靶场<span>4</span></a></li>
 		
 			<li><a href="/tags/赛题/">赛题<span>3</span></a></li>
 		
-			<li><a href="/tags/web学习/">web学习<span>1</span></a></li>
+			<li><a href="/tags/每周一pwn系列/">每周一pwn系列<span>3</span></a></li>
 		
-			<li><a href="/tags/Vulnstack靶场/">Vulnstack靶场<span>4</span></a></li>
+			<li><a href="/tags/靶场/">靶场<span>6</span></a></li>
+		
+			<li><a href="/tags/AV/">AV<span>5</span></a></li>
+		
+			<li><a href="/tags/web学习/">web学习<span>1</span></a></li>
 		
 		 
 		</ul>
@@ -892,6 +911,10 @@ administrator:Test2008
 <div class="widget">
   <h4>Recent Posts</h4>
   <ul class="entry list-unstyled">
+    
+      <li>
+        <a href="/2025/01/04/Easy L-Keeper/" ><i class="fa fa-file-o"></i>Easy L-Keeper</a>
+      </li>
     
       <li>
         <a href="/2025/01/01/Easy W-Netmon/" ><i class="fa fa-file-o"></i>Easy W-Netmon</a>
@@ -907,10 +930,6 @@ administrator:Test2008
     
       <li>
         <a href="/2024/12/21/2024-12第三周2：normalbabynote/"  title="每周一pwn系列" ><i class="fa fa-file-o"></i>2024-12第三周2：normalbabynote</a>
-      </li>
-    
-      <li>
-        <a href="/2024/12/19/2024-12第三周：pwnable_bf/"  title="每周一pwn系列" ><i class="fa fa-file-o"></i>2024-12第三周：pwnable_bf</a>
       </li>
     
   </ul>
