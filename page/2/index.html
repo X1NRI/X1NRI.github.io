@@ -137,6 +137,43 @@
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2024/12/28/sql-labs靶场通关/" >SQL-labs靶场通关</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2024-12-28  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<blockquote>
+<p>靶场地址：<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#sqli-labs">BUUCTF在线评测</a></p>
+</blockquote>
+<h1 id="level-1"><a href="#level-1" class="headerlink" title="level 1"></a>level 1</h1><p>GET传参 ?id&#x3D;1<br><img src="/SNIPER_FILE/bf52f20479948ae3c94db8829592eb73_MD5.jpeg"></p>
+<p>传参2回显不同，说明传入的参数是会进入数据库语句的</p>
+<p><code>1&#39;</code> 单引号报错，这里有报错注入<br><img src="/SNIPER_FILE/0af604d9a444e02be20bb5d7b50ff5f8_MD5.jpeg"></p>
+<p><code>1&#39;--+</code><br><img src="/SNIPER_FILE/ad4c34712b16f5da90aff0ecddc85a14_MD5.jpeg"></p>
+<p>可以判断出是字符型且存在SQL注入</p>
+<p>联合查询爆出列数，3列能正常回显</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">1'UNION SELECT 1,2,3--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/SNIPER_FILE/1eb747fd3e620bdbb4ebbf430520d4cf_MD5.jpeg"></p>
+	
+	</div>
+  <a type="button" href="/2024/12/28/sql-labs靶场通关/#more" class="btn btn-default more">Read More</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2024/12/25/21.Payload Obfuscation - IPv4 IPv6Fuscation 有效负载混淆-IPV4 IPV6/" >21.Payload Obfuscation - IPv4 IPv6Fuscation 有效负载混淆-IPV4 IPV6</a>
 		</h3>
 		</div>
@@ -735,63 +772,6 @@ administrator:Test2008
 </div>
 
 		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2024/10/06/W Easy-Bastion/" >W Easy-Bastion</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2024-10-06  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<h1 id="信息搜集"><a href="#信息搜集" class="headerlink" title="信息搜集"></a>信息搜集</h1><pre class="line-numbers language-text" data-language="text"><code class="language-text">PORT      STATE  SERVICE      VERSION
-22/tcp    open   ssh          OpenSSH for_Windows_7.9 (protocol 2.0)
-| ssh-hostkey:
-|   2048 3a:56:ae:75:3c:78:0e:c8:56:4d:cb:1c:22:bf:45:8a (RSA)
-|   256 cc:2e:56:ab:19:97:d5:bb:03:fb:82:cd:63:da:68:01 (ECDSA)
-|_  256 93:5f:5d:aa:ca:9f:53:e7:f2:82:e6:64:a8:a3:a0:18 (ED25519)
-25/tcp    closed smtp
-110/tcp   closed pop3
-135/tcp   open   msrpc        Microsoft Windows RPC
-139/tcp   open   netbios-ssn  Microsoft Windows netbios-ssn
-445/tcp   open   microsoft-ds Windows Server 2016 Standard 14393 microsoft-ds
-47001/tcp open   http         Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
-|_http-server-header: Microsoft-HTTPAPI/2.0
-|_http-title: Not Found
-49664/tcp open   msrpc        Microsoft Windows RPC
-49665/tcp open   msrpc        Microsoft Windows RPC
-49666/tcp open   msrpc        Microsoft Windows RPC
-49667/tcp open   msrpc        Microsoft Windows RPC
-49668/tcp open   msrpc        Microsoft Windows RPC
-49669/tcp open   msrpc        Microsoft Windows RPC
-49670/tcp open   msrpc        Microsoft Windows RPC<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-
-<h1 id="入侵-驻足"><a href="#入侵-驻足" class="headerlink" title="入侵 &amp; 驻足"></a>入侵 &amp; 驻足</h1><h2 id="smb-guest登录策略"><a href="#smb-guest登录策略" class="headerlink" title="smb guest登录策略"></a>smb guest登录策略</h2><p>对smb进行枚举<br><img src="/Rxi134_FILE/f6c2c7ba974326656f4877f7574b70c3_MD5.jpeg"><br>开启了guest登录策略，随机的用户名都会映射为guest用户</p>
-<p><img src="/Rxi134_FILE/2c5baf067163bd972aa8780521eb8dad_MD5.jpeg"></p>
-<h2 id="发现备份文件夹"><a href="#发现备份文件夹" class="headerlink" title="发现备份文件夹"></a>发现备份文件夹</h2><p>其中有个 note.txt 和 文件夹 WindowsImageBackup<br><img src="/Rxi134_FILE/41f43da27c87c35f9254b53c56ebc304_MD5.jpeg"></p>
-<pre class="line-numbers language-text" data-language="text"><code class="language-text">Sysadmins: please don't transfer the entire backup file locally, the VPN to the subsidiary office is too slow.
-
-系统管理员：请不要将整个备份文件传输到本地，到子公司的 VPN 太慢了。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
-<h2 id="挂载磁盘"><a href="#挂载磁盘" class="headerlink" title="挂载磁盘"></a>挂载磁盘</h2>
-	
-	</div>
-  <a type="button" href="/2024/10/06/W Easy-Bastion/#more" class="btn btn-default more">Read More</a>
-</div>
-
-		
 
 		</div>
 
@@ -843,6 +823,8 @@ administrator:Test2008
 		
 			<li><a href="/categories/pentest/">pentest<span>16</span></a></li>
 		
+			<li><a href="/categories/电子取证/">电子取证<span>1</span></a></li>
+		
 			<li><a href="/categories/逆向工程/">逆向工程<span>5</span></a></li>
 		
 		</ul>
@@ -856,15 +838,17 @@ administrator:Test2008
 		
 			<li><a href="/tags/AV/">AV<span>5</span></a></li>
 		
+			<li><a href="/tags/赛题/">赛题<span>4</span></a></li>
+		
+			<li><a href="/tags/Vulnstack靶场/">Vulnstack靶场<span>4</span></a></li>
+		
+			<li><a href="/tags/恶意软件分析/">恶意软件分析<span>1</span></a></li>
+		
 			<li><a href="/tags/web学习/">web学习<span>1</span></a></li>
 		
 			<li><a href="/tags/每周一pwn系列/">每周一pwn系列<span>4</span></a></li>
 		
-			<li><a href="/tags/Vulnstack靶场/">Vulnstack靶场<span>4</span></a></li>
-		
 			<li><a href="/tags/靶场/">靶场<span>11</span></a></li>
-		
-			<li><a href="/tags/赛题/">赛题<span>4</span></a></li>
 		
 		 
 		</ul>
@@ -876,6 +860,10 @@ administrator:Test2008
 <div class="widget">
   <h4>Recent Posts</h4>
   <ul class="entry list-unstyled">
+    
+      <li>
+        <a href="/2025/01/28/2024数证杯决赛团体赛-恶意软件分析/"  title="新年快乐" ><i class="fa fa-file-o"></i>2024数证杯决赛团体赛-恶意软件分析</a>
+      </li>
     
       <li>
         <a href="/2025/01/24/春秋云镜-2022第三届网鼎杯半决/" ><i class="fa fa-file-o"></i>春秋云镜-2022第三届网鼎杯半决</a>
@@ -891,10 +879,6 @@ administrator:Test2008
     
       <li>
         <a href="/2025/01/14/12. Easy W-Active/" ><i class="fa fa-file-o"></i>Easy W-Active</a>
-      </li>
-    
-      <li>
-        <a href="/2025/01/13/9. Easy L-UnderPass-S6排位赛/" ><i class="fa fa-file-o"></i>Easy L-UnderPass-S6</a>
       </li>
     
   </ul>

@@ -137,6 +137,43 @@
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2025/01/28/2024数证杯决赛团体赛-恶意软件分析/" title="新年快乐">2024数证杯决赛团体赛-恶意软件分析</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2025-01-28  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<p><img src="/Forensics_FILE/d9176342ef93b288f1ffb76506cde20d_MD5.jpeg"><br>32位程序，无壳，编译器为mingw</p>
+<h1 id="1-通过分析恶意程序，找出运行该软件必要的参数是？（答案格式：–xxx-xxx）-2-0分"><a href="#1-通过分析恶意程序，找出运行该软件必要的参数是？（答案格式：–xxx-xxx）-2-0分" class="headerlink" title="1. 通过分析恶意程序，找出运行该软件必要的参数是？（答案格式：–xxx-xxx） (2.0分)"></a>1. 通过分析恶意程序，找出运行该软件必要的参数是？（答案格式：–xxx-xxx） (2.0分)</h1><pre class="line-numbers language-text" data-language="text"><code class="language-text">--access-token<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+
+<p><img src="/Forensics_FILE/0f3d72611a1158efc98262374e94714e_MD5.jpeg"></p>
+<h1 id="2-该程序为了控制控制最大并发数，在注册表中设置了MaxMpxCt参数，请给出设置参数的具体值。（答案格式：纯数字）-2-0分"><a href="#2-该程序为了控制控制最大并发数，在注册表中设置了MaxMpxCt参数，请给出设置参数的具体值。（答案格式：纯数字）-2-0分" class="headerlink" title="2. 该程序为了控制控制最大并发数，在注册表中设置了MaxMpxCt参数，请给出设置参数的具体值。（答案格式：纯数字） (2.0分)"></a>2. 该程序为了控制控制最大并发数，在注册表中设置了MaxMpxCt参数，请给出设置参数的具体值。（答案格式：纯数字） (2.0分)</h1><pre class="line-numbers language-text" data-language="text"><code class="language-text">65533<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="/Forensics_FILE/d529b1589e5c82555edbcda0e67532d1_MD5.jpeg"></p>
+<h1 id="3-该程序运行过程中会创建新的分区磁盘，请写出该分区磁盘一级目录中的文件名。（答案格式：如有字母请大写）-2-0分"><a href="#3-该程序运行过程中会创建新的分区磁盘，请写出该分区磁盘一级目录中的文件名。（答案格式：如有字母请大写）-2-0分" class="headerlink" title="3. 该程序运行过程中会创建新的分区磁盘，请写出该分区磁盘一级目录中的文件名。（答案格式：如有字母请大写） (2.0分)"></a>3. 该程序运行过程中会创建新的分区磁盘，请写出该分区磁盘一级目录中的文件名。（答案格式：如有字母请大写） (2.0分)</h1><pre class="line-numbers language-text" data-language="text"><code class="language-text">Boot<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>新增分区 Z:\，下面有隐藏文件</p>
+	
+	</div>
+  <a type="button" href="/2025/01/28/2024数证杯决赛团体赛-恶意软件分析/#more" class="btn btn-default more">Read More</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2025/01/24/春秋云镜-2022第三届网鼎杯半决/" >春秋云镜-2022第三届网鼎杯半决</a>
 		</h3>
 		</div>
@@ -810,43 +847,6 @@ Host script results:
 </div>
 
 		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2024/12/28/sql-labs靶场通关/" >SQL-labs靶场通关</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2024-12-28  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<blockquote>
-<p>靶场地址：<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#sqli-labs">BUUCTF在线评测</a></p>
-</blockquote>
-<h1 id="level-1"><a href="#level-1" class="headerlink" title="level 1"></a>level 1</h1><p>GET传参 ?id&#x3D;1<br><img src="/SNIPER_FILE/bf52f20479948ae3c94db8829592eb73_MD5.jpeg"></p>
-<p>传参2回显不同，说明传入的参数是会进入数据库语句的</p>
-<p><code>1&#39;</code> 单引号报错，这里有报错注入<br><img src="/SNIPER_FILE/0af604d9a444e02be20bb5d7b50ff5f8_MD5.jpeg"></p>
-<p><code>1&#39;--+</code><br><img src="/SNIPER_FILE/ad4c34712b16f5da90aff0ecddc85a14_MD5.jpeg"></p>
-<p>可以判断出是字符型且存在SQL注入</p>
-<p>联合查询爆出列数，3列能正常回显</p>
-<pre class="line-numbers language-text" data-language="text"><code class="language-text">1'UNION SELECT 1,2,3--+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><img src="/SNIPER_FILE/1eb747fd3e620bdbb4ebbf430520d4cf_MD5.jpeg"></p>
-	
-	</div>
-  <a type="button" href="/2024/12/28/sql-labs靶场通关/#more" class="btn btn-default more">Read More</a>
-</div>
-
-		
 
 		</div>
 
@@ -898,6 +898,8 @@ Host script results:
 		
 			<li><a href="/categories/pentest/">pentest<span>16</span></a></li>
 		
+			<li><a href="/categories/电子取证/">电子取证<span>1</span></a></li>
+		
 			<li><a href="/categories/逆向工程/">逆向工程<span>5</span></a></li>
 		
 		</ul>
@@ -909,13 +911,15 @@ Host script results:
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
+			<li><a href="/tags/AV/">AV<span>5</span></a></li>
+		
+			<li><a href="/tags/web学习/">web学习<span>1</span></a></li>
+		
 			<li><a href="/tags/赛题/">赛题<span>4</span></a></li>
 		
 			<li><a href="/tags/靶场/">靶场<span>11</span></a></li>
 		
-			<li><a href="/tags/web学习/">web学习<span>1</span></a></li>
-		
-			<li><a href="/tags/AV/">AV<span>5</span></a></li>
+			<li><a href="/tags/恶意软件分析/">恶意软件分析<span>1</span></a></li>
 		
 			<li><a href="/tags/Vulnstack靶场/">Vulnstack靶场<span>4</span></a></li>
 		
@@ -933,6 +937,10 @@ Host script results:
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2025/01/28/2024数证杯决赛团体赛-恶意软件分析/"  title="新年快乐" ><i class="fa fa-file-o"></i>2024数证杯决赛团体赛-恶意软件分析</a>
+      </li>
+    
+      <li>
         <a href="/2025/01/24/春秋云镜-2022第三届网鼎杯半决/" ><i class="fa fa-file-o"></i>春秋云镜-2022第三届网鼎杯半决</a>
       </li>
     
@@ -946,10 +954,6 @@ Host script results:
     
       <li>
         <a href="/2025/01/14/12. Easy W-Active/" ><i class="fa fa-file-o"></i>Easy W-Active</a>
-      </li>
-    
-      <li>
-        <a href="/2025/01/13/9. Easy L-UnderPass-S6排位赛/" ><i class="fa fa-file-o"></i>Easy L-UnderPass-S6</a>
       </li>
     
   </ul>
