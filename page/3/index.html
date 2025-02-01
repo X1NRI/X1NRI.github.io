@@ -194,6 +194,59 @@
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2024/10/05/8.Portable Executable Format 可移植可执行格式/" >8.Portable Executable Format 可移植可执行格式</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2024-10-05  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p><strong>Portable Executable (PE)</strong> 是 Windows 系统上可执行文件的文件格式。PE 文件扩展名的几个示例包括 <code>.exe</code>、<code>.dll</code>、<code>.sys</code> 和 <code>.scr</code>。本模块讨论 PE 文件的结构，这对于构建或逆向工程恶意软件非常重要。</p>
+<p>请注意，本模块及未来的模块将经常互换使用“可执行文件”（例如 EXE、DLL）和“镜像”（Images）来指代这些文件。</p>
+<h1 id="PE结构"><a href="#PE结构" class="headerlink" title="PE结构"></a>PE结构</h1><p>下图展示了一个简化的 <strong>Portable Executable (PE)</strong> 结构。图中显示的每个头部都被定义为一个数据结构，该结构包含关于 PE 文件的信息。本模块将详细解释每个数据结构。<br><img src="/Rxi134_FILE/4671b85da7b3108123c5f23d8748a504_MD5.jpeg"></p>
+<p><img src="/Rxi134_FILE/07427b54f2cd6658fb90b65947539444_MD5.jpeg"></p>
+<h2 id="DOS-头-IMAGE-DOS-HEADER-）"><a href="#DOS-头-IMAGE-DOS-HEADER-）" class="headerlink" title="DOS 头 (IMAGE_DOS_HEADER)）"></a>DOS 头 (IMAGE_DOS_HEADER)）</h2><p>PE 文件的第一个头部总是以两个字节开头，分别是 <code>0x4D</code> 和 <code>0x5A</code>，通常称为 **<code>MZ</code>**。这两个字节代表 DOS 头部的签名，用于确认正在解析或检查的文件是一个有效的 PE 文件。<br><img src="/Rxi134_FILE/bdd280e07e2ab3e4ea79f3a64f88be18_MD5.jpeg"></p>
+<p><strong>DOS 头部</strong> 是一个数据结构，其定义如下：</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">typedef</span> <span class="token keyword">struct</span> <span class="token class-name">_IMAGE_DOS_HEADER</span> <span class="token punctuation">&#123;</span>      <span class="token comment">// DOS .EXE header</span>
+    WORD   e_magic<span class="token punctuation">;</span>                     <span class="token comment">// Magic number</span>
+    WORD   e_cblp<span class="token punctuation">;</span>                      <span class="token comment">// Bytes on last page of file</span>
+    WORD   e_cp<span class="token punctuation">;</span>                        <span class="token comment">// Pages in file</span>
+    WORD   e_crlc<span class="token punctuation">;</span>                      <span class="token comment">// Relocations</span>
+    WORD   e_cparhdr<span class="token punctuation">;</span>                   <span class="token comment">// Size of header in paragraphs</span>
+    WORD   e_minalloc<span class="token punctuation">;</span>                  <span class="token comment">// Minimum extra paragraphs needed</span>
+    WORD   e_maxalloc<span class="token punctuation">;</span>                  <span class="token comment">// Maximum extra paragraphs needed</span>
+    WORD   e_ss<span class="token punctuation">;</span>                        <span class="token comment">// Initial (relative) SS value</span>
+    WORD   e_sp<span class="token punctuation">;</span>                        <span class="token comment">// Initial SP value</span>
+    WORD   e_csum<span class="token punctuation">;</span>                      <span class="token comment">// Checksum</span>
+    WORD   e_ip<span class="token punctuation">;</span>                        <span class="token comment">// Initial IP value</span>
+    WORD   e_cs<span class="token punctuation">;</span>                        <span class="token comment">// Initial (relative) CS value</span>
+    WORD   e_lfarlc<span class="token punctuation">;</span>                    <span class="token comment">// File address of relocation table</span>
+    WORD   e_ovno<span class="token punctuation">;</span>                      <span class="token comment">// Overlay number</span>
+    WORD   e_res<span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">;</span>                    <span class="token comment">// Reserved words</span>
+    WORD   e_oemid<span class="token punctuation">;</span>                     <span class="token comment">// OEM identifier (for e_oeminfo)</span>
+    WORD   e_oeminfo<span class="token punctuation">;</span>                   <span class="token comment">// OEM information; e_oemid specific</span>
+    WORD   e_res2<span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">;</span>                  <span class="token comment">// Reserved words</span>
+    LONG   e_lfanew<span class="token punctuation">;</span>                    <span class="token comment">// Offset to the NT header</span>
+  <span class="token punctuation">&#125;</span> IMAGE_DOS_HEADER<span class="token punctuation">,</span> <span class="token operator">*</span>PIMAGE_DOS_HEADER<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+	
+	</div>
+  <a type="button" href="/2024/10/05/8.Portable Executable Format 可移植可执行格式/#more" class="btn btn-default more">Read More</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2024/10/05/ATT&CK红队评估实战靶场-3/" >ATT&amp;CK红队评估实战靶场-3</a>
 		</h3>
 		</div>
@@ -247,59 +300,6 @@
 	
 	</div>
   <a type="button" href="/2024/10/05/ATT&CK红队评估实战靶场-3/#more" class="btn btn-default more">Read More</a>
-</div>
-
-		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2024/10/05/8.Portable Executable Format 可移植可执行格式/" >8.Portable Executable Format 可移植可执行格式</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2024-10-05  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p><strong>Portable Executable (PE)</strong> 是 Windows 系统上可执行文件的文件格式。PE 文件扩展名的几个示例包括 <code>.exe</code>、<code>.dll</code>、<code>.sys</code> 和 <code>.scr</code>。本模块讨论 PE 文件的结构，这对于构建或逆向工程恶意软件非常重要。</p>
-<p>请注意，本模块及未来的模块将经常互换使用“可执行文件”（例如 EXE、DLL）和“镜像”（Images）来指代这些文件。</p>
-<h1 id="PE结构"><a href="#PE结构" class="headerlink" title="PE结构"></a>PE结构</h1><p>下图展示了一个简化的 <strong>Portable Executable (PE)</strong> 结构。图中显示的每个头部都被定义为一个数据结构，该结构包含关于 PE 文件的信息。本模块将详细解释每个数据结构。<br><img src="/Rxi134_FILE/4671b85da7b3108123c5f23d8748a504_MD5.jpeg"></p>
-<p><img src="/Rxi134_FILE/07427b54f2cd6658fb90b65947539444_MD5.jpeg"></p>
-<h2 id="DOS-头-IMAGE-DOS-HEADER-）"><a href="#DOS-头-IMAGE-DOS-HEADER-）" class="headerlink" title="DOS 头 (IMAGE_DOS_HEADER)）"></a>DOS 头 (IMAGE_DOS_HEADER)）</h2><p>PE 文件的第一个头部总是以两个字节开头，分别是 <code>0x4D</code> 和 <code>0x5A</code>，通常称为 **<code>MZ</code>**。这两个字节代表 DOS 头部的签名，用于确认正在解析或检查的文件是一个有效的 PE 文件。<br><img src="/Rxi134_FILE/bdd280e07e2ab3e4ea79f3a64f88be18_MD5.jpeg"></p>
-<p><strong>DOS 头部</strong> 是一个数据结构，其定义如下：</p>
-<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">typedef</span> <span class="token keyword">struct</span> <span class="token class-name">_IMAGE_DOS_HEADER</span> <span class="token punctuation">&#123;</span>      <span class="token comment">// DOS .EXE header</span>
-    WORD   e_magic<span class="token punctuation">;</span>                     <span class="token comment">// Magic number</span>
-    WORD   e_cblp<span class="token punctuation">;</span>                      <span class="token comment">// Bytes on last page of file</span>
-    WORD   e_cp<span class="token punctuation">;</span>                        <span class="token comment">// Pages in file</span>
-    WORD   e_crlc<span class="token punctuation">;</span>                      <span class="token comment">// Relocations</span>
-    WORD   e_cparhdr<span class="token punctuation">;</span>                   <span class="token comment">// Size of header in paragraphs</span>
-    WORD   e_minalloc<span class="token punctuation">;</span>                  <span class="token comment">// Minimum extra paragraphs needed</span>
-    WORD   e_maxalloc<span class="token punctuation">;</span>                  <span class="token comment">// Maximum extra paragraphs needed</span>
-    WORD   e_ss<span class="token punctuation">;</span>                        <span class="token comment">// Initial (relative) SS value</span>
-    WORD   e_sp<span class="token punctuation">;</span>                        <span class="token comment">// Initial SP value</span>
-    WORD   e_csum<span class="token punctuation">;</span>                      <span class="token comment">// Checksum</span>
-    WORD   e_ip<span class="token punctuation">;</span>                        <span class="token comment">// Initial IP value</span>
-    WORD   e_cs<span class="token punctuation">;</span>                        <span class="token comment">// Initial (relative) CS value</span>
-    WORD   e_lfarlc<span class="token punctuation">;</span>                    <span class="token comment">// File address of relocation table</span>
-    WORD   e_ovno<span class="token punctuation">;</span>                      <span class="token comment">// Overlay number</span>
-    WORD   e_res<span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">;</span>                    <span class="token comment">// Reserved words</span>
-    WORD   e_oemid<span class="token punctuation">;</span>                     <span class="token comment">// OEM identifier (for e_oeminfo)</span>
-    WORD   e_oeminfo<span class="token punctuation">;</span>                   <span class="token comment">// OEM information; e_oemid specific</span>
-    WORD   e_res2<span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">;</span>                  <span class="token comment">// Reserved words</span>
-    LONG   e_lfanew<span class="token punctuation">;</span>                    <span class="token comment">// Offset to the NT header</span>
-  <span class="token punctuation">&#125;</span> IMAGE_DOS_HEADER<span class="token punctuation">,</span> <span class="token operator">*</span>PIMAGE_DOS_HEADER<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-	
-	</div>
-  <a type="button" href="/2024/10/05/8.Portable Executable Format 可移植可执行格式/#more" class="btn btn-default more">Read More</a>
 </div>
 
 		
@@ -945,19 +945,19 @@ Disallow: /se3reTdir777/uploads/<span aria-hidden="true" class="line-numbers-row
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
+			<li><a href="/tags/AV规避/">AV规避<span>5</span></a></li>
+		
 			<li><a href="/tags/每周一pwn系列/">每周一pwn系列<span>4</span></a></li>
-		
-			<li><a href="/tags/恶意软件分析/">恶意软件分析<span>1</span></a></li>
-		
-			<li><a href="/tags/AV/">AV<span>5</span></a></li>
-		
-			<li><a href="/tags/web学习/">web学习<span>1</span></a></li>
 		
 			<li><a href="/tags/Vulnstack靶场/">Vulnstack靶场<span>4</span></a></li>
 		
+			<li><a href="/tags/靶场/">靶场<span>11</span></a></li>
+		
 			<li><a href="/tags/赛题/">赛题<span>4</span></a></li>
 		
-			<li><a href="/tags/靶场/">靶场<span>11</span></a></li>
+			<li><a href="/tags/web学习/">web学习<span>1</span></a></li>
+		
+			<li><a href="/tags/恶意软件分析/">恶意软件分析<span>1</span></a></li>
 		
 		 
 		</ul>
