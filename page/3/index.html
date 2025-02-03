@@ -137,6 +137,46 @@
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2024/10/15/春秋云镜-Initial/" >春秋云镜-Initial</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2024-10-15  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<blockquote>
+<p>Initial是一套难度为简单的靶场环境，完成该挑战可以帮助玩家初步认识内网渗透的简单流程。该靶场只有一个flag，各部分位于不同的机器上。</p>
+</blockquote>
+<ul>
+<li>DCSync</li>
+<li>CVE</li>
+<li>域渗透<br><img src="/Rxi134_FILE/58142e8af4ac2508452353c3efc22aee_MD5.jpeg"></li>
+</ul>
+<h1 id="信息搜集"><a href="#信息搜集" class="headerlink" title="信息搜集"></a>信息搜集</h1><h1 id="web机器-thinkphp"><a href="#web机器-thinkphp" class="headerlink" title="web机器 thinkphp"></a>web机器 thinkphp</h1><p>先访问80端口</p>
+<p>这图标，一眼thinkphp<br><img src="/Rxi134_FILE/5e7826534b99fb53ddd61360c2a3a6d4_MD5.jpeg"></p>
+<p>制造报错测试下版本，5.0.23<br><img src="/Rxi134_FILE/00dff5ba3574fba90599582655f09181_MD5.jpeg"></p>
+<p><img src="/Rxi134_FILE/780ce7e44c999bac5d117f4c23cede90_MD5.jpeg"></p>
+<p>命令执行无回显，简单上个 webshell 算了<br><img src="/Rxi134_FILE/f3dfea2fae5cf0ca1abd0d8dfe30fad4_MD5.jpeg"><br><img src="/Rxi134_FILE/db37dff6f2590695f6ab6e1a2eb6ecf7_MD5.jpeg"></p>
+<h1 id="上线msf"><a href="#上线msf" class="headerlink" title="上线msf"></a>上线msf</h1>
+	
+	</div>
+  <a type="button" href="/2024/10/15/春秋云镜-Initial/#more" class="btn btn-default more">Read More</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2024/10/06/W Easy-Bastion/" >W Easy-Bastion</a>
 		</h3>
 		</div>
@@ -842,45 +882,6 @@
 </div>
 
 		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2024/06/05/Easy-AI_Web_1/" >Easy-AI_Web_1</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2024-06-05  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<blockquote>
-<p>靶机地址：<a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/ai-web-1,353/">AI: Web: 1 ~ VulnHub</a></p>
-</blockquote>
-<h1 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h1><p>额外设置了个跳板机，更接近现实<br><img src="/Rxi134_FILE/fc8a796b7c75ecb02200f2bbf5d32d55_MD5.jpeg"></p>
-<h1 id="入侵"><a href="#入侵" class="headerlink" title="入侵"></a>入侵</h1><p>扫下端口<br><img src="/Rxi134_FILE/7b75f0a6b36b30a6433a6ef27c967f90_MD5.jpeg"></p>
-<p>访问网站页面，只有一行字<br><img src="/Rxi134_FILE/938b9d2811e2b344493418a36a37ae63_MD5.jpeg"></p>
-<p>dirsearch扫目录只扫出个&#x2F;robots.txt</p>
-<pre class="line-numbers language-text" data-language="text"><code class="language-text">User-agent: *
-Disallow: 
-Disallow: /m3diNf0/
-Disallow: /se3reTdir777/uploads/<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p>访问都是403，拿着 &#x2F;m3diNf0&#x2F; 和 &#x2F;se3reTdir777&#x2F; 继续扫</p>
-<p>扫到  &#x2F;m3diNf0&#x2F;info.php，是一个phpinfo界面<br><img src="/Rxi134_FILE/e895abffb33d61ed10fb573347745eea_MD5.jpeg"><br>这时候想了一下会不会有XXE，但是libxml 2.9.4默认不解析外部实体<br><img src="/Rxi134_FILE/8b7947f4287429e7b16227d7f2fdf36f_MD5.jpeg"></p>
-	
-	</div>
-  <a type="button" href="/2024/06/05/Easy-AI_Web_1/#more" class="btn btn-default more">Read More</a>
-</div>
-
-		
 
 		</div>
 
@@ -896,7 +897,7 @@ Disallow: /se3reTdir777/uploads/<span aria-hidden="true" class="line-numbers-row
 
         <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
  
-          <a type="button" class="btn btn-default disabled">Next<i class="fa fa-arrow-circle-o-right"></i></a>
+       <a href="/page/4/" type="button" class="btn btn-default ">Next<i class="fa fa-arrow-circle-o-right"></i></a>     
         
 
   
@@ -934,7 +935,7 @@ Disallow: /se3reTdir777/uploads/<span aria-hidden="true" class="line-numbers-row
 		
 			<li><a href="/categories/电子取证/">电子取证<span>1</span></a></li>
 		
-			<li><a href="/categories/逆向工程/">逆向工程<span>5</span></a></li>
+			<li><a href="/categories/逆向工程/">逆向工程<span>6</span></a></li>
 		
 		</ul>
 	</div>
@@ -945,9 +946,9 @@ Disallow: /se3reTdir777/uploads/<span aria-hidden="true" class="line-numbers-row
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/AV规避/">AV规避<span>5</span></a></li>
-		
 			<li><a href="/tags/每周一pwn系列/">每周一pwn系列<span>4</span></a></li>
+		
+			<li><a href="/tags/AV规避/">AV规避<span>6</span></a></li>
 		
 			<li><a href="/tags/Vulnstack靶场/">Vulnstack靶场<span>4</span></a></li>
 		
@@ -955,9 +956,9 @@ Disallow: /se3reTdir777/uploads/<span aria-hidden="true" class="line-numbers-row
 		
 			<li><a href="/tags/赛题/">赛题<span>4</span></a></li>
 		
-			<li><a href="/tags/web学习/">web学习<span>1</span></a></li>
-		
 			<li><a href="/tags/恶意软件分析/">恶意软件分析<span>1</span></a></li>
+		
+			<li><a href="/tags/web学习/">web学习<span>1</span></a></li>
 		
 		 
 		</ul>
@@ -969,6 +970,10 @@ Disallow: /se3reTdir777/uploads/<span aria-hidden="true" class="line-numbers-row
 <div class="widget">
   <h4>Recent Posts</h4>
   <ul class="entry list-unstyled">
+    
+      <li>
+        <a href="/2025/02/03/远程DLL注入/" ><i class="fa fa-file-o"></i>远程DLL注入</a>
+      </li>
     
       <li>
         <a href="/2025/01/28/2024数证杯决赛团体赛-恶意软件分析/"  title="新年快乐" ><i class="fa fa-file-o"></i>2024数证杯决赛团体赛-恶意软件分析</a>
@@ -984,10 +989,6 @@ Disallow: /se3reTdir777/uploads/<span aria-hidden="true" class="line-numbers-row
     
       <li>
         <a href="/2025/01/16/11. Easy W-EscapeTwo-S7排位赛/"  title="This box is still active. Once retired, this article will be published for public access as policy on publishing content from their platform." ><i class="fa fa-file-o"></i>Easy W-EscapeTwo-S7</a>
-      </li>
-    
-      <li>
-        <a href="/2025/01/14/12. Easy W-Active/" ><i class="fa fa-file-o"></i>Easy W-Active</a>
       </li>
     
   </ul>
