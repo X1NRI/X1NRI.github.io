@@ -137,6 +137,62 @@
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2024/11/16/ATT&CK红队评估实战靶场-4/" >ATT&amp;CK红队评估实战靶场-4</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2024-11-16  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<blockquote>
+<p>下载地址：<a target="_blank" rel="noopener" href="http://vulnstack.qiyuanxuetang.net/vuln/detail/6/">漏洞详情</a></p>
+</blockquote>
+<p><img src="/Rxi134_FILE/01e760a174b100ab764f690ba82aaa18_MD5.jpeg"></p>
+<h1 id="网络搭建"><a href="#网络搭建" class="headerlink" title="网络搭建"></a>网络搭建</h1><pre class="line-numbers language-text" data-language="text"><code class="language-text">ubuntu:ubuntu
+192.168.74.140
+192.168.183.128
+
+域成员机器
+douser:Dotest123
+192.168.183.129
+
+DC
+administrator:Test2008
+192.168.183.130<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h1 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h1><ul>
+<li><p>web机器</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">cd</span> /home/ubuntu/Desktop/vulhub/struts2/s2-045
+<span class="token function">sudo</span> <span class="token function">docker-compose</span> up <span class="token parameter variable">-d</span>
+<span class="token builtin class-name">cd</span> /home/ubuntu/Desktop/vulhub/tomcat/CVE-2017-12615/
+<span class="token function">sudo</span> <span class="token function">docker-compose</span> up <span class="token parameter variable">-d</span>
+<span class="token builtin class-name">cd</span> /home/ubuntu/Desktop/vulhub/phpmyadmin/CVE-2018-12613/
+<span class="token function">sudo</span> <span class="token function">docker-compose</span> up <span class="token parameter variable">-d</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>win7<br>win7总是挂起，修改设备计划<br><img src="/Rxi134_FILE/393f5041cfd50e06414cf2e793ebb750_MD5.jpeg"></p>
+</li>
+</ul>
+<h1 id="边界"><a href="#边界" class="headerlink" title="边界"></a>边界</h1><h2 id="信息搜集"><a href="#信息搜集" class="headerlink" title="信息搜集"></a>信息搜集</h2><p>goby上去打些常见poc，随便把端口扫了<br><img src="/Rxi134_FILE/3243933a3096253353d76f94faab9aad_MD5.jpeg"></p>
+<h2 id="tomcat-PUT-任意文件上传（CVE-2017-12615）"><a href="#tomcat-PUT-任意文件上传（CVE-2017-12615）" class="headerlink" title="tomcat PUT 任意文件上传（CVE-2017-12615）"></a>tomcat PUT 任意文件上传（CVE-2017-12615）</h2>
+	
+	</div>
+  <a type="button" href="/2024/11/16/ATT&CK红队评估实战靶场-4/#more" class="btn btn-default more">Read More</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2024/10/15/春秋云镜-Initial/" >春秋云镜-Initial</a>
 		</h3>
 		</div>
@@ -844,44 +900,6 @@
 </div>
 
 		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2024/06/06/Easy-AI_Web_2/" >Easy-AI_Web_2</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2024-06-06  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<blockquote>
-<p>靶机地址：<a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/ai-web-2,357/">AI: Web: 2 ~ VulnHub</a></p>
-</blockquote>
-<h1 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h1><p><img src="/Rxi134_FILE/9c5e37455a54f557b07e1321cb8da7a3_MD5.jpeg"></p>
-<h1 id="入侵"><a href="#入侵" class="headerlink" title="入侵"></a>入侵</h1><p><img src="/Rxi134_FILE/945949733b182b78582a5e5d68a3f829_MD5.jpeg"></p>
-<p>是个登录界面<br><img src="/Rxi134_FILE/9347ffe79c10443dde93f42085eef40f_MD5.jpeg"><br>可以注册进去<br><img src="/Rxi134_FILE/b3046717c69370c5f1f12ca23806c12e_MD5.jpeg"><br>XuezhuLi FileSharing？搜索一下有目录遍历<br><img src="/Rxi134_FILE/5deba8eebc0a0719dd778dd1d100764c_MD5.jpeg"></p>
-<pre class="line-numbers language-text" data-language="text"><code class="language-text">/vul_test/FileSharing/download.php?file_name=../../../../../../../../../../../../../etc/passwd<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-
-<p>这边扫下目录，正好扫到一个download.php，直接利用</p>
-<pre class="line-numbers language-text" data-language="text"><code class="language-text">http://192.168.50.139/download.php?file_name=../../../../../../../../../../../../../etc/passwd<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><img src="/Rxi134_FILE/a07934496e60f968e52cd7884bb8d5c5_MD5.jpeg"><br>成功触发</p>
-	
-	</div>
-  <a type="button" href="/2024/06/06/Easy-AI_Web_2/#more" class="btn btn-default more">Read More</a>
-</div>
-
-		
 
 		</div>
 
@@ -929,7 +947,7 @@
 		<h4>Categories</h4>
 		<ul class="tag_box inline list-unstyled">
 		
-			<li><a href="/categories/CTFpwn/">CTFpwn<span>8</span></a></li>
+			<li><a href="/categories/CTFpwn/">CTFpwn<span>9</span></a></li>
 		
 			<li><a href="/categories/pentest/">pentest<span>16</span></a></li>
 		
@@ -946,19 +964,19 @@
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/Vulnstack靶场/">Vulnstack靶场<span>4</span></a></li>
-		
-			<li><a href="/tags/AV规避/">AV规避<span>6</span></a></li>
-		
 			<li><a href="/tags/靶场/">靶场<span>11</span></a></li>
 		
-			<li><a href="/tags/每周一pwn系列/">每周一pwn系列<span>4</span></a></li>
-		
-			<li><a href="/tags/web学习/">web学习<span>1</span></a></li>
+			<li><a href="/tags/恶意软件分析/">恶意软件分析<span>1</span></a></li>
 		
 			<li><a href="/tags/赛题/">赛题<span>4</span></a></li>
 		
-			<li><a href="/tags/恶意软件分析/">恶意软件分析<span>1</span></a></li>
+			<li><a href="/tags/Vulnstack靶场/">Vulnstack靶场<span>4</span></a></li>
+		
+			<li><a href="/tags/web学习/">web学习<span>1</span></a></li>
+		
+			<li><a href="/tags/每周一pwn系列/">每周一pwn系列<span>5</span></a></li>
+		
+			<li><a href="/tags/AV规避/">AV规避<span>6</span></a></li>
 		
 		 
 		</ul>
@@ -970,6 +988,10 @@
 <div class="widget">
   <h4>Recent Posts</h4>
   <ul class="entry list-unstyled">
+    
+      <li>
+        <a href="/2025/02/11/2025-02第二周：2022春秋杯 Torghast/"  title="每周一pwn系列" ><i class="fa fa-file-o"></i>2025-02第二周：2022春秋杯 Torghast</a>
+      </li>
     
       <li>
         <a href="/2025/02/03/远程DLL注入/" ><i class="fa fa-file-o"></i>远程DLL注入</a>
@@ -985,10 +1007,6 @@
     
       <li>
         <a href="/2025/01/19/第八届西湖论剑2024初赛/" ><i class="fa fa-file-o"></i>第八届西湖论剑2024初赛</a>
-      </li>
-    
-      <li>
-        <a href="/2025/01/16/11. Easy W-EscapeTwo-S7排位赛/"  title="This box is still active. Once retired, this article will be published for public access as policy on publishing content from their platform." ><i class="fa fa-file-o"></i>Easy W-EscapeTwo-S7</a>
       </li>
     
   </ul>

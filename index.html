@@ -137,6 +137,49 @@
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2025/02/11/2025-02第二周：2022春秋杯 Torghast/" title="每周一pwn系列">2025-02第二周：2022春秋杯 Torghast</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2025-02-11  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<blockquote>
+<p>题目描述：Torghast, Tower of the Damned</p>
+</blockquote>
+<h1 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h1><p><img src="/EXP_FILE/9b16dbc40fd026b1d989dfe6330a3b5b_MD5.jpeg"></p>
+<p>2.31-0ubuntu9.7</p>
+<h1 id="逆向分析"><a href="#逆向分析" class="headerlink" title="逆向分析"></a>逆向分析</h1><ul>
+<li><p>主函数<br><img src="/EXP_FILE/a492425b1339d6ed43722f6f49b5c9fe_MD5.jpeg"></p>
+</li>
+<li><p>join_game()<br>有三个boss，分别是HP 10，HP 1000，HP ????。要全部打败才能继续<br><img src="/EXP_FILE/c2d1fe0171ddd85e2a2ea729108f3d08_MD5.jpeg"><br><img src="/EXP_FILE/5b11ce1af33f902bd6f83e856c173b09_MD5.jpeg"><br><img src="/EXP_FILE/24aec091b30e3ce7845bd221d2c7c13a_MD5.jpeg"></p>
+</li>
+</ul>
+<p>在use magic里面有个漏洞，有符号数转无符号数，把mp扣成负数就会转为一个非常大的无符号数从而满足条件<br><img src="/EXP_FILE/7e7eb05d4aea7316cf1b2d82e333a520_MD5.jpeg"></p>
+<ul>
+<li>player_manage()<br>堆菜单，没有size限制<br><img src="/EXP_FILE/fc984347f04611fac484289b8c646991_MD5.jpeg"></li>
+</ul>
+<p>show函数在 join_game() 里：<br><img src="/EXP_FILE/8f9e1e33391c5911faf6f3b49518ea1d_MD5.jpeg"><br><img src="/EXP_FILE/df22f4ffa9f5e01f2cfe6b8dc458e3d3_MD5.jpeg"></p>
+<p>而show的索引由 select_user()控制<br><img src="/EXP_FILE/9c001e82ecbd086d3be29caef07b0829_MD5.jpeg"></p>
+	
+	</div>
+  <a type="button" href="/2025/02/11/2025-02第二周：2022春秋杯 Torghast/#more" class="btn btn-default more">Read More</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2025/02/03/远程DLL注入/" >远程DLL注入</a>
 		</h3>
 		</div>
@@ -723,81 +766,6 @@ free : 4&amp;index<span aria-hidden="true" class="line-numbers-rows"><span></spa
 </div>
 
 		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2025/01/04/Easy L-Keeper/" >Easy L-Keeper</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2025-01-04  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<h1 id="信息搜集"><a href="#信息搜集" class="headerlink" title="信息搜集"></a>信息搜集</h1><p>访问ip<br><img src="/Rxi134_FILE/0edca269088ac282555c43cb3f4d9fc8_MD5.jpeg"></p>
-<p>在hosts添加两行</p>
-<pre class="line-numbers language-text" data-language="text"><code class="language-text">10.10.11.227 tickets.keeper.htb
-10.10.11.227 keeper.htb<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-
-<p>访问 tickets.keeper.htb&#x2F;<br><img src="/Rxi134_FILE/399868b5209eb9a8fafaed5f93184751_MD5.jpeg"></p>
-<p>访问一下 keeper.htb&#x2F;， 就是之前跳转的界面</p>
-<h2 id="扫端口"><a href="#扫端口" class="headerlink" title="扫端口"></a>扫端口</h2><p>先简单扫下端口</p>
-<pre class="line-numbers language-text" data-language="text"><code class="language-text">PORT      STATE    SERVICE
-22/tcp    open     ssh
-| ssh-hostkey:
-|   256 35:39:d4:39:40:4b:1f:61:86:dd:7c:37:bb:4b:98:9e (ECDSA)
-|_  256 1a:e9:72:be:8b:b1:05:d5:ef:fe:dd:80:d8:ef:c0:66 (ED25519)
-25/tcp    open     smtp
-|_smtp-commands: Couldn't establish connection on port 25
-37/tcp    filtered time
-80/tcp    open     http
-| http-methods:
-|_  Supported Methods: GET HEAD
-|_http-title: Site doesn't have a title (text/html).
-110/tcp   open     pop3
-125/tcp   filtered locus-map
-444/tcp   filtered snpp
-514/tcp   filtered shell
-1105/tcp  filtered ftranhc
-1233/tcp  filtered univ-appserver
-1840/tcp  filtered netopia-vo2
-2107/tcp  filtered msmq-mgmt
-2251/tcp  filtered dif-port
-2399/tcp  filtered fmpro-fdal
-3827/tcp  filtered netmpi
-3871/tcp  filtered avocent-adsap
-5033/tcp  filtered jtnetd-server
-5357/tcp  filtered wsdapi
-5560/tcp  filtered isqlplus
-5877/tcp  filtered unknown
-5961/tcp  filtered unknown
-6502/tcp  filtered netop-rc
-7070/tcp  filtered realserver
-8254/tcp  filtered unknown
-9000/tcp  filtered cslistener
-9002/tcp  filtered dynamid
-9900/tcp  filtered iua
-16113/tcp filtered unknown
-22939/tcp filtered unknown
-49999/tcp filtered unknown<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-
-<h1 id="入侵"><a href="#入侵" class="headerlink" title="入侵"></a>入侵</h1>
-	
-	</div>
-  <a type="button" href="/2025/01/04/Easy L-Keeper/#more" class="btn btn-default more">Read More</a>
-</div>
-
-		
 
 		</div>
 
@@ -845,7 +813,7 @@ free : 4&amp;index<span aria-hidden="true" class="line-numbers-rows"><span></spa
 		<h4>Categories</h4>
 		<ul class="tag_box inline list-unstyled">
 		
-			<li><a href="/categories/CTFpwn/">CTFpwn<span>8</span></a></li>
+			<li><a href="/categories/CTFpwn/">CTFpwn<span>9</span></a></li>
 		
 			<li><a href="/categories/pentest/">pentest<span>16</span></a></li>
 		
@@ -864,17 +832,17 @@ free : 4&amp;index<span aria-hidden="true" class="line-numbers-rows"><span></spa
 		
 			<li><a href="/tags/AV规避/">AV规避<span>6</span></a></li>
 		
-			<li><a href="/tags/靶场/">靶场<span>11</span></a></li>
+			<li><a href="/tags/赛题/">赛题<span>4</span></a></li>
 		
-			<li><a href="/tags/Vulnstack靶场/">Vulnstack靶场<span>4</span></a></li>
+			<li><a href="/tags/每周一pwn系列/">每周一pwn系列<span>5</span></a></li>
 		
 			<li><a href="/tags/web学习/">web学习<span>1</span></a></li>
 		
-			<li><a href="/tags/赛题/">赛题<span>4</span></a></li>
+			<li><a href="/tags/靶场/">靶场<span>11</span></a></li>
 		
 			<li><a href="/tags/恶意软件分析/">恶意软件分析<span>1</span></a></li>
 		
-			<li><a href="/tags/每周一pwn系列/">每周一pwn系列<span>4</span></a></li>
+			<li><a href="/tags/Vulnstack靶场/">Vulnstack靶场<span>4</span></a></li>
 		
 		 
 		</ul>
@@ -886,6 +854,10 @@ free : 4&amp;index<span aria-hidden="true" class="line-numbers-rows"><span></spa
 <div class="widget">
   <h4>Recent Posts</h4>
   <ul class="entry list-unstyled">
+    
+      <li>
+        <a href="/2025/02/11/2025-02第二周：2022春秋杯 Torghast/"  title="每周一pwn系列" ><i class="fa fa-file-o"></i>2025-02第二周：2022春秋杯 Torghast</a>
+      </li>
     
       <li>
         <a href="/2025/02/03/远程DLL注入/" ><i class="fa fa-file-o"></i>远程DLL注入</a>
@@ -901,10 +873,6 @@ free : 4&amp;index<span aria-hidden="true" class="line-numbers-rows"><span></spa
     
       <li>
         <a href="/2025/01/19/第八届西湖论剑2024初赛/" ><i class="fa fa-file-o"></i>第八届西湖论剑2024初赛</a>
-      </li>
-    
-      <li>
-        <a href="/2025/01/16/11. Easy W-EscapeTwo-S7排位赛/"  title="This box is still active. Once retired, this article will be published for public access as policy on publishing content from their platform." ><i class="fa fa-file-o"></i>Easy W-EscapeTwo-S7</a>
       </li>
     
   </ul>
