@@ -137,6 +137,111 @@
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2025/02/17/2025-02第三周：pawnyable LK01/" title="每周一pwn系列">2025-02第三周：pawnyable LK01</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2025-02-17  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<h1 id="LK01"><a href="#LK01" class="headerlink" title="LK01"></a>LK01</h1><h2 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h2><ul>
+<li><p>run.sh</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token shebang important">#!/bin/sh</span>
+qemu-system-x86_64 <span class="token punctuation">\</span>
+    <span class="token parameter variable">-m</span> 64M <span class="token punctuation">\</span>
+    <span class="token parameter variable">-nographic</span> <span class="token punctuation">\</span>
+    <span class="token parameter variable">-kernel</span> bzImage <span class="token punctuation">\</span>
+    <span class="token parameter variable">-append</span> <span class="token string">"console=ttyS0 loglevel=3 oops=panic panic=-1 nopti nokaslr"</span> <span class="token punctuation">\</span>
+    -no-reboot <span class="token punctuation">\</span>
+    <span class="token parameter variable">-cpu</span> qemu64 <span class="token punctuation">\</span>
+    <span class="token parameter variable">-smp</span> <span class="token number">1</span> <span class="token punctuation">\</span>
+    <span class="token parameter variable">-monitor</span> /dev/null <span class="token punctuation">\</span>
+    <span class="token parameter variable">-initrd</span> rootfs.cpio <span class="token punctuation">\</span>
+    <span class="token parameter variable">-net</span> nic,model<span class="token operator">=</span>virtio <span class="token punctuation">\</span>
+    <span class="token parameter variable">-net</span> user<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>没开 kaslr</p>
+</li>
+<li><p>init</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token shebang important">#!/bin/sh</span>
+
+<span class="token comment">##</span>
+<span class="token comment">## Setup</span>
+<span class="token comment">##</span>
+mdev <span class="token parameter variable">-s</span>
+<span class="token function">mount</span> <span class="token parameter variable">-t</span> proc none /proc
+<span class="token function">mkdir</span> <span class="token parameter variable">-p</span> /dev/pts
+<span class="token function">mount</span> <span class="token parameter variable">-vt</span> devpts <span class="token parameter variable">-o</span> <span class="token assign-left variable">gid</span><span class="token operator">=</span><span class="token number">4</span>,mode<span class="token operator">=</span><span class="token number">620</span> none /dev/pts
+<span class="token function">chmod</span> <span class="token number">666</span> /dev/ptmx
+stty <span class="token parameter variable">-opost</span>
+<span class="token builtin class-name">echo</span> <span class="token number">2</span> <span class="token operator">></span> /proc/sys/kernel/kptr_restrict
+<span class="token comment">#echo 1 > /proc/sys/kernel/dmesg_restrict</span>
+
+<span class="token comment">##</span>
+<span class="token comment">## Install driver</span>
+<span class="token comment">##</span>
+insmod /root/vuln.ko
+<span class="token function">mknod</span> <span class="token parameter variable">-m</span> <span class="token number">666</span> /dev/holstein c <span class="token variable"><span class="token variable">`</span><span class="token function">grep</span> holstein /proc/devices <span class="token operator">|</span> <span class="token function">awk</span> <span class="token string">'&#123;print $1;&#125;'</span><span class="token variable">`</span></span> <span class="token number">0</span>
+
+<span class="token comment">##</span>
+<span class="token comment">## User shell</span>
+<span class="token comment">##</span>
+<span class="token builtin class-name">echo</span> <span class="token parameter variable">-e</span> <span class="token string">"<span class="token entity" title="\n">\n</span>Boot took <span class="token variable"><span class="token variable">$(</span><span class="token function">cut</span> -d<span class="token string">' '</span> <span class="token parameter variable">-f1</span> /proc/uptime<span class="token variable">)</span></span> seconds<span class="token entity" title="\n">\n</span>"</span>
+<span class="token builtin class-name">echo</span> <span class="token string">"[ Holstein v1 (LK01) - Pawnyable ]"</span>
+setsid cttyhack setuidgid <span class="token number">1337</span> <span class="token function">sh</span>
+
+<span class="token comment">##</span>
+<span class="token comment">## Cleanup</span>
+<span class="token comment">##</span>
+<span class="token function">umount</span> /proc
+poweroff <span class="token parameter variable">-d</span> <span class="token number">0</span> <span class="token parameter variable">-f</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>加载了一个LKM <code>/root/vuln.ko</code></p>
+</li>
+</ul>
+<p>为了方便把 kptr_restrict 注释掉</p>
+<h2 id="逆向分析"><a href="#逆向分析" class="headerlink" title="逆向分析"></a>逆向分析</h2><ul>
+<li><p>module_initialize<br>初始化了一个字符设备 “holstein”<br><img src="/EXP_FILE/27b8060095f3573dc0481ea7e262284e_MD5.jpeg"></p>
+</li>
+<li><p>module_open<br>分配了一个 0x400 的内存块<br><img src="/EXP_FILE/87d7247f9755bc1b2b2f0c30ae74a032_MD5.jpeg"></p>
+</li>
+<li><p>module_read<br><img src="/EXP_FILE/cd2581f19a07ead43b9c5b71de27e944_MD5.jpeg"></p>
+</li>
+<li><p>module_write<br><img src="/EXP_FILE/a8391f44117d2c8c0e3dd9b1c2974a72_MD5.jpeg"></p>
+</li>
+<li><p>module_close<br><img src="/EXP_FILE/87b2f135f494776e06e6d26f2ba1315a_MD5.jpeg"><br>这里其实还存在一个UAF</p>
+</li>
+<li><p>module_cleanup<br><img src="/EXP_FILE/2ee53122de9c95720a7a5506642082d1_MD5.jpeg"></p>
+</li>
+</ul>
+<h2 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h2><p>很明显，对内核空间的读写没有作任何限制，也没有任何保护</p>
+<p>先测溢出点</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token keyword">int</span> argc<span class="token punctuation">,</span> <span class="token keyword">char</span> <span class="token operator">*</span>argv<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token keyword">char</span> <span class="token operator">*</span>envp<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+	<span class="token function">saveStatus</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">int</span> fd <span class="token operator">=</span> <span class="token function">open</span><span class="token punctuation">(</span><span class="token string">"/dev/holstein"</span><span class="token punctuation">,</span> O_RDWR<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">if</span> <span class="token punctuation">(</span>fd<span class="token operator">&lt;</span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token function">errExit</span><span class="token punctuation">(</span><span class="token string">"DEV Opened Failed!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">char</span> buf<span class="token punctuation">[</span><span class="token number">0x420</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token number">0</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+	<span class="token operator">*</span><span class="token punctuation">(</span><span class="token class-name">size_t</span> <span class="token operator">*</span><span class="token punctuation">)</span><span class="token operator">&amp;</span>buf<span class="token punctuation">[</span><span class="token number">0x408</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">0xdeadbeef</span><span class="token punctuation">;</span>
+	<span class="token function">write</span><span class="token punctuation">(</span>fd<span class="token punctuation">,</span> buf<span class="token punctuation">,</span> <span class="token keyword">sizeof</span><span class="token punctuation">(</span>buf<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 0x000000000000020E</span>
+	<span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+	
+	</div>
+  <a type="button" href="/2025/02/17/2025-02第三周：pawnyable LK01/#more" class="btn btn-default more">Read More</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2025/02/11/2025-02第二周：2022春秋杯 Torghast/" title="每周一pwn系列">2025-02第二周：2022春秋杯 Torghast</a>
 		</h3>
 		</div>
@@ -698,74 +803,6 @@ free : 4&amp;index<span aria-hidden="true" class="line-numbers-rows"><span></spa
 </div>
 
 		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2025/01/09/Easy L-Knife/" >Easy L-Knife</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2025-01-09  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<h1 id="信息搜集"><a href="#信息搜集" class="headerlink" title="信息搜集"></a>信息搜集</h1><h2 id="初识"><a href="#初识" class="headerlink" title="初识"></a>初识</h2><p>访问ip<br><img src="/Rxi134_FILE/b7ab4324f4016376f0959d69bb49587d_MD5.jpeg"><br><img src="/Rxi134_FILE/87f30ac2679bebf3f86d78c3caafc1b4_MD5.jpeg"></p>
-<p>上面的选项都点不了</p>
-<h2 id="扫端口"><a href="#扫端口" class="headerlink" title="扫端口"></a>扫端口</h2><pre class="line-numbers language-text" data-language="text"><code class="language-text">PORT      STATE    SERVICE         VERSION
-22/tcp    open     ssh             OpenSSH 8.2p1 Ubuntu 4ubuntu0.2 (Ubuntu Linux; protocol 2.0)
-| ssh-hostkey: 
-|   3072 be:54:9c:a3:67:c3:15:c3:64:71:7f:6a:53:4a:4c:21 (RSA)
-| ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCjEtN3+WZzlvu54zya9Q+D0d/jwjZT2jYFKwHe0icY7plEWSAqbP+b3ijRL6kv522KEJPHkfXuRwzt5z4CNpyUnqr6nQINn8DU0Iu/UQby+6OiQIleNUCYYaI+1mV0sm4kgmue4oVI1Q3JYOH41efTbGDFHiGSTY1lH3HcAvOFh75dCID0564T078p7ZEIoKRt1l7Yz+GeMZ870Nw13ao0QLPmq2HnpQS34K45zU0lmxIHqiK/IpFJOLfugiQF52Qt6+gX3FOjPgxk8rk81DEwicTrlir2gJiizAOchNPZjbDCnG2UqTapOm292Xg0hCE6H03Ri6GtYs5xVFw/KfGSGb7OJT1jhitbpUxRbyvP+pFy4/8u6Ty91s98bXrCyaEy2lyZh5hm7MN2yRsX+UbrSo98UfMbHkKnePg7/oBhGOOrUb77/DPePGeBF5AT029Xbz90v2iEFfPdcWj8SP/p2Fsn/qdutNQ7cRnNvBVXbNm0CpiNfoHBCBDJ1LR8p8k=
-|   256 bf:8a:3f:d4:06:e9:2e:87:4e:c9:7e:ab:22:0e:c0:ee (ECDSA)
-| ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBGKC3ouVMPI/5R2Fsr5b0uUQGDrAa6ev8uKKp5x8wdqPXvM1tr4u0GchbVoTX5T/PfJFi9UpeDx/uokU3chqcFc=
-|   256 1a:de:a1:cc:37:ce:53:bb:1b:fb:2b:0b:ad:b3:f6:84 (ED25519)
-|_ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJbkxEqMn++HZ2uEvM0lDZy+TB8B8IAeWRBEu3a34YIb
-25/tcp    open     smtp?
-|_smtp-commands: Couldn't establish connection on port 25
-80/tcp    open     http            Apache httpd 2.4.41 ((Ubuntu))
-|_http-title:  Emergent Medical Idea
-| http-methods: 
-|_  Supported Methods: GET HEAD POST OPTIONS
-|_http-server-header: Apache/2.4.41 (Ubuntu)
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-
-<h2 id="扫目录"><a href="#扫目录" class="headerlink" title="扫目录"></a>扫目录</h2><pre class="line-numbers language-text" data-language="text"><code class="language-text">16:44:13] Starting: 
-[16:44:25] 403 -  277B  - /.ht_wsr.txt                                      
-[16:44:28] 403 -  277B  - /.htaccess_extra                                  
-[16:44:28] 403 -  277B  - /.htaccessOLD                                     
-[16:44:28] 403 -  277B  - /.htaccess.orig                                   
-[16:44:28] 403 -  277B  - /.htaccessOLD2                                    
-[16:44:28] 403 -  277B  - /.htaccess.sample                                 
-[16:44:28] 403 -  277B  - /.htaccess.save
-[16:44:28] 403 -  277B  - /.htaccessBAK
-[16:44:28] 403 -  277B  - /.htaccess_orig
-[16:44:28] 403 -  277B  - /.htm
-[16:44:28] 403 -  277B  - /.htaccess_sc                                     
-[16:44:28] 403 -  277B  - /.html
-[16:44:28] 403 -  277B  - /.htaccess.bak1                                   
-[16:44:28] 403 -  277B  - /.htpasswd_test                                   
-[16:44:28] 403 -  277B  - /.htpasswds                                       
-[16:44:28] 403 -  277B  - /.httr-oauth
-[16:46:22] 403 -  277B  - /server-status                                    
-[16:46:22] 403 -  277B  - /server-status/   <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>目录也没东西</p>
-<h2 id="打波poc"><a href="#打波poc" class="headerlink" title="打波poc"></a>打波poc</h2>
-	
-	</div>
-  <a type="button" href="/2025/01/09/Easy L-Knife/#more" class="btn btn-default more">Read More</a>
-</div>
-
-		
 
 		</div>
 
@@ -813,7 +850,7 @@ free : 4&amp;index<span aria-hidden="true" class="line-numbers-rows"><span></spa
 		<h4>Categories</h4>
 		<ul class="tag_box inline list-unstyled">
 		
-			<li><a href="/categories/CTFpwn/">CTFpwn<span>9</span></a></li>
+			<li><a href="/categories/CTFpwn/">CTFpwn<span>10</span></a></li>
 		
 			<li><a href="/categories/pentest/">pentest<span>16</span></a></li>
 		
@@ -830,19 +867,21 @@ free : 4&amp;index<span aria-hidden="true" class="line-numbers-rows"><span></spa
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
+			<li><a href="/tags/每周一pwn系列/">每周一pwn系列<span>6</span></a></li>
+		
+			<li><a href="/tags/内核pwn/">内核pwn<span>1</span></a></li>
+		
+			<li><a href="/tags/靶场/">靶场<span>11</span></a></li>
+		
+			<li><a href="/tags/Vulnstack靶场/">Vulnstack靶场<span>4</span></a></li>
+		
+			<li><a href="/tags/恶意软件分析/">恶意软件分析<span>1</span></a></li>
+		
 			<li><a href="/tags/AV规避/">AV规避<span>6</span></a></li>
 		
 			<li><a href="/tags/赛题/">赛题<span>4</span></a></li>
 		
-			<li><a href="/tags/每周一pwn系列/">每周一pwn系列<span>5</span></a></li>
-		
 			<li><a href="/tags/web学习/">web学习<span>1</span></a></li>
-		
-			<li><a href="/tags/靶场/">靶场<span>11</span></a></li>
-		
-			<li><a href="/tags/恶意软件分析/">恶意软件分析<span>1</span></a></li>
-		
-			<li><a href="/tags/Vulnstack靶场/">Vulnstack靶场<span>4</span></a></li>
 		
 		 
 		</ul>
@@ -854,6 +893,10 @@ free : 4&amp;index<span aria-hidden="true" class="line-numbers-rows"><span></spa
 <div class="widget">
   <h4>Recent Posts</h4>
   <ul class="entry list-unstyled">
+    
+      <li>
+        <a href="/2025/02/17/2025-02第三周：pawnyable LK01/"  title="每周一pwn系列" ><i class="fa fa-file-o"></i>2025-02第三周：pawnyable LK01</a>
+      </li>
     
       <li>
         <a href="/2025/02/11/2025-02第二周：2022春秋杯 Torghast/"  title="每周一pwn系列" ><i class="fa fa-file-o"></i>2025-02第二周：2022春秋杯 Torghast</a>
@@ -869,10 +912,6 @@ free : 4&amp;index<span aria-hidden="true" class="line-numbers-rows"><span></spa
     
       <li>
         <a href="/2025/01/24/春秋云镜-2022第三届网鼎杯半决/" ><i class="fa fa-file-o"></i>春秋云镜-2022第三届网鼎杯半决</a>
-      </li>
-    
-      <li>
-        <a href="/2025/01/19/第八届西湖论剑2024初赛/" ><i class="fa fa-file-o"></i>第八届西湖论剑2024初赛</a>
       </li>
     
   </ul>
