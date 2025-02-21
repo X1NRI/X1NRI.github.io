@@ -137,6 +137,49 @@
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2025/01/12/2025-01第三周：2022春秋杯 chunzhiIOT/" title="每周一pwn系列">2025-01第三周：2022春秋杯 chunzhiIOT</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2025-01-12  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<blockquote>
+<p>题目描述：一个看似健康的IOT服务</p>
+</blockquote>
+<h1 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h1><p><img src="/EXP_FILE/c95b1f98c46d8da23424a4ea647b0034_MD5.jpeg"></p>
+<p>给了libc，libc2.33-0ubuntu5_amd64</p>
+<h1 id="逆向分析"><a href="#逆向分析" class="headerlink" title="逆向分析"></a>逆向分析</h1><ul>
+<li>主函数<br><img src="/EXP_FILE/d730e6caaf5f95931f8291cdf9841293_MD5.jpeg"><br><img src="/EXP_FILE/befbaba840c0f9ac03b46093b988d76f_MD5.jpeg"></li>
+</ul>
+<p><img src="/EXP_FILE/e28ff8f5420045c9b8642e896f7b6a8b_MD5.jpeg"></p>
+<ul>
+<li>处理请求正文<br><img src="/EXP_FILE/58b5a20c352937d2c0775e7bd8f6eea8_MD5.jpeg"></li>
+</ul>
+<p>要注意的是其中有一个check：<br><img src="/EXP_FILE/7c7c70017add048ed53dfb7677b010fb_MD5.jpeg"><br>这个全局变量默认为0<br><img src="/EXP_FILE/3dfad92b1c8efe81fcdc81a46f5f20ee_MD5.jpeg"></p>
+<pre class="line-numbers language-none"><code class="language-none">add : 1&amp;index&amp;size&amp;content
+edit : 2&amp;index&amp;content
+show : 3&amp;index
+free : 4&amp;index<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+	
+	</div>
+  <a type="button" href="/2025/01/12/2025-01第三周：2022春秋杯 chunzhiIOT/#more" class="btn btn-default more">Read More</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2025/01/09/Easy L-Knife/" >Easy L-Knife</a>
 		</h3>
 		</div>
@@ -739,50 +782,6 @@ Host script results:
 </div>
 
 		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2024/11/21/ATT&CK红队评估实战靶场-5/" >ATT&amp;CK红队评估实战靶场-5</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2024-11-21  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<blockquote>
-<p>下载地址：<a target="_blank" rel="noopener" href="http://vulnstack.qiyuanxuetang.net/vuln/detail/7/">漏洞详情</a></p>
-</blockquote>
-<h1 id="网络搭建"><a href="#网络搭建" class="headerlink" title="网络搭建"></a>网络搭建</h1><p>只有两台机子，一个外网一个内网</p>
-<pre class="line-numbers language-text" data-language="text"><code class="language-text">win7
-
-sun\leo 123.com
-sun\Administrator dc123.com
-
-
-2008
-
-sun\admin 2020.com
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h1 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h1><p>win7启动phpstudy<br><img src="/Rxi134_FILE/37514640ca23b85c2139045439df833e_MD5.jpeg"></p>
-<h1 id="外网"><a href="#外网" class="headerlink" title="外网"></a>外网</h1><h2 id="端口扫描"><a href="#端口扫描" class="headerlink" title="端口扫描"></a>端口扫描</h2><p><img src="/Rxi134_FILE/bdc549cfcccaed50166046dc8a75eec1_MD5.jpeg"></p>
-<h2 id="TP-tp5-construct-code-exec-1"><a href="#TP-tp5-construct-code-exec-1" class="headerlink" title="TP tp5_construct_code_exec_1"></a>TP tp5_construct_code_exec_1</h2>
-	
-	</div>
-  <a type="button" href="/2024/11/21/ATT&CK红队评估实战靶场-5/#more" class="btn btn-default more">Read More</a>
-</div>
-
-		
 
 		</div>
 
@@ -830,7 +829,7 @@ sun\admin 2020.com
 		<h4>Categories</h4>
 		<ul class="tag_box inline list-unstyled">
 		
-			<li><a href="/categories/CTFpwn/">CTFpwn<span>10</span></a></li>
+			<li><a href="/categories/CTFpwn/">CTFpwn<span>11</span></a></li>
 		
 			<li><a href="/categories/pentest/">pentest<span>16</span></a></li>
 		
@@ -847,19 +846,19 @@ sun\admin 2020.com
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/web学习/">web学习<span>1</span></a></li>
+			<li><a href="/tags/AV规避/">AV规避<span>6</span></a></li>
+		
+			<li><a href="/tags/每周一pwn系列/">每周一pwn系列<span>7</span></a></li>
 		
 			<li><a href="/tags/赛题/">赛题<span>4</span></a></li>
 		
 			<li><a href="/tags/Vulnstack靶场/">Vulnstack靶场<span>4</span></a></li>
 		
-			<li><a href="/tags/每周一pwn系列/">每周一pwn系列<span>6</span></a></li>
+			<li><a href="/tags/靶场/">靶场<span>11</span></a></li>
+		
+			<li><a href="/tags/web学习/">web学习<span>1</span></a></li>
 		
 			<li><a href="/tags/恶意软件分析/">恶意软件分析<span>1</span></a></li>
-		
-			<li><a href="/tags/AV规避/">AV规避<span>6</span></a></li>
-		
-			<li><a href="/tags/靶场/">靶场<span>11</span></a></li>
 		
 		 
 		</ul>
@@ -871,6 +870,10 @@ sun\admin 2020.com
 <div class="widget">
   <h4>Recent Posts</h4>
   <ul class="entry list-unstyled">
+    
+      <li>
+        <a href="/2025/02/21/2025-02第四周：pawnyable LK01变式/"  title="每周一pwn系列" ><i class="fa fa-file-o"></i>2025-02第四周：pawnyable LK01变式</a>
+      </li>
     
       <li>
         <a href="/2025/02/17/2025-02第三周：pawnyable LK01/"  title="每周一pwn系列" ><i class="fa fa-file-o"></i>2025-02第三周：pawnyable LK01</a>
@@ -886,10 +889,6 @@ sun\admin 2020.com
     
       <li>
         <a href="/2025/01/28/2024数证杯决赛团体赛-恶意软件分析/"  title="新年快乐" ><i class="fa fa-file-o"></i>2024数证杯决赛团体赛-恶意软件分析</a>
-      </li>
-    
-      <li>
-        <a href="/2025/01/24/春秋云镜-2022第三届网鼎杯半决/" ><i class="fa fa-file-o"></i>春秋云镜-2022第三届网鼎杯半决</a>
       </li>
     
   </ul>
