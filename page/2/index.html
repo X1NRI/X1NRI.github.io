@@ -137,6 +137,80 @@
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2025/01/14/12. Easy W-Active/" >Easy W-Active</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2025-01-14  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<h1 id="信息搜集"><a href="#信息搜集" class="headerlink" title="信息搜集"></a>信息搜集</h1><h2 id="扫端口"><a href="#扫端口" class="headerlink" title="扫端口"></a>扫端口</h2><p>是个域控</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">PORT      STATE    SERVICE       VERSION
+25/tcp    open     smtp?
+|_smtp-commands: Couldn't establish connection on port 25
+53/tcp    open     domain        Microsoft DNS 6.1.7601 (1DB15D39) (Windows Server 2008 R2 SP1)
+| dns-nsid: 
+|_  bind.version: Microsoft DNS 6.1.7601 (1DB15D39)
+88/tcp    open     kerberos-sec  Microsoft Windows Kerberos (server time: 2025-01-14 09:30:17Z)
+110/tcp   open     tcpwrapped
+135/tcp   open     msrpc         Microsoft Windows RPC
+139/tcp   open     netbios-ssn   Microsoft Windows netbios-ssn
+389/tcp   open     ldap          Microsoft Windows Active Directory LDAP (Domain: active.htb, Site: Default-First-Site-Name)
+445/tcp   open     microsoft-ds?
+464/tcp   open     kpasswd5?
+514/tcp   filtered shell
+593/tcp   open     ncacn_http    Microsoft Windows RPC over HTTP 1.0
+636/tcp   open     tcpwrapped
+1151/tcp  filtered unizensus
+3268/tcp  open     ldap          Microsoft Windows Active Directory LDAP (Domain: active.htb, Site: Default-First-Site-Name)
+3269/tcp  open     tcpwrapped
+49152/tcp open     msrpc         Microsoft Windows RPC
+49153/tcp open     msrpc         Microsoft Windows RPC
+49154/tcp open     msrpc         Microsoft Windows RPC
+49155/tcp open     msrpc         Microsoft Windows RPC
+49157/tcp open     ncacn_http    Microsoft Windows RPC over HTTP 1.0
+49158/tcp open     msrpc         Microsoft Windows RPC
+49165/tcp open     msrpc         Microsoft Windows RPC
+50006/tcp filtered unknown
+Aggressive OS guesses: Microsoft Windows XP SP3 or Windows 7 or Windows Server 2012 (95%), Microsoft Windows XP SP3 (92%), VMware Player virtual NAT device (92%), Actiontec MI424WR-GEN3I WAP (90%), DD-WRT v24-sp2 (Linux 2.4.37) (90%), Linux 4.4 (88%), Linux 3.2 (87%)
+No exact OS matches for host (test conditions non-ideal).
+Network Distance: 2 hops
+TCP Sequence Prediction: Difficulty=248 (Good luck!)
+IP ID Sequence Generation: Incremental
+Service Info: Host: DC; OS: Windows; CPE: cpe:/o:microsoft:windows_server_2008:r2:sp1, cpe:/o:microsoft:windows
+
+Host script results:
+| smb2-security-mode: 
+|   2:1:0: 
+|_    Message signing enabled and required
+| smb2-time: 
+|   date: 2025-01-14T09:32:18
+|_  start_date: 2025-01-14T04:08:46
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>再用enum4linux-ng枚举一波信息：</p>
+<p>根域服务器，域名 active.htb，FQDN DC.active.htb，操作系统可能是Windows 7、Windows Server 2008 R2；同时SMB允许匿名登录：</p>
+<p><img src="/Rxi134_FILE/a9c9c06009636a8e05e4bcfd916f09ed_MD5.jpeg"></p>
+<h1 id="入侵"><a href="#入侵" class="headerlink" title="入侵"></a>入侵</h1><h2 id="SMB匿名登录"><a href="#SMB匿名登录" class="headerlink" title="SMB匿名登录"></a>SMB匿名登录</h2><p><img src="/Rxi134_FILE/b6edaf94e40f378b8a566c280cf4fc2b_MD5.jpeg"></p>
+	
+	</div>
+  <a type="button" href="/2025/01/14/12. Easy W-Active/#more" class="btn btn-default more">Read More</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2025/01/13/9. Easy L-UnderPass-S6排位赛/" >Easy L-UnderPass-S6</a>
 		</h3>
 		</div>
@@ -607,54 +681,6 @@ Host script results:
 </div>
 
 		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2024/12/13/2024-12第二周：ciscn_2019_qual_virtual/" title="每周一pwn系列">2024-12第二周：ciscn_2019_qual_virtual</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2024-12-13  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		<blockquote>
-<p>赛题地址：<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#ciscn_2019_qual_virtual">BUUCTF在线评测</a></p>
-</blockquote>
-<p>vmpwn初探</p>
-<h1 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h1><p><img src="/EXP_FILE/6b35aee306536e9016983f2737a30397_MD5.jpeg"></p>
-<h1 id="逆向分析"><a href="#逆向分析" class="headerlink" title="逆向分析"></a>逆向分析</h1><h2 id="各虚拟段初始化"><a href="#各虚拟段初始化" class="headerlink" title="各虚拟段初始化"></a>各虚拟段初始化</h2><p><img src="/EXP_FILE/cbad4ec09039da31682729a93cf874c9_MD5.jpeg"><br>如图：<br><img src="/EXP_FILE/eab6d937744654ea3eadfbf50981a3ad_MD5.jpeg"></p>
-<h2 id="opcode解析部分"><a href="#opcode解析部分" class="headerlink" title="opcode解析部分"></a>opcode解析部分</h2><p>将我们输入的指令转为opcode<br><img src="/EXP_FILE/ec885429b943018f0189461ba9692f22_MD5.jpeg"></p>
-<ul>
-<li>copy<br>即以每8字节为单位赋值：<code>*(segment+idx++)=a2</code><pre class="line-numbers language-c" data-language="c"><code class="language-c">__int64 __fastcall <span class="token function">copy</span><span class="token punctuation">(</span><span class="token keyword">void</span> <span class="token operator">*</span><span class="token operator">*</span>a1<span class="token punctuation">,</span> __int64 a2<span class="token punctuation">)</span>
-<span class="token punctuation">&#123;</span>
-  <span class="token keyword">int</span> v3<span class="token punctuation">;</span> <span class="token comment">// [rsp+1Ch] [rbp-4h]</span>
-
-  <span class="token keyword">if</span> <span class="token punctuation">(</span> <span class="token operator">!</span>a1 <span class="token punctuation">)</span>
-    <span class="token keyword">return</span> <span class="token number">0LL</span><span class="token punctuation">;</span>
-  v3 <span class="token operator">=</span> <span class="token operator">*</span><span class="token punctuation">(</span><span class="token punctuation">(</span>_DWORD <span class="token operator">*</span><span class="token punctuation">)</span>a1 <span class="token operator">+</span> <span class="token number">3</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span>                 <span class="token comment">// 0</span>
-  <span class="token keyword">if</span> <span class="token punctuation">(</span> v3 <span class="token operator">==</span> <span class="token operator">*</span><span class="token punctuation">(</span><span class="token punctuation">(</span>_DWORD <span class="token operator">*</span><span class="token punctuation">)</span>a1 <span class="token operator">+</span> <span class="token number">2</span><span class="token punctuation">)</span> <span class="token punctuation">)</span>              <span class="token comment">// if(v3==size)</span>
-    <span class="token keyword">return</span> <span class="token number">0LL</span><span class="token punctuation">;</span>
-  <span class="token operator">*</span><span class="token punctuation">(</span><span class="token punctuation">(</span>_QWORD <span class="token operator">*</span><span class="token punctuation">)</span><span class="token operator">*</span>a1 <span class="token operator">+</span> v3<span class="token punctuation">)</span> <span class="token operator">=</span> a2<span class="token punctuation">;</span>
-  <span class="token operator">*</span><span class="token punctuation">(</span><span class="token punctuation">(</span>_DWORD <span class="token operator">*</span><span class="token punctuation">)</span>a1 <span class="token operator">+</span> <span class="token number">3</span><span class="token punctuation">)</span> <span class="token operator">=</span> v3<span class="token punctuation">;</span>                     <span class="token comment">// idx=v3</span>
-  <span class="token keyword">return</span> <span class="token number">1LL</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
-</ul>
-	
-	</div>
-  <a type="button" href="/2024/12/13/2024-12第二周：ciscn_2019_qual_virtual/#more" class="btn btn-default more">Read More</a>
-</div>
-
-		
 
 		</div>
 
@@ -704,7 +730,7 @@ Host script results:
 		
 			<li><a href="/categories/CTFpwn/">CTFpwn<span>12</span></a></li>
 		
-			<li><a href="/categories/pentest/">pentest<span>16</span></a></li>
+			<li><a href="/categories/pentest/">pentest<span>17</span></a></li>
 		
 			<li><a href="/categories/数证/">数证<span>1</span></a></li>
 		
@@ -719,19 +745,19 @@ Host script results:
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/恶意软件分析/">恶意软件分析<span>1</span></a></li>
-		
-			<li><a href="/tags/靶场/">靶场<span>11</span></a></li>
-		
 			<li><a href="/tags/AV规避/">AV规避<span>6</span></a></li>
-		
-			<li><a href="/tags/web学习/">web学习<span>1</span></a></li>
-		
-			<li><a href="/tags/每周一pwn系列/">每周一pwn系列<span>8</span></a></li>
 		
 			<li><a href="/tags/赛题/">赛题<span>4</span></a></li>
 		
+			<li><a href="/tags/web学习/">web学习<span>1</span></a></li>
+		
+			<li><a href="/tags/恶意软件分析/">恶意软件分析<span>1</span></a></li>
+		
+			<li><a href="/tags/每周一pwn系列/">每周一pwn系列<span>8</span></a></li>
+		
 			<li><a href="/tags/Vulnstack靶场/">Vulnstack靶场<span>4</span></a></li>
+		
+			<li><a href="/tags/靶场/">靶场<span>12</span></a></li>
 		
 		 
 		</ul>
@@ -743,6 +769,10 @@ Host script results:
 <div class="widget">
   <h4>Recent Posts</h4>
   <ul class="entry list-unstyled">
+    
+      <li>
+        <a href="/2025/03/05/春秋云镜-Delegation/"  title="晋升荣耀黄金" ><i class="fa fa-file-o"></i>春秋云镜-Delegation</a>
+      </li>
     
       <li>
         <a href="/2025/03/01/2025-03第一周：2022蓝帽杯半决 Smurfs/"  title="每周一pwn系列" ><i class="fa fa-file-o"></i>2025-03第一周：2022蓝帽杯半决 Smurfs</a>
@@ -758,10 +788,6 @@ Host script results:
     
       <li>
         <a href="/2025/02/11/2025-02第二周：2022春秋杯 Torghast/"  title="每周一pwn系列" ><i class="fa fa-file-o"></i>2025-02第二周：2022春秋杯 Torghast</a>
-      </li>
-    
-      <li>
-        <a href="/2025/02/03/远程DLL注入/" ><i class="fa fa-file-o"></i>远程DLL注入</a>
       </li>
     
   </ul>
