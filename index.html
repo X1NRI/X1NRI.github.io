@@ -137,6 +137,88 @@
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2025/03/12/2025-03第二周：pawnyable LK01-2 & LK01-3/" title="每周一pwn系列">2025-03第二周：2025-03第二周：pawnyable LK01-2 &amp; LK01-3</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2025-03-12  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<h1 id="LK01-2"><a href="#LK01-2" class="headerlink" title="LK01-2"></a>LK01-2</h1><h2 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h2><p>内核版本 5.15.0<br><img src="/EXP_FILE/afaa3d5f8db181bac9b0c7d5d65a516f_MD5.jpeg"></p>
+<p><img src="/EXP_FILE/e5646bb4f87f8c0104f786c6dc9ecc3f_MD5.jpeg"></p>
+<ul>
+<li><p>run.sh</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token shebang important">#!/bin/sh</span>
+qemu-system-x86_64 <span class="token punctuation">\</span>
+    <span class="token parameter variable">-m</span> 64M <span class="token punctuation">\</span>
+    <span class="token parameter variable">-nographic</span> <span class="token punctuation">\</span>
+    <span class="token parameter variable">-kernel</span> bzImage <span class="token punctuation">\</span>
+    <span class="token parameter variable">-append</span> <span class="token string">"console=ttyS0 loglevel=3 oops=panic panic=-1 pti=on kaslr"</span> <span class="token punctuation">\</span>
+    -no-reboot <span class="token punctuation">\</span>
+    <span class="token parameter variable">-cpu</span> qemu64,+smap,+smep <span class="token punctuation">\</span>
+    <span class="token parameter variable">-smp</span> <span class="token number">1</span> <span class="token punctuation">\</span>
+    <span class="token parameter variable">-monitor</span> /dev/null <span class="token punctuation">\</span>
+    <span class="token parameter variable">-initrd</span> rootfs.cpio <span class="token punctuation">\</span>
+    <span class="token parameter variable">-net</span> nic,model<span class="token operator">=</span>virtio <span class="token punctuation">\</span>
+    <span class="token parameter variable">-net</span> user<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>保护全开</p>
+</li>
+<li><p>init</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token shebang important">#!/bin/sh</span>
+mdev <span class="token parameter variable">-s</span>
+<span class="token function">mount</span> <span class="token parameter variable">-t</span> proc none /proc
+<span class="token function">mkdir</span> <span class="token parameter variable">-p</span> /dev/pts
+<span class="token function">mount</span> <span class="token parameter variable">-vt</span> devpts <span class="token parameter variable">-o</span> <span class="token assign-left variable">gid</span><span class="token operator">=</span><span class="token number">4</span>,mode<span class="token operator">=</span><span class="token number">620</span> none /dev/pts
+<span class="token function">chmod</span> <span class="token number">666</span> /dev/ptmx
+stty <span class="token parameter variable">-opost</span>
+<span class="token builtin class-name">echo</span> <span class="token number">2</span> <span class="token operator">></span> /proc/sys/kernel/kptr_restrict
+<span class="token builtin class-name">echo</span> <span class="token number">1</span> <span class="token operator">></span> /proc/sys/kernel/dmesg_restrict
+
+insmod /root/vuln.ko
+<span class="token function">mknod</span> <span class="token parameter variable">-m</span> <span class="token number">666</span> /dev/holstein c <span class="token variable"><span class="token variable">`</span><span class="token function">grep</span> holstein /proc/devices <span class="token operator">|</span> <span class="token function">awk</span> <span class="token string">'&#123;print $1;&#125;'</span><span class="token variable">`</span></span> <span class="token number">0</span>
+
+<span class="token builtin class-name">echo</span> <span class="token parameter variable">-e</span> <span class="token string">"<span class="token entity" title="\n">\n</span>Boot took <span class="token variable"><span class="token variable">$(</span><span class="token function">cut</span> -d<span class="token string">' '</span> <span class="token parameter variable">-f1</span> /proc/uptime<span class="token variable">)</span></span> seconds<span class="token entity" title="\n">\n</span>"</span>
+<span class="token builtin class-name">echo</span> <span class="token string">"[ Holstein v2 (KL01-2) - Pawnyable ]"</span>
+setsid cttyhack setuidgid <span class="token number">1337</span> <span class="token function">sh</span>
+
+<span class="token function">umount</span> /proc
+poweroff <span class="token parameter variable">-d</span> <span class="token number">0</span> <span class="token parameter variable">-f</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+</ul>
+<h2 id="逆向分析"><a href="#逆向分析" class="headerlink" title="逆向分析"></a>逆向分析</h2><ul>
+<li><p>module_initialize<br><img src="/EXP_FILE/cc652cb750c59fade0da76b9d882e824_MD5.jpeg"><br>注册了一个杂项设备 holstein</p>
+</li>
+<li><p>module_open<br><img src="/EXP_FILE/996d5be2ecc9ea463b9d1a7d391febb3_MD5.jpeg"><br>申请了一块0x400的内存</p>
+</li>
+<li><p>module_read<br><img src="/EXP_FILE/0e5b562bd3869503b0bedb8931e0b4a4_MD5.jpeg"></p>
+</li>
+<li><p>module_write<br><img src="/EXP_FILE/e1822eb5da10401e620ea4b6dec1c951_MD5.jpeg"></p>
+</li>
+<li><p>module_close<br><img src="/EXP_FILE/816779a261fd27ef3d76e9a67c6558a8_MD5.jpeg"><br>UAF</p>
+</li>
+<li><p>module_cleanup<br><img src="/EXP_FILE/346e56874b719afe369db4107bfcdd1c_MD5.jpeg"><br>卸载设备</p>
+</li>
+</ul>
+<h2 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h2><p>没有对size进行任何限制，存在内核堆溢出</p>
+<p>SLUB 的特性决定了只有大小相同的对象才会从同一个 kmem_cache 区域分配，0x400的大小，那么我的想法是对 tty_struct 进行堆喷射，泄露内核基址后劫持 tty_ops 函数表</p>
+	
+	</div>
+  <a type="button" href="/2025/03/12/2025-03第二周：pawnyable LK01-2 & LK01-3/#more" class="btn btn-default more">Read More</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2025/03/05/春秋云镜-Delegation/" title="晋升荣耀黄金">春秋云镜-Delegation</a>
 		</h3>
 		</div>
@@ -847,33 +929,6 @@ poweroff <span class="token parameter variable">-d</span> <span class="token num
 </div>
 
 		
-			
-	
-	<!-- display as entry -->
-<div class="row">
-	<div class="col-md-8">
-		<h3 class="title">
-			<a href="/2025/01/16/11. Easy W-EscapeTwo-S7排位赛/" title="This box is still active. Once retired, this article will be published for public access as policy on publishing content from their platform.">Easy W-EscapeTwo-S7</a>
-		</h3>
-		</div>
-	<div class="col-md-4">
-		<div class="date">post @ 2025-01-16  </div>
-		</div>
-	</div>
-	
-
-
-			<div class="entry">
-  <div class="row">
-	
-	
-		Here's something encrypted, password is required to continue reading.
-	
-	</div>
-  <a type="button" href="/2025/01/16/11. Easy W-EscapeTwo-S7排位赛/#more" class="btn btn-default more">Read More</a>
-</div>
-
-		
 
 		</div>
 
@@ -921,7 +976,7 @@ poweroff <span class="token parameter variable">-d</span> <span class="token num
 		<h4>Categories</h4>
 		<ul class="tag_box inline list-unstyled">
 		
-			<li><a href="/categories/CTFpwn/">CTFpwn<span>12</span></a></li>
+			<li><a href="/categories/CTFpwn/">CTFpwn<span>13</span></a></li>
 		
 			<li><a href="/categories/pentest/">pentest<span>17</span></a></li>
 		
@@ -938,17 +993,17 @@ poweroff <span class="token parameter variable">-d</span> <span class="token num
 		<h4>Tag Cloud</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/靶场/">靶场<span>12</span></a></li>
+			<li><a href="/tags/Vulnstack靶场/">Vulnstack靶场<span>4</span></a></li>
 		
 			<li><a href="/tags/赛题/">赛题<span>4</span></a></li>
 		
-			<li><a href="/tags/每周一pwn系列/">每周一pwn系列<span>8</span></a></li>
+			<li><a href="/tags/靶场/">靶场<span>12</span></a></li>
 		
-			<li><a href="/tags/Vulnstack靶场/">Vulnstack靶场<span>4</span></a></li>
+			<li><a href="/tags/AV规避/">AV规避<span>6</span></a></li>
 		
 			<li><a href="/tags/web学习/">web学习<span>1</span></a></li>
 		
-			<li><a href="/tags/AV规避/">AV规避<span>6</span></a></li>
+			<li><a href="/tags/每周一pwn系列/">每周一pwn系列<span>9</span></a></li>
 		
 			<li><a href="/tags/恶意软件分析/">恶意软件分析<span>1</span></a></li>
 		
@@ -964,6 +1019,10 @@ poweroff <span class="token parameter variable">-d</span> <span class="token num
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2025/03/12/2025-03第二周：pawnyable LK01-2 &amp; LK01-3/"  title="每周一pwn系列" ><i class="fa fa-file-o"></i>2025-03第二周：2025-03第二周：pawny...</a>
+      </li>
+    
+      <li>
         <a href="/2025/03/05/春秋云镜-Delegation/"  title="晋升荣耀黄金" ><i class="fa fa-file-o"></i>春秋云镜-Delegation</a>
       </li>
     
@@ -977,10 +1036,6 @@ poweroff <span class="token parameter variable">-d</span> <span class="token num
     
       <li>
         <a href="/2025/02/17/2025-02第三周：pawnyable LK01/"  title="每周一pwn系列" ><i class="fa fa-file-o"></i>2025-02第三周：pawnyable LK01</a>
-      </li>
-    
-      <li>
-        <a href="/2025/02/11/2025-02第二周：2022春秋杯 Torghast/"  title="每周一pwn系列" ><i class="fa fa-file-o"></i>2025-02第二周：2022春秋杯 Torghast</a>
       </li>
     
   </ul>
